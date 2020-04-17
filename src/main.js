@@ -51,7 +51,7 @@ const createFilterTemplate = () => {
     `);
 };
 
-const createSortTemplate = () => {
+const createContentTemplate = () => {
     return (`
     <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
                 <span class="trip-sort__item  trip-sort__item--day">Day</span>
@@ -86,23 +86,16 @@ const createSortTemplate = () => {
 
                 <span class="trip-sort__item  trip-sort__item--offers">Offers</span>
             </form>
-    `);
-};
-const createDayList = () => {
-    return (`
-    <ul class="trip-days"></ul>
-    `);
-};
-
-const createContainerForDay = () => {
-    return (`
-    <li class="trip-days__item  day">
+            
+            <ul class="trip-days">
+            <li class="trip-days__item  day">
     <div class="day__info">
         <span class="day__counter">1</span>
         <time class="day__date" datetime="2019-03-18">MAR 18</time>
     </div>
 
     <ul class="trip-events__list"></ul>
+</ul>
     `);
 };
 
@@ -377,18 +370,15 @@ for (let i = 0; i < siteHeaderHiddenTitles.length; i++) {
 
 const eventsContainer = document.querySelector(".trip-events");
 
-render(eventsContainer, createSortTemplate(), `beforeend`);
+render(eventsContainer, createContentTemplate(), `beforeend`);
 
-render(eventsContainer, createEditCardTemplate(), `beforeend`);
+const sortForm = eventsContainer.querySelector(".trip-events__trip-sort.trip-sort");
 
-render(eventsContainer, createDayList(), `beforeend`);
+render(sortForm, createEditCardTemplate(), `afterend`);
 
-const dayList = eventsContainer.querySelector(".trip-days");
-render(dayList, createContainerForDay(), `afterbegin`);
+const eventList = eventsContainer.querySelector(".trip-events__list");
 
-const eventList = dayList.querySelector(".trip-events__list");
-
-new Array(3).fill(``).forEach(() => {
+new Array(CARD_COUNT).fill(``).forEach(() => {
     render(eventList, createCardTemplate(), `beforeend`);
 });
 
