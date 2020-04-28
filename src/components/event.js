@@ -1,5 +1,5 @@
-export const createCardTemplate = () => {
-    return (`
+export const createEventTemplate = () => {
+  return (`
     <li class="trip-events__item">
                             <div class="event">
                                 <div class="event__type">

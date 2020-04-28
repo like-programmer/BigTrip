@@ -1,47 +1,39 @@
 import {createTripInfoTemplate} from "./components/trip-info.js";
 import {createSiteMenuTemplate} from "./components/site-menu.js";
 import {createFilterTemplate} from "./components/filter.js";
-import {createListTemplate} from "./components/list.js";
-import {createEditCardTemplate} from "./components/edit-card.js";
-import {createCardTemplate} from "./components/card.js";
+import {createSortingTemplate} from "./components/sorting.js";
+import {createEditEventTemplate} from "./components/edit-event.js";
+import {createDayListTemplate} from "./components/day-list.js";
+import {createEventTemplate} from "./components/event.js";
 
 
-const CARD_COUNT = 3;
+const EVENT_COUNT = 3;
 
 const render = (container, template, place) => {
-    container.insertAdjacentHTML(place, template)
+  container.insertAdjacentHTML(place, template);
 };
 
-const siteEditedHeader = document.querySelector(`.trip-main`);
+const siteHeaderElement = document.querySelector(`.trip-main`);
 
-render(siteEditedHeader, createTripInfoTemplate(), `afterbegin`);
+render(siteHeaderElement, createTripInfoTemplate(), `afterbegin`);
 
-const siteHeaderHiddenTitles = siteEditedHeader.querySelectorAll(".trip-main__trip-controls.trip-controls .visually-hidden");
+const siteHeaderHiddenTitles = Array.from(siteHeaderElement.querySelectorAll(`.trip-main__trip-controls.trip-controls .visually-hidden`));
 
-for (let i = 0; i < siteHeaderHiddenTitles.length; i++) {
-    switch (i) {
-        case 0:
-            render(siteHeaderHiddenTitles[i], createSiteMenuTemplate(), `afterend`);
-            break;
+render(siteHeaderHiddenTitles[0], createSiteMenuTemplate(), `afterend`);
+render(siteHeaderHiddenTitles[1], createFilterTemplate(), `afterend`);
 
-        case 1:
-            render(siteHeaderHiddenTitles[i], createFilterTemplate(), `afterend`);
-            break;
-    }
-}
 
-const eventsContainer = document.querySelector(".trip-events");
+const eventsContainerElement = document.querySelector(`.trip-events`);
 
-render(eventsContainer, createListTemplate(), `beforeend`);
+render(eventsContainerElement, createSortingTemplate(), `beforeend`);
+render(eventsContainerElement, createEditEventTemplate(), `beforeend`);
 
-const sortForm = eventsContainer.querySelector(".trip-events__trip-sort.trip-sort");
+render(eventsContainerElement, createDayListTemplate(), `beforeend`);
 
-render(sortForm, createEditCardTemplate(), `afterend`);
+const eventListElement = eventsContainerElement.querySelector(`.trip-events__list`);
 
-const eventList = eventsContainer.querySelector(".trip-events__list");
-
-new Array(CARD_COUNT).fill(``).forEach(() => {
-    render(eventList, createCardTemplate(), `beforeend`);
+new Array(EVENT_COUNT).fill(``).forEach(() => {
+  render(eventListElement, createEventTemplate(), `beforeend`);
 });
 
 
