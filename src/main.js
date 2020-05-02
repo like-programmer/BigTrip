@@ -6,6 +6,8 @@ import {createEditEventTemplate} from "./components/edit-event.js";
 import {createDayListTemplate} from "./components/day-list.js";
 import {createEventTemplate} from "./components/event.js";
 
+import {FILTER_NAMES} from "./const.js";
+
 
 const EVENT_COUNT = 3;
 
@@ -20,7 +22,7 @@ render(siteHeaderElement, createTripInfoTemplate(), `afterbegin`);
 const siteHeaderHiddenTitles = Array.from(siteHeaderElement.querySelectorAll(`.trip-main__trip-controls.trip-controls .visually-hidden`));
 
 render(siteHeaderHiddenTitles[0], createSiteMenuTemplate(), `afterend`);
-render(siteHeaderHiddenTitles[1], createFilterTemplate(), `afterend`);
+render(siteHeaderHiddenTitles[1], createFilterTemplate(FILTER_NAMES), `afterend`);
 
 
 const eventsContainerElement = document.querySelector(`.trip-events`);
