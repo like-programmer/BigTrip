@@ -1,15 +1,15 @@
-const createFilterMarkup = (filterName) => {
+const createFilterMarkup = (filterName, isChecked) => {
   return (`
   <div class="trip-filters__filter">
-                        <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio"
-                               name="trip-filter" value="everything" checked>
-                        <label class="trip-filters__filter-label" for="filter-everything">${filterName}</label>
+                        <input id="filter-${filterName}" class="trip-filters__filter-input  visually-hidden" type="radio"
+                               name="trip-filter" value="${filterName}" ${isChecked ? `checked` : ``}>
+                        <label class="trip-filters__filter-label" for="filter-${filterName}">${filterName}</label>
                     </div>
   `);
 };
 
 export const createFilterTemplate = (filterNames) => {
-  const filterMarkup = filterNames.map((it) => createFilterMarkup(it)).join(`\n`);
+  const filterMarkup = filterNames.map((it, i) => createFilterMarkup(it, i === 0)).join(`\n`);
 
   return (`
     <form class="trip-filters" action="#" method="get">
