@@ -1,4 +1,6 @@
-export const createEventTemplate = () => {
+export const createEventTemplate = (event) => {
+  // const {} = event;
+
   return (`
     <li class="trip-events__item">
                             <div class="event">

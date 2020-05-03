@@ -6,10 +6,13 @@ import {createEditEventTemplate} from "./components/edit-event.js";
 import {createDayListTemplate} from "./components/day-list.js";
 import {createEventTemplate} from "./components/event.js";
 
+import {generateEvents} from "./mock/event.js";
 import {FILTER_NAMES} from "./mock/filter.js";
 
 
 const EVENT_COUNT = 3;
+
+const events = generateEvents(EVENT_COUNT);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -28,14 +31,14 @@ render(siteHeaderHiddenTitles[1], createFilterTemplate(FILTER_NAMES), `afterend`
 const eventsContainerElement = document.querySelector(`.trip-events`);
 
 render(eventsContainerElement, createSortingTemplate(), `beforeend`);
-render(eventsContainerElement, createEditEventTemplate(), `beforeend`);
+render(eventsContainerElement, createEditEventTemplate(events[0]), `beforeend`);
 
 render(eventsContainerElement, createDayListTemplate(), `beforeend`);
 
 const eventListElement = eventsContainerElement.querySelector(`.trip-events__list`);
 
-new Array(EVENT_COUNT).fill(``).forEach(() => {
-  render(eventListElement, createEventTemplate(), `beforeend`);
+events.forEach((event) => {
+  render(eventListElement, createEventTemplate(event), `beforeend`);
 });
 
 
