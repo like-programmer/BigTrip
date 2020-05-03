@@ -6,7 +6,7 @@ import {createEditEventTemplate} from "./components/edit-event.js";
 import {createDayListTemplate} from "./components/day-list.js";
 import {createEventTemplate} from "./components/event.js";
 
-import {FILTER_NAMES} from "./const.js";
+import {FILTER_NAMES} from "./mock/filter.js";
 
 
 const EVENT_COUNT = 3;
