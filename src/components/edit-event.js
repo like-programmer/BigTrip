@@ -63,16 +63,12 @@ const createPhotoTapeMarkup = () => {
 };
 
 export const createEditEventTemplate = (event) => {
-  // const {} = event;
+  const {icon, eventType, destination, price, description} = event;
 
-  const icon = `img/icons/taxi.png`;
-  const title = `Taxi to `;
-  const startDate = `2019/03/18`;
+  const startDate = `18/03/19`;
   const startTime = `10:30`;
-  const endDate = `2019/03/18`;
+  const endDate = `18/03/19`;
   const endTime = `11:00`;
-  const price = `20`;
-  const description = `Geneva is a city in Switzerland that lies at the southern tip of expansive Lac Léman (Lake Geneva). Surrounded by the Alps and Jura mountains, the city has views of dramatic Mont Blanc.`;
 
   const offersMarkup = createOffersMarkup();
   const photoTapeMarkup = createPhotoTapeMarkup();
@@ -166,10 +162,10 @@ export const createEditEventTemplate = (event) => {
 
                     <div class="event__field-group  event__field-group--destination">
                         <label class="event__label  event__type-output" for="event-destination-1">
-                            ${title}
+                            ${eventType}
                         </label>
                         <input class="event__input  event__input--destination" id="event-destination-1" type="text"
-                               name="event-destination" value="Geneva" list="destination-list-1">
+                               name="event-destination" value="${destination}" list="destination-list-1">
                         <datalist id="destination-list-1">
                             <option value="Amsterdam"></option>
                             <option value="Geneva"></option>
