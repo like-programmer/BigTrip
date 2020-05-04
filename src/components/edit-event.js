@@ -62,8 +62,11 @@ const createPhotoTapeMarkup = () => {
   `);
 };
 
+import {EVENT_TYPES} from "../const.js";
+import {createTripTypeTitle} from "../utils.js";
+
 export const createEditEventTemplate = (event) => {
-  const {icon, eventType, destination, price, description} = event;
+  const {icon, eventName, destination, price, description} = event;
 
   const startDate = `18/03/19`;
   const startTime = `10:30`;
@@ -72,6 +75,7 @@ export const createEditEventTemplate = (event) => {
 
   const offersMarkup = createOffersMarkup();
   const photoTapeMarkup = createPhotoTapeMarkup();
+  const eventTitle = createTripTypeTitle(EVENT_TYPES, eventName);
 
   return (`
     <form class="trip-events__item  event  event--edit" action="#" method="post">
@@ -162,7 +166,7 @@ export const createEditEventTemplate = (event) => {
 
                     <div class="event__field-group  event__field-group--destination">
                         <label class="event__label  event__type-output" for="event-destination-1">
-                            ${eventType}
+                            ${eventTitle}
                         </label>
                         <input class="event__input  event__input--destination" id="event-destination-1" type="text"
                                name="event-destination" value="${destination}" list="destination-list-1">

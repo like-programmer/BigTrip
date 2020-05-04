@@ -1,7 +1,7 @@
 export const generateEvent = () => {
   return {
     icon: `img/icons/taxi.png`,
-    eventType: `Taxi to `,
+    eventName: `taxi`,
     destination: `Amsterdam`,
     endDate: new Date(),
     duration: `30M`,
