@@ -60,3 +60,4 @@ export const EVENT_TYPES = [
     type: `move`
   }
 ];
+

@@ -1,8 +1,23 @@
 import {EVENT_TYPES} from "../const.js";
 import {createTripTypeTitle} from "../utils.js";
 
+const createOffersMarkup = (offers) => {
+  return offers.map((offer) => {
+    const title = offer.title;
+    const price = offer.price;
+
+    return (`
+  <li class="event__offer">
+      <span class="event__offer-title">${title}</span>
+      &plus;
+      &euro;&nbsp;<span class="event__offer-price">${price}</span>
+  </li>
+`);
+  }).join(`\n`);
+};
+
 export const createEventTemplate = (event) => {
-  const {icon, eventName, destination, duration, price} = event;
+  const {icon, eventName, destination, duration, price, offers} = event;
 
   const startDate = `2019-03-18`;
   const startTime = `10:30`;
@@ -10,6 +25,7 @@ export const createEventTemplate = (event) => {
   const endTime = `11:00`;
 
   const eventTitle = createTripTypeTitle(EVENT_TYPES, eventName);
+  const offersMarkup = createOffersMarkup(offers);
 
   return (`
     <li class="trip-events__item">
@@ -36,11 +52,7 @@ export const createEventTemplate = (event) => {
 
             <h4 class="visually-hidden">Offers:</h4>
             <ul class="event__selected-offers">
-                <li class="event__offer">
-                    <span class="event__offer-title">Order Uber</span>
-                    &plus;
-                    &euro;&nbsp;<span class="event__offer-price">20</span>
-                </li>
+                ${offersMarkup}
             </ul>
 
             <button class="event__rollup-btn" type="button">
