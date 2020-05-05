@@ -20,7 +20,7 @@ const render = (container, template, place) => {
 
 const siteHeaderElement = document.querySelector(`.trip-main`);
 
-render(siteHeaderElement, createTripInfoTemplate(), `afterbegin`);
+render(siteHeaderElement, createTripInfoTemplate(events), `afterbegin`);
 
 const siteHeaderHiddenTitles = Array.from(siteHeaderElement.querySelectorAll(`.trip-main__trip-controls.trip-controls .visually-hidden`));
 

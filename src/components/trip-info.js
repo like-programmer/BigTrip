@@ -1,14 +1,21 @@
-const createtripName = () => {
-  return (`Amsterdam &mdash; Chamonix &mdash; Geneva`);
+const createtripName = (events) => {
+  if (events.length <= 3) {
+    return events.map((event) => {
+      return (`${event.destination}`);
+    }).join(` &mdash; `);
+  } else {
+    const eventsLastPoint = events.length - 1;
+    return `${events[0].destination} &mdash; ... &mdash; ${events[eventsLastPoint].destination}`;
+  }
 };
 
-const createtripLimits = () => {
+const createtripLimits = (events) => {
   return (`Mar 18&nbsp;&mdash;&nbsp;20`);
 };
 
-export const createTripInfoTemplate = () => {
-  const tripName = createtripName();
-  const tripLimits = createtripLimits();
+export const createTripInfoTemplate = (events) => {
+  const tripName = createtripName(events);
+  const tripLimits = createtripLimits(events);
   const totalPrice = 1000;
 
   return (`
