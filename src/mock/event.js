@@ -141,6 +141,9 @@ const getRandomDates = () => {
 export const generateEvent = () => {
   const dates = getRandomDates();
   const eventType = getRandomArrayItem(EVENT_TYPES);
+  const offers = offerItems.filter((offer) => {
+    return eventType.name === offer.type;
+  });
 
   return {
     eventType,
@@ -150,7 +153,7 @@ export const generateEvent = () => {
     price: getRandomIntegerNumber(5, 60),
     description: getRandomString(descriptionItems),
     photos: getRandomArray(),
-    offers: []
+    offers
   };
 };
 

@@ -2,7 +2,7 @@ import {EVENT_TYPES} from "../const.js";
 import {createTripTypeTitle, formatTime, formatDateYMD, getDuration} from "../utils.js";
 
 const createOffersMarkup = (offers) => {
-  return offers.map((offer) => {
+  return offers.slice(0, 2).map((offer) => {
     const title = offer.title;
     const price = offer.price;
 
