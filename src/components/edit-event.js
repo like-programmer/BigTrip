@@ -40,11 +40,9 @@ export const createEditEventTemplate = (event) => {
 
   const formattedStartDate = formatDateDMY(startDate);
   const formattedStartTime = formatTime(startDate);
-
   const formattedEndDate = formatDateDMY(endDate);
   const formattedEndTime = formatTime(endDate);
-
-  const offersMarkup = createOffersMarkup(offers);
+  const offersMarkup = offers !== [] ? createOffersMarkup(offers) : null;
   const photoTapeMarkup = createPhotoTapeMarkup(photos);
 
   return (`
@@ -175,6 +173,7 @@ export const createEditEventTemplate = (event) => {
                     <button class="event__reset-btn" type="reset">Cancel</button>
                 </header>
                 <section class="event__details">
+                ${offersMarkup ? `
                     <section class="event__section  event__section--offers">
                         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
@@ -182,6 +181,7 @@ export const createEditEventTemplate = (event) => {
                             ${offersMarkup}
                         </div>
                     </section>
+                    ` : ``}
 
                     <section class="event__section  event__section--destination">
                         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
