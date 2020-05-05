@@ -33,7 +33,10 @@ import {EVENT_TYPES} from "../const.js";
 import {createTripTypeTitle} from "../utils.js";
 
 export const createEditEventTemplate = (event) => {
-  const {icon, eventName, destination, startDate, endDate, price, description, photos, offers} = event;
+  const {eventType, destination, startDate, endDate, price, description, photos, offers} = event;
+
+  const eventTitle = createTripTypeTitle(EVENT_TYPES, eventType.name);
+  const eventIcon = eventType.icon;
 
   const formattedStartDate = formatDateDMY(startDate);
   const formattedStartTime = formatTime(startDate);
@@ -43,7 +46,6 @@ export const createEditEventTemplate = (event) => {
 
   const offersMarkup = createOffersMarkup(offers);
   const photoTapeMarkup = createPhotoTapeMarkup(photos);
-  const eventTitle = createTripTypeTitle(EVENT_TYPES, eventName);
 
   return (`
     <form class="trip-events__item  event  event--edit" action="#" method="post">
@@ -51,7 +53,7 @@ export const createEditEventTemplate = (event) => {
                     <div class="event__type-wrapper">
                         <label class="event__type  event__type-btn" for="event-type-toggle-1">
                             <span class="visually-hidden">Choose event type</span>
-                            <img class="event__type-icon" width="17" height="17" src="${icon}" alt="Event type icon">
+                            <img class="event__type-icon" width="17" height="17" src="${eventIcon}" alt="Event type icon">
                         </label>
                         <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 

@@ -17,7 +17,10 @@ const createOffersMarkup = (offers) => {
 };
 
 export const createEventTemplate = (event) => {
-  const {icon, eventName, destination, startDate, endDate, price, offers} = event;
+  const {eventType, destination, startDate, endDate, price, offers} = event;
+
+  const eventTitle = createTripTypeTitle(EVENT_TYPES, eventType.name);
+  const eventIcon = eventType.icon;
 
   const formattedStartDate = formatDateYMD(startDate);
   const formattedStartTime = formatTime(startDate);
@@ -27,14 +30,13 @@ export const createEventTemplate = (event) => {
 
   const duration = getDuration(startDate, endDate);
 
-  const eventTitle = createTripTypeTitle(EVENT_TYPES, eventName);
   const offersMarkup = createOffersMarkup(offers);
 
   return (`
     <li class="trip-events__item">
         <div class="event">
             <div class="event__type">
-                <img class="event__type-icon" width="42" height="42" src="${icon}"
+                <img class="event__type-icon" width="42" height="42" src="${eventIcon}"
                                          alt="Event type icon">
             </div>
             <h3 class="event__title">${eventTitle} ${destination}</h3>

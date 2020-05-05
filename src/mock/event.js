@@ -1,3 +1,5 @@
+import {EVENT_TYPES} from "../const.js";
+
 const destinationItems = [`Amsterdam`, `Chamonix`, `Geneva`, `Rotterdam`, `Strasbourg`, `Zürich`, `Sydney`, `Kyoto`, `Praha`];
 
 const offerItems = [
@@ -138,10 +140,10 @@ const getRandomDates = () => {
 
 export const generateEvent = () => {
   const dates = getRandomDates();
+  const eventType = getRandomArrayItem(EVENT_TYPES);
 
   return {
-    icon: `img/icons/taxi.png`,
-    eventName: `taxi`,
+    eventType,
     destination: getRandomArrayItem(destinationItems),
     startDate: dates[0],
     endDate: dates[1],
