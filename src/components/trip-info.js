@@ -1,4 +1,6 @@
-const createtripName = (events) => {
+import {MONTH_NAMES} from "../const.js";
+
+const createTripName = (events) => {
   if (events.length <= 3) {
     return events.map((event) => {
       return (`${event.destination}`);
@@ -9,13 +11,17 @@ const createtripName = (events) => {
   }
 };
 
-const createtripLimits = (events) => {
-  return (`Mar 18&nbsp;&mdash;&nbsp;20`);
+const createTripLimits = (events, monthNames) => {
+  const eventsLastPoint = events.length - 1;
+  const startMonthName = monthNames[events[0].startDate.getMonth()];
+  const endMonthName = monthNames[events[eventsLastPoint].endDate.getMonth()];
+
+  return (`${events[0].startDate.getDate()} ${startMonthName} &mdash; ${events[eventsLastPoint].endDate.getDate()} ${endMonthName}`);
 };
 
 export const createTripInfoTemplate = (events) => {
-  const tripName = createtripName(events);
-  const tripLimits = createtripLimits(events);
+  const tripName = createTripName(events);
+  const tripLimits = createTripLimits(events, MONTH_NAMES);
   const totalPrice = 1000;
 
   return (`
