@@ -5,14 +5,14 @@ const createOffersMarkup = (offers) => {
   return offers.slice(0, 2).map((offer) => {
     const title = offer.title;
     const price = offer.price;
-
-    return (`
+    const markup = `
   <li class="event__offer">
       <span class="event__offer-title">${title}</span>
       &plus;
       &euro;&nbsp;<span class="event__offer-price">${price}</span>
   </li>
-`);
+`;
+    return (offer.isChecked ? markup : ``);
   }).join(`\n`);
 };
 

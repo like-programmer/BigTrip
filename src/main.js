@@ -37,7 +37,7 @@ render(eventsContainerElement, createDayListTemplate(), `beforeend`);
 
 const eventListElement = eventsContainerElement.querySelector(`.trip-events__list`);
 
-events.forEach((event) => {
+events.slice(1).forEach((event) => {
   render(eventListElement, createEventTemplate(event), `beforeend`);
 });
 

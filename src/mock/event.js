@@ -25,45 +25,10 @@ const offerItems = [
     isChecked: Math.random() > 0.5
   },
   {
-    type: `restaurant`,
-    name: `reserve`,
-    title: `Reserve a table`,
-    price: 65,
-    isChecked: Math.random() > 0.5
-  },
-  {
     type: `taxi`,
     name: `uber`,
     title: `Order Uber`,
     price: 20,
-    isChecked: Math.random() > 0.5
-  },
-  {
-    type: `bus`,
-    name: `travel-card`,
-    title: `Buy a travel card`,
-    price: 15,
-    isChecked: Math.random() > 0.5
-  },
-  {
-    type: `train`,
-    name: `meal`,
-    title: `Add meal`,
-    price: 10,
-    isChecked: Math.random() > 0.5
-  },
-  {
-    type: `ship`,
-    name: `seats`,
-    title: `Choose seats`,
-    price: 25,
-    isChecked: Math.random() > 0.5
-  },
-  {
-    type: `transport`,
-    name: `seats`,
-    title: `Choose seats`,
-    price: 5,
     isChecked: Math.random() > 0.5
   },
   {
@@ -85,6 +50,20 @@ const offerItems = [
     name: `comfort`,
     title: `Switch to comfort class`,
     price: 100,
+    isChecked: Math.random() > 0.5
+  },
+  {
+    type: `flight`,
+    name: `seats`,
+    title: `Choose seats`,
+    price: 5,
+    isChecked: Math.random() > 0.5
+  },
+  {
+    type: `flight`,
+    name: `meal`,
+    title: `Add meal`,
+    price: 15,
     isChecked: Math.random() > 0.5
   }
 ];

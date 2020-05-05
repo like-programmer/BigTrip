@@ -22,7 +22,20 @@ const createTripLimits = (events, monthNames) => {
 export const createTripInfoTemplate = (events) => {
   const tripName = createTripName(events);
   const tripLimits = createTripLimits(events, MONTH_NAMES);
-  const totalPrice = 1000;
+
+  const priceSums = events.map((event) => {
+    let priceSum = event.price;
+    event.offers.map((offer) => {
+      offer.isChecked ? (priceSum = priceSum + offer.price) : priceSum;
+    });
+    return priceSum;
+  });
+
+  let totalPrice = 0;
+
+  for (const mama of priceSums) {
+    totalPrice += mama;
+  }
 
   return (`
     <section class="trip-main__trip-info  trip-info">
