@@ -1,5 +1,5 @@
 import {EVENT_TYPES} from "../const.js";
-import {createTripTypeTitle} from "../utils.js";
+import {createTripTypeTitle, formatTime, formatDateYMD, getDuration} from "../utils.js";
 
 const createOffersMarkup = (offers) => {
   return offers.map((offer) => {
@@ -17,12 +17,15 @@ const createOffersMarkup = (offers) => {
 };
 
 export const createEventTemplate = (event) => {
-  const {icon, eventName, destination, duration, price, offers} = event;
+  const {icon, eventName, destination, startDate, endDate, price, offers} = event;
 
-  const startDate = `2019-03-18`;
-  const startTime = `10:30`;
-  const endDate = `2019-03-18`;
-  const endTime = `11:00`;
+  const formattedStartDate = formatDateYMD(startDate);
+  const formattedStartTime = formatTime(startDate);
+
+  const formattedEndDate = formatDateYMD(endDate);
+  const formattedEndTime = formatTime(endDate);
+
+  const duration = getDuration(startDate, endDate);
 
   const eventTitle = createTripTypeTitle(EVENT_TYPES, eventName);
   const offersMarkup = createOffersMarkup(offers);
@@ -38,9 +41,9 @@ export const createEventTemplate = (event) => {
 
             <div class="event__schedule">
                 <p class="event__time">
-                    <time class="event__start-time" datetime="${startDate}T${startTime}">${startTime}</time>
+                    <time class="event__start-time" datetime="${formattedStartDate}T${formattedStartTime}">${formattedStartTime}</time>
                                         &mdash;
-                    <time class="event__end-time" datetime="${endDate}T${endTime}">${endTime}</time>
+                    <time class="event__end-time" datetime="${formattedEndDate}T${formattedEndTime}">${formattedEndTime}</time>
                 </p>
                 <p class="event__duration">${duration}</p>
             </div>

@@ -1,3 +1,5 @@
+import {formatTime, formatDateDMY} from "../utils";
+
 const createOffersMarkup = (offers) => {
   return offers.map((offer) => {
     const type = offer.type;
@@ -31,12 +33,13 @@ import {EVENT_TYPES} from "../const.js";
 import {createTripTypeTitle} from "../utils.js";
 
 export const createEditEventTemplate = (event) => {
-  const {icon, eventName, destination, price, description, photos, offers} = event;
+  const {icon, eventName, destination, startDate, endDate, price, description, photos, offers} = event;
 
-  const startDate = `18/03/19`;
-  const startTime = `10:30`;
-  const endDate = `18/03/19`;
-  const endTime = `11:00`;
+  const formattedStartDate = formatDateDMY(startDate);
+  const formattedStartTime = formatTime(startDate);
+
+  const formattedEndDate = formatDateDMY(endDate);
+  const formattedEndTime = formatTime(endDate);
 
   const offersMarkup = createOffersMarkup(offers);
   const photoTapeMarkup = createPhotoTapeMarkup(photos);
@@ -148,13 +151,13 @@ export const createEditEventTemplate = (event) => {
                             From
                         </label>
                         <input class="event__input  event__input--time" id="event-start-time-1" type="text"
-                               name="event-start-time" value="${startDate} ${startTime}">
+                               name="event-start-time" value="${formattedStartDate} ${formattedStartTime}">
                         &mdash;
                         <label class="visually-hidden" for="event-end-time-1">
                             To
                         </label>
                         <input class="event__input  event__input--time" id="event-end-time-1" type="text"
-                               name="event-end-time" value="${endDate} ${endTime}">
+                               name="event-end-time" value="${formattedEndDate} ${formattedEndTime}">
                     </div>
 
                     <div class="event__field-group  event__field-group--price">
