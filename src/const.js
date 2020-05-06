@@ -1,63 +1,53 @@
 export const EVENT_TYPES = [
   {
-    name: `check`,
-    title: `Check`,
+    name: `check-in`,
     icon: `img/icons/check-in.png`,
-    type: `stop`
+    type: `activity`
   },
   {
     name: `sightseeing`,
-    title: `Sightseeing`,
     icon: `img/icons/sightseeing.png`,
-    type: `stop`
+    type: `activity`
   },
   {
     name: `restaurant`,
-    title: `Restaurant`,
     icon: `img/icons/restaurant.png`,
-    type: `stop`
+    type: `activity`
   },
   {
     name: `taxi`,
-    title: `Taxi`,
     icon: `img/icons/taxi.png`,
-    type: `move`
+    type: `transfer`
   },
   {
     name: `bus`,
-    title: `Bus`,
     icon: `img/icons/bus.png`,
-    type: `move`
+    type: `transfer`
   },
   {
     name: `train`,
-    title: `Train`,
     icon: `img/icons/train.png`,
-    type: `move`
+    type: `transfer`
   },
   {
     name: `ship`,
-    title: `Ship`,
     icon: `img/icons/ship.png`,
-    type: `move`
+    type: `transfer`
   },
   {
     name: `transport`,
-    title: `Transport`,
     icon: `img/icons/transport.png`,
-    type: `move`
+    type: `transfer`
   },
   {
     name: `drive`,
-    title: `Drive`,
     icon: `img/icons/drive.png`,
-    type: `move`
+    type: `transfer`
   },
   {
     name: `flight`,
-    title: `Flight`,
     icon: `img/icons/flight.png`,
-    type: `move`
+    type: `transfer`
   }
 ];
 
@@ -76,3 +66,96 @@ export const MONTH_NAMES = [
   `DEC`
 ];
 
+export const DESTINATION_CITIES = [`Amsterdam`, `Chamonix`, `Geneva`, `Rotterdam`, `Strasbourg`, `Zürich`, `Sydney`, `Kyoto`, `Praha`];
+
+export const OFFER_LIST = [
+  {
+    "type": `check-in`,
+    "offers": [
+      {
+        "title": `Add breakfast`,
+        "price": 45
+      }
+    ]
+  },
+  {
+    "type": `sightseeing`,
+    "offers": [
+      {
+        "title": `Book tickets`,
+        "price": 30
+      },
+      {
+        "title": `Lunch in city`,
+        "price": 65
+      }
+    ]
+  },
+  {
+    "type": `restaurant`,
+    "offers": []
+  },
+  {
+    "type": `taxi`,
+    "offers": [
+      {
+        "title": `Upgrade to a comfort class`,
+        "price": 120
+      },
+      {
+        "title": `Choose the radio station`,
+        "price": 60
+      },
+      {
+        "title": `Order Uber`,
+        "price": 20
+      }
+    ]
+  },
+  {
+    "type": `bus`,
+    "offers": []
+  },
+  {
+    "type": `train`,
+    "offers": []
+  },
+  {
+    "type": `ship`,
+    "offers": []
+  },
+  {
+    "type": `transport`,
+    "offers": []
+  },
+  {
+    "type": `drive`,
+    "offers": [
+      {
+        "title": `Rent a car`,
+        "price": 200
+      },
+    ]
+  },
+  {
+    "type": `flight`,
+    "offers": [
+      {
+        "title": `Add luggage`,
+        "price": 50
+      },
+      {
+        "title": `Switch to a comfort class`,
+        "price": 100
+      },
+      {
+        "title": `Choose seats`,
+        "price": 5
+      },
+      {
+        "title": `Add meal`,
+        "price": 15
+      },
+    ]
+  }
+];

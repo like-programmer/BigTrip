@@ -1,69 +1,67 @@
 import {EVENT_TYPES} from "../const.js";
-import {createTripTypeTitle, formatTime, formatDateYMD, getDuration} from "../utils.js";
+import {getDuration, createTripTypeTitle} from "../utils.js";
 
 const createOffersMarkup = (offers) => {
   return offers.slice(0, 2).map((offer) => {
     const title = offer.title;
     const price = offer.price;
-    const markup = `
-  <li class="event__offer">
-      <span class="event__offer-title">${title}</span>
-      &plus;
-      &euro;&nbsp;<span class="event__offer-price">${price}</span>
-  </li>
-`;
-    return (offer.isChecked ? markup : ``);
+    return (`
+      <li class="event__offer">
+          <span class="event__offer-title">${title}</span>
+          &plus;
+          &euro;&nbsp;<span class="event__offer-price">${price}</span>
+      </li>
+    `);
   }).join(`\n`);
 };
 
 export const createEventTemplate = (event) => {
-  const {eventType, destination, startDate, endDate, price, offers} = event;
+  const {basePrice, dateFrom, dateTo, destination, offers, type} = event;
 
-  const eventTitle = createTripTypeTitle(EVENT_TYPES, eventType.name);
-  const eventIcon = eventType.icon;
+  const destinationName = destination.name;
+  const eventTitle = createTripTypeTitle(EVENT_TYPES, type);
 
-  const formattedStartDate = formatDateYMD(startDate);
-  const formattedStartTime = formatTime(startDate);
+  const formattedDateFrom = dateFrom.toISOString().slice(0, -5);
+  const formattedTimeFrom = dateFrom.toISOString().split(`T`)[1].slice(0, 5);
 
-  const formattedEndDate = formatDateYMD(endDate);
-  const formattedEndTime = formatTime(endDate);
+  const formattedDateTo = dateTo.toISOString().slice(0, -5);
+  const formattedTimeTo = dateTo.toISOString().split(`T`)[1].slice(0, 5);
 
-  const duration = getDuration(startDate, endDate);
+  const duration = getDuration(dateFrom, dateTo);
 
+  const [eventIcon] = EVENT_TYPES.filter((it) => it.name === type).map((it) => it.icon);
   const offersMarkup = createOffersMarkup(offers);
 
   return (`
     <li class="trip-events__item">
-        <div class="event">
-            <div class="event__type">
-                <img class="event__type-icon" width="42" height="42" src="${eventIcon}"
-                                         alt="Event type icon">
-            </div>
-            <h3 class="event__title">${eventTitle} ${destination}</h3>
-
-            <div class="event__schedule">
-                <p class="event__time">
-                    <time class="event__start-time" datetime="${formattedStartDate}T${formattedStartTime}">${formattedStartTime}</time>
-                                        &mdash;
-                    <time class="event__end-time" datetime="${formattedEndDate}T${formattedEndTime}">${formattedEndTime}</time>
-                </p>
-                <p class="event__duration">${duration}</p>
-            </div>
-
-            <p class="event__price">
-                &euro;&nbsp;
-                <span class="event__price-value">${price}</span>
-            </p>
-
-            <h4 class="visually-hidden">Offers:</h4>
-            <ul class="event__selected-offers">
-                ${offersMarkup}
-            </ul>
-
-            <button class="event__rollup-btn" type="button">
-                <span class="visually-hidden">Open event</span>
-            </button>
+      <div class="event">
+        <div class="event__type">
+          <img class="event__type-icon" width="42" height="42" src="${eventIcon}" alt="Event type icon">
         </div>
+        <h3 class="event__title">${eventTitle} ${destinationName}</h3>
+
+        <div class="event__schedule">
+          <p class="event__time">
+            <time class="event__start-time" datetime="${formattedDateFrom}">${formattedTimeFrom}</time>
+            &mdash;
+            <time class="event__end-time" datetime="${formattedDateTo}">${formattedTimeTo}</time>
+          </p>
+          <p class="event__duration">${duration}</p>
+        </div>
+
+        <p class="event__price">
+          &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
+        </p>
+
+        <h4 class="visually-hidden">Offers:</h4>
+        <ul class="event__selected-offers">
+          ${offersMarkup}
+        </ul>
+
+        <button class="event__rollup-btn" type="button">
+          <span class="visually-hidden">Open event</span>
+        </button>
+      </div>
     </li>
-    `);
+  `);
 };

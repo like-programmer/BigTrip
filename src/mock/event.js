@@ -1,72 +1,4 @@
-import {EVENT_TYPES} from "../const.js";
-
-const destinationItems = [`Amsterdam`, `Chamonix`, `Geneva`, `Rotterdam`, `Strasbourg`, `Zürich`, `Sydney`, `Kyoto`, `Praha`];
-
-const offerItems = [
-  {
-    type: `check`,
-    name: `breakfast`,
-    title: `Add breakfast`,
-    price: 45,
-    isChecked: Math.random() > 0.5
-  },
-  {
-    type: `sightseeing`,
-    name: `tickets`,
-    title: `Book tickets`,
-    price: 30,
-    isChecked: Math.random() > 0.5
-  },
-  {
-    type: `sightseeing`,
-    name: `lunch`,
-    title: `Lunch in city`,
-    price: 65,
-    isChecked: Math.random() > 0.5
-  },
-  {
-    type: `taxi`,
-    name: `uber`,
-    title: `Order Uber`,
-    price: 20,
-    isChecked: Math.random() > 0.5
-  },
-  {
-    type: `drive`,
-    name: `rent`,
-    title: `Rent a car`,
-    price: 200,
-    isChecked: Math.random() > 0.5
-  },
-  {
-    type: `flight`,
-    name: `luggage`,
-    title: `Add luggage`,
-    price: 50,
-    isChecked: Math.random() > 0.5
-  },
-  {
-    type: `flight`,
-    name: `comfort`,
-    title: `Switch to comfort class`,
-    price: 100,
-    isChecked: Math.random() > 0.5
-  },
-  {
-    type: `flight`,
-    name: `seats`,
-    title: `Choose seats`,
-    price: 5,
-    isChecked: Math.random() > 0.5
-  },
-  {
-    type: `flight`,
-    name: `meal`,
-    title: `Add meal`,
-    price: 15,
-    isChecked: Math.random() > 0.5
-  }
-];
+import {EVENT_TYPES, DESTINATION_CITIES, OFFER_LIST} from "../const.js";
 
 const descriptionItems = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget.`,
@@ -90,20 +22,6 @@ const getRandomArrayItem = (array) => {
   return array[randomIndex];
 };
 
-const getRandomArray = () => {
-  const itemsCount = getRandomIntegerNumber(1, 7);
-  return new Array(itemsCount).fill(``).map(() => {
-    return `http://picsum.photos/300/150?r=${Math.random()}`;
-  });
-};
-
-const getRandomString = (array) => {
-  const itemsCount = getRandomIntegerNumber(1, 3);
-  return new Array(itemsCount).fill(``).map(() => {
-    return getRandomArrayItem(array);
-  }).join(` `);
-};
-
 const getRandomDates = () => {
   const startDate = new Date();
   const sign = Math.random() > 0.5 ? 1 : -1;
@@ -114,23 +32,56 @@ const getRandomDates = () => {
   endDate.setDate(startDate.getDate() + getRandomIntegerNumber(0, 3));
   endDate.setHours(endDate.getHours() + getRandomIntegerNumber(0, 3));
   endDate.setMinutes(endDate.getMinutes() + getRandomIntegerNumber(5, 30));
+
   return [startDate, endDate];
+};
+
+const getPhotosArray = () => {
+  const itemsCount = getRandomIntegerNumber(4, 8);
+  return new Array(itemsCount).fill(``).map(() => {
+    return ({
+      src: `http://picsum.photos/300/150?r=${Math.random()}`,
+      description: getRandomArrayItem(descriptionItems)
+    });
+  });
+};
+
+const getRandomArray = (array) => {
+  if (array.length > 0) {
+    const itemsCount = getRandomIntegerNumber(0, array.length - 1);
+    return new Array(itemsCount).fill(``).map((it, i) => {
+      return array[i];
+    });
+  } else {
+    return [];
+  }
+};
+
+const getRandomString = (array) => {
+  const itemsCount = getRandomIntegerNumber(1, 3);
+  return new Array(itemsCount).fill(``).map(() => {
+    return getRandomArrayItem(array);
+  }).join(` `);
 };
 
 export const generateEvent = () => {
   const dates = getRandomDates();
   const eventType = getRandomArrayItem(EVENT_TYPES);
-  const offers = offerItems.filter((offer) => eventType.name === offer.type);
+  const [filteredOfferList] = OFFER_LIST.filter((it) => it.type === eventType.name);
+  const randomCheckedOfferList = getRandomArray(filteredOfferList.offers);
 
   return {
-    eventType,
-    destination: getRandomArrayItem(destinationItems),
-    startDate: dates[0],
-    endDate: dates[1],
-    price: getRandomIntegerNumber(5, 60),
-    description: getRandomString(descriptionItems),
-    photos: getRandomArray(),
-    offers
+    basePrice: getRandomIntegerNumber(50, 500),
+    dateFrom: dates[0],
+    dateTo: dates[1],
+    destination: {
+      description: getRandomString(descriptionItems),
+      name: getRandomArrayItem(DESTINATION_CITIES),
+      pictures: getPhotosArray()
+    },
+    isFavourite: Math.random() > 0.5,
+    offers: randomCheckedOfferList,
+    type: eventType.name
   };
 };
 

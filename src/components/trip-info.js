@@ -3,51 +3,55 @@ import {MONTH_NAMES} from "../const.js";
 const createTripName = (events) => {
   if (events.length <= 3) {
     return events.map((event) => {
-      return (`${event.destination}`);
+      return (`${event.destination.name}`);
     }).join(` &mdash; `);
   } else {
     const eventsLastPoint = events.length - 1;
-    return `${events[0].destination} &mdash; ... &mdash; ${events[eventsLastPoint].destination}`;
+    return `${events[0].destination.name} &mdash; ... &mdash; ${events[eventsLastPoint].destination.name}`;
   }
 };
 
 const createTripLimits = (events, monthNames) => {
   const eventsLastPoint = events.length - 1;
-  const startMonthName = monthNames[events[0].startDate.getMonth()];
-  const endMonthName = monthNames[events[eventsLastPoint].endDate.getMonth()];
+  const startMonthName = monthNames[events[0].dateFrom.getMonth()];
+  const endMonthName = monthNames[events[eventsLastPoint].dateTo.getMonth()];
 
-  return (`${events[0].startDate.getDate()} ${startMonthName} &mdash; ${events[eventsLastPoint].endDate.getDate()} ${endMonthName}`);
+  return (`${events[0].dateFrom.getDate()} ${startMonthName} &mdash; ${events[eventsLastPoint].dateTo.getDate()} ${endMonthName}`);
+};
+
+const calculateTotalPrice = (events) => {
+  let totalPrice = 0;
+  const priceSums = events.map((event) => {
+    let priceSum = event.basePrice;
+    event.offers.map((offer) => {
+      priceSum = priceSum + offer.price;
+    });
+    return priceSum;
+  });
+
+  for (const price of priceSums) {
+    totalPrice += price;
+  }
+
+  return totalPrice;
 };
 
 export const createTripInfoTemplate = (events) => {
   const tripName = createTripName(events);
   const tripLimits = createTripLimits(events, MONTH_NAMES);
-
-  const priceSums = events.map((event) => {
-    let priceSum = event.price;
-    event.offers.map((offer) => {
-      offer.isChecked ? (priceSum = priceSum + offer.price) : priceSum;
-    });
-    return priceSum;
-  });
-
-  let totalPrice = 0;
-
-  for (const mama of priceSums) {
-    totalPrice += mama;
-  }
+  const totalPrice = calculateTotalPrice(events);
 
   return (`
     <section class="trip-main__trip-info  trip-info">
             <div class="trip-info__main">
               <h1 class="trip-info__title">${tripName}</h1>
 
-              <p class="trip-info__dates">${tripLimits}</p>
-            </div>
+                  <p class="trip-info__dates">${tripLimits}</p>
+              </div>
 
-            <p class="trip-info__cost">
-              Total: &euro;&nbsp;<span class="trip-info__cost-value">${totalPrice}</span>
-            </p>
+              <p class="trip-info__cost">
+                  Total: &euro;&nbsp;<span class="trip-info__cost-value">${totalPrice}</span>
+              </p>
           </section>
 `);
 };

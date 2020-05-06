@@ -10,7 +10,7 @@ import {generateEvents} from "./mock/event.js";
 import {FILTER_NAMES} from "./mock/filter.js";
 
 
-const EVENT_COUNT = 3;
+const EVENT_COUNT = 4;
 
 const events = generateEvents(EVENT_COUNT);
 
@@ -31,14 +31,14 @@ render(siteHeaderHiddenTitles[1], createFilterTemplate(FILTER_NAMES), `afterend`
 const eventsContainerElement = document.querySelector(`.trip-events`);
 
 render(eventsContainerElement, createSortingTemplate(), `beforeend`);
-render(eventsContainerElement, createEditEventTemplate(events[0]), `beforeend`);
 
 render(eventsContainerElement, createDayListTemplate(), `beforeend`);
 
 const eventListElement = eventsContainerElement.querySelector(`.trip-events__list`);
 
+render(eventListElement, createEditEventTemplate(events[0]), `beforeend`);
+
 events.slice(1).forEach((event) => {
   render(eventListElement, createEventTemplate(event), `beforeend`);
 });
-
 

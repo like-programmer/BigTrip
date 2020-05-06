@@ -1,6 +1,17 @@
-const calcHoursDifference = (startDate, endDate) => {
-  const startTime = formatTime(startDate);
-  const endTime = formatTime(endDate);
+const setTimeDateFormat = (value) => {
+  return value < 10 ? `0${value}` : String(value);
+};
+
+const formatTime = (date) => {
+  const hours = setTimeDateFormat(date.getHours());
+  const minutes = setTimeDateFormat(date.getMinutes());
+
+  return `${hours}:${minutes}`;
+};
+
+const calcHoursDifference = (dateFrom, dateTo) => {
+  const startTime = formatTime(dateFrom);
+  const endTime = formatTime(dateTo);
 
   const getDate = (string) => new Date(0, 0, 0, string.split(`:`)[0], string.split(`:`)[1]);
   const difference = (getDate(endTime) - getDate(startTime));
@@ -20,39 +31,9 @@ const calcHoursDifference = (startDate, endDate) => {
   return [hours, minutes];
 };
 
-export const setTimeDateFormat = (value) => {
-  return value < 10 ? `0${value}` : String(value);
-};
-
-export const formatTime = (date) => {
-  const hours = setTimeDateFormat(date.getHours());
-  const minutes = setTimeDateFormat(date.getMinutes());
-
-  return `${hours}:${minutes}`;
-};
-
-export const formatDateYMD = (date) => {
-  const year = date.getFullYear();
-  const month = parseInt(date.getMonth(), 10) + 1;
-  const formattedMonth = setTimeDateFormat(month);
-  const day = setTimeDateFormat(date.getDate());
-  return `${year}-${formattedMonth}-${day}`;
-};
-
-export const formatDateDMY = (date) => {
-  const day = setTimeDateFormat(date.getDate());
-  const month = parseInt(date.getMonth(), 10) + 1;
-  const formattedMonth = setTimeDateFormat(month);
-  const year = date.getFullYear();
-  const formattedYear = year.toString().slice(0, 2);
-
-
-  return `${day}/${formattedMonth}/${formattedYear}`;
-};
-
-export const getDuration = (startDate, endDate) => {
-  const daysDifference = endDate.getDate() - startDate.getDate();
-  const [hoursDifference, minutesDifference] = calcHoursDifference(startDate, endDate);
+export const getDuration = (dateFrom, dateTo) => {
+  const daysDifference = dateTo.getDate() - dateFrom.getDate();
+  const [hoursDifference, minutesDifference] = calcHoursDifference(dateFrom, dateTo);
 
   const differenceValues = Array.of(daysDifference, hoursDifference, minutesDifference);
 
@@ -67,7 +48,20 @@ export const getDuration = (startDate, endDate) => {
   }
 };
 
+export const getCapitalizedType = (string) => `${string.substr(0, 1).toUpperCase()}${string.slice(1)}`;
+
 export const createTripTypeTitle = (eventTypes, eventName) => {
   const [event] = eventTypes.filter((eventType) => eventType.name === eventName);
-  return event.type === `stop` ? `${event.title} in` : `${event.title} to`;
+  return event.type === `activity` ? `${getCapitalizedType(event.name)} in` : `${getCapitalizedType(event.name)} to`;
 };
+
+// export const formatDateDMY = (date) => {
+//   const day = setTimeDateFormat(date.getDate());
+//   const month = parseInt(date.getMonth(), 10) + 1;
+//   const formattedMonth = setTimeDateFormat(month);
+//   const year = date.getFullYear();
+//   const formattedYear = year.toString().slice(0, 2);
+//
+//
+//   return `${day}/${formattedMonth}/${formattedYear}`;
+// };
