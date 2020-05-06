@@ -29,7 +29,7 @@ const getRandomDates = () => {
   startDate.setDate(startDate.getDate() + startDiffValue);
 
   const endDate = new Date();
-  endDate.setDate(startDate.getDate() + getRandomIntegerNumber(0, 3));
+  endDate.setDate(startDate.getDate() + getRandomIntegerNumber(0, 1));
   endDate.setHours(endDate.getHours() + getRandomIntegerNumber(0, 3));
   endDate.setMinutes(endDate.getMinutes() + getRandomIntegerNumber(5, 30));
 

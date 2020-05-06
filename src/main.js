@@ -14,13 +14,16 @@ const EVENT_COUNT = 4;
 
 const events = generateEvents(EVENT_COUNT);
 
+const eventsCopy = events.slice();
+const sortedEvents = eventsCopy.sort((first, second) => first.dateFrom - second.dateFrom);
+
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
 const siteHeaderElement = document.querySelector(`.trip-main`);
 
-render(siteHeaderElement, createTripInfoTemplate(events), `afterbegin`);
+render(siteHeaderElement, createTripInfoTemplate(sortedEvents), `afterbegin`);
 
 const siteHeaderHiddenTitles = Array.from(siteHeaderElement.querySelectorAll(`.trip-main__trip-controls.trip-controls .visually-hidden`));
 
@@ -36,9 +39,8 @@ render(eventsContainerElement, createDayListTemplate(), `beforeend`);
 
 const eventListElement = eventsContainerElement.querySelector(`.trip-events__list`);
 
-render(eventListElement, createEditEventTemplate(events[0]), `beforeend`);
+render(eventListElement, createEditEventTemplate(sortedEvents[0]), `beforeend`);
 
-events.slice(1).forEach((event) => {
+sortedEvents.slice(1).forEach((event) => {
   render(eventListElement, createEventTemplate(event), `beforeend`);
 });
-
