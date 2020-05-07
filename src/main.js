@@ -35,12 +35,31 @@ const eventsContainerElement = document.querySelector(`.trip-events`);
 
 render(eventsContainerElement, createSortingTemplate(), `beforeend`);
 
-render(eventsContainerElement, createDayListTemplate(), `beforeend`);
+const dayListElement = eventsContainerElement.querySelector(`.trip-days`);
 
-const eventListElement = eventsContainerElement.querySelector(`.trip-events__list`);
+const getuniqueArray = (array) => {
+  return Array.from(new Set(array));
+};
 
-render(eventListElement, createEditEventTemplate(sortedEvents[0]), `beforeend`);
-
-sortedEvents.slice(1).forEach((event) => {
-  render(eventListElement, createEventTemplate(event), `beforeend`);
+const eventDatesFrom = sortedEvents.map((it) => {
+  return it.dateFrom.toISOString();
 });
+console.log(eventDatesFrom);
+
+const uniqueEventDatesFrom = getuniqueArray(eventDatesFrom);
+console.log(uniqueEventDatesFrom);
+
+uniqueEventDatesFrom.forEach((date, i) => {
+  render(dayListElement, createDayListTemplate(date, i), `beforeend`);
+});
+
+// render(eventsContainerElement, createDayListTemplate(uniqueEventDatesFrom), `beforeend`);
+// render(dayListElement, createDayListTemplate(uniqueEventDatesFrom), `beforeend`);
+
+// const eventListElement = eventsContainerElement.querySelector(`.trip-events__list`);
+
+// render(eventListElement, createEditEventTemplate(sortedEvents[0]), `beforeend`);
+//
+// sortedEvents.slice(1).forEach((event) => {
+//   render(eventListElement, createEventTemplate(event), `beforeend`);
+// });
