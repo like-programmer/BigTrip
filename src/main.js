@@ -17,24 +17,41 @@ const EVENT_COUNT = 4;
 const sortedEvents = generateEvents(EVENT_COUNT).sort((first, second) => first.dateFrom - second.dateFrom);
 
 const renderEvent = (dayElement, event) => {
-  const editBtnClickHandler = () => {
+  const replaceEventToEdit = () => {
     dayElement.replaceChild(editEventComponent.getElement(), eventComponent.getElement());
   };
 
-  const editFormSubmitHandler = (evt) => {
-    evt.preventDefault();
+  const replaceEditToEvent = () => {
     dayElement.replaceChild(eventComponent.getElement(), editEventComponent.getElement());
+  };
+
+  const documentEscKeydownHandler = (evt) => {
+    const isEsc = evt.key === `Escape` || evt.key === `Esc`;
+    if (isEsc) {
+      replaceEditToEvent();
+      document.removeEventListener(`keydown`, documentEscKeydownHandler);
+    }
   };
 
   const eventComponent = new EventComponent(event);
   const editBtn = eventComponent.getElement().querySelector(`.event__rollup-btn`);
-  editBtn.addEventListener(`click`, editBtnClickHandler);
+  editBtn.addEventListener(`click`, () => {
+    replaceEventToEdit();
+    document.addEventListener(`keydown`, documentEscKeydownHandler);
+  });
 
   const editEventComponent = new EditEventComponent(event);
   const editForm = editEventComponent.getElement().querySelector(`.event.event--edit`);
-  editForm.addEventListener(`submit`, editFormSubmitHandler);
+  editForm.addEventListener(`submit`, (evt) => {
+    evt.preventDefault();
+    replaceEditToEvent();
+    document.removeEventListener(`keydown`, documentEscKeydownHandler);
+  });
   const closeForm = editEventComponent.getElement().querySelector(`.event__rollup-btn`);
-  closeForm.addEventListener(`click`, editFormSubmitHandler);
+  closeForm.addEventListener(`click`, () => {
+    replaceEditToEvent();
+    document.removeEventListener(`keydown`, documentEscKeydownHandler);
+  });
 
   render(dayElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
 };
