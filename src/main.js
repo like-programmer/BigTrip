@@ -19,7 +19,27 @@ const events = generateEvents(EVENT_COUNT);
 const eventsCopy = events.slice();
 const sortedEvents = eventsCopy.sort((first, second) => first.dateFrom - second.dateFrom);
 
-const renderEvent = () => {
+const renderEvent = (dayElement, event) => {
+  const editBtnClickHandler = () => {
+    dayElement.replaceChild(editEventComponent.getElement(), eventComponent.getElement());
+  };
+
+  const editFormSubmitHandler = (evt) => {
+    evt.preventDefault();
+    dayElement.replaceChild(eventComponent.getElement(), editEventComponent.getElement());
+  };
+
+  const eventComponent = new EventComponent(event);
+  const editBtn = eventComponent.getElement().querySelector(`.event__rollup-btn`);
+  editBtn.addEventListener(`click`, editBtnClickHandler);
+
+  const editEventComponent = new EditEventComponent(event);
+  const editForm = editEventComponent.getElement().querySelector(`.event.event--edit`);
+  editForm.addEventListener(`submit`, editFormSubmitHandler);
+  const closeForm = editEventComponent.getElement().querySelector(`.event__rollup-btn`);
+  closeForm.addEventListener(`click`, editFormSubmitHandler);
+
+  render(dayElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
 };
 const renderDayList = () => {
 };
@@ -37,7 +57,30 @@ siteHeaderControls.prepend(hiddenTitle);
 
 render(siteHeaderControls, new FilterComponent(FILTER_NAMES).getElement(), RenderPosition.BEFOREEND);
 
-
 const eventsContainerElement = document.querySelector(`.trip-events`);
 
 render(eventsContainerElement, new SortComponent().getElement(), RenderPosition.BEFOREEND);
+
+
+//
+//
+//
+
+
+render(eventsContainerElement, new DaysListComponent().getElement(), RenderPosition.BEFOREEND);
+const dayListElement = eventsContainerElement.querySelector(`.trip-days`);
+
+const getuniqueArray = (array) => {
+  return Array.from(new Set(array));
+};
+
+const eventDatesFrom = sortedEvents.map((it) => {
+  return it.dateFrom.toISOString().split(`.`)[0];
+});
+
+const uniqueEventDatesFrom = getuniqueArray(eventDatesFrom);
+render(dayListElement, new DayListItemComponent(uniqueEventDatesFrom[0], 0).getElement(), RenderPosition.BEFOREEND);
+
+const eventListElement = dayListElement.querySelector(`.trip-events__list`);
+renderEvent(eventListElement, events[0]);
+
