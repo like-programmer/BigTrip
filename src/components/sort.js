@@ -33,9 +33,7 @@ const createSortTemplate = () => {
                 </div>
 
                 <span class="trip-sort__item  trip-sort__item--offers">Offers</span>
-            </form>
-            
-  <ul class="trip-days"></ul>`);
+            </form>`);
 };
 
 export default class Sort {

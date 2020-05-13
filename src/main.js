@@ -1,9 +1,9 @@
 import {createTripInfoTemplate} from "./components/trip-info.js";
 import {createSiteMenuTemplate} from "./components/site-menu.js";
 import {createFilterTemplate} from "./components/filter.js";
-import {createSortTemplate} from "./components/sorting.js";
+import {createSortTemplate} from "./components/sort.js";
 import {createEditEventTemplate} from "./components/edit-event.js";
-import {createDayListTemplate} from "./components/day-list.js";
+import {createDayListItemTemplate} from "./components/day-list-item.js";
 import {createEventTemplate} from "./components/event.js";
 
 import {generateEvents} from "./mock/event.js";
@@ -48,7 +48,7 @@ const eventDatesFrom = sortedEvents.map((it) => {
 const uniqueEventDatesFrom = getuniqueArray(eventDatesFrom);
 
 uniqueEventDatesFrom.forEach((date, i) => {
-  render(dayListElement, createDayListTemplate(date, i), `beforeend`);
+  render(dayListElement, createDayListItemTemplate(date, i), `beforeend`);
 
   const eventListElement = eventsContainerElement.querySelectorAll(`.trip-events__list`);
 

@@ -1,7 +1,7 @@
 import {MONTH_NAMES} from "../const.js";
 import {createElement} from "../utils.js";
 
-const createDayListTemplate = (date, index) => {
+const createDayListItemTemplate = (date, index) => {
   const dayNumber = index + 1;
 
   const dateTime = date.split(`T`)[0];
@@ -21,7 +21,7 @@ const createDayListTemplate = (date, index) => {
   </li>`);
 };
 
-export default class DayList {
+export default class DayListItem {
   constructor(date, index) {
     this._date = date;
     this._index = index;
@@ -29,7 +29,7 @@ export default class DayList {
   }
 
   getTemplate() {
-    return createDayListTemplate(this._date, this._index);
+    return createDayListItemTemplate(this._date, this._index);
   }
 
   getElement() {
