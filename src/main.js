@@ -6,10 +6,11 @@ import DaysListComponent from "./components/days-list.js";
 import DayListItemComponent from "./components/day-list-item.js";
 import EditEventComponent from "./components/edit-event.js";
 import EventComponent from "./components/event.js";
+import NoEventsComponent from "./components/no-events.js";
 
 import {generateEvents} from "./mock/event.js";
-import {FILTER_NAMES} from "./mock/filter.js";
 
+import {FILTER_NAMES} from "./const.js";
 import {RenderPosition, render} from "./utils.js";
 
 const EVENT_COUNT = 4;
@@ -56,34 +57,6 @@ const renderEvent = (dayElement, event) => {
   render(dayElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
-const renderDayList = (daysListComponent, events) => {
-  const dayListElement = daysListComponent.getElement();
-
-  const getuniqueArray = (array) => {
-    return Array.from(new Set(array));
-  };
-
-  const eventDatesFrom = events.map((it) => {
-    return it.dateFrom.toISOString().split(`.`)[0];
-  });
-
-  const uniqueEventDatesFrom = getuniqueArray(eventDatesFrom);
-
-  uniqueEventDatesFrom.forEach((date, i) => {
-    const dayListComponent = new DayListItemComponent(date, i);
-    render(dayListElement, dayListComponent.getElement(), RenderPosition.BEFOREEND);
-
-    const groupedEventByDate = events.filter((event) => {
-      return date === event.dateFrom.toISOString().split(`.`)[0];
-    });
-
-    const eventListElement = dayListComponent.getElement().querySelector(`.trip-events__list`);
-    groupedEventByDate.forEach((event) => {
-      renderEvent(eventListElement, event);
-    });
-  });
-};
-
 const siteHeaderElement = document.querySelector(`.trip-main`);
 
 render(siteHeaderElement, new TripInfoComponent(sortedEvents).getElement(), RenderPosition.AFTERBEGIN);
@@ -99,9 +72,38 @@ render(siteHeaderControls, new FilterComponent(FILTER_NAMES).getElement(), Rende
 
 const eventsContainerElement = document.querySelector(`.trip-events`);
 
-render(eventsContainerElement, new SortComponent().getElement(), RenderPosition.BEFOREEND);
+if (sortedEvents.length > 0) {
+  render(eventsContainerElement, new SortComponent().getElement(), RenderPosition.BEFOREEND);
 
-const daysListComponent = new DaysListComponent();
-render(eventsContainerElement, daysListComponent.getElement(), RenderPosition.BEFOREEND);
-renderDayList(daysListComponent, sortedEvents);
+  const daysListComponent = new DaysListComponent();
+  render(eventsContainerElement, daysListComponent.getElement(), RenderPosition.BEFOREEND);
 
+  const dayListElement = daysListComponent.getElement();
+
+  const getuniqueArray = (array) => {
+    return Array.from(new Set(array));
+  };
+
+  const eventDatesFrom = sortedEvents.map((it) => {
+    return it.dateFrom.toISOString().split(`.`)[0];
+  });
+
+  const uniqueEventDatesFrom = getuniqueArray(eventDatesFrom);
+
+  uniqueEventDatesFrom.forEach((date, i) => {
+    const dayListComponent = new DayListItemComponent(date, i);
+    render(dayListElement, dayListComponent.getElement(), RenderPosition.BEFOREEND);
+
+    const groupedEventByDate = sortedEvents.filter((event) => {
+      return date === event.dateFrom.toISOString().split(`.`)[0];
+    });
+
+    const eventListElement = dayListComponent.getElement().querySelector(`.trip-events__list`);
+    groupedEventByDate.forEach((event) => {
+      renderEvent(eventListElement, event);
+    });
+  });
+} else {
+  render(eventsContainerElement, new NoEventsComponent().getElement(), RenderPosition.BEFOREEND);
+
+}

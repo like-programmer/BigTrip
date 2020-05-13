@@ -38,20 +38,24 @@ const calculateTotalPrice = (events) => {
 };
 
 const createTripInfoTemplate = (events) => {
-  const tripName = createTripName(events);
-  const tripLimits = createTripLimits(events, MONTH_NAMES);
+  const isNoPoints = events.length === 0;
+
+  const tripName = isNoPoints ? null : createTripName(events);
+  const tripLimits = isNoPoints ? null : createTripLimits(events, MONTH_NAMES);
   const totalPrice = calculateTotalPrice(events);
 
   return (`<section class="trip-main__trip-info  trip-info">
+            ${isNoPoints ? `` : `
             <div class="trip-info__main">
               <h1 class="trip-info__title">${tripName}</h1>
 
-                  <p class="trip-info__dates">${tripLimits}</p>
-              </div>
+              <p class="trip-info__dates">${tripLimits}</p>
+            </div>
+            `}
 
-              <p class="trip-info__cost">
-                  Total: &euro;&nbsp;<span class="trip-info__cost-value">${totalPrice}</span>
-              </p>
+            <p class="trip-info__cost">
+                Total: &euro;&nbsp;<span class="trip-info__cost-value">${totalPrice}</span>
+            </p>
           </section>`);
 };
 

@@ -68,6 +68,8 @@ export const MONTH_NAMES = [
 
 export const DESTINATION_CITIES = [`Amsterdam`, `Chamonix`, `Geneva`, `Rotterdam`, `Strasbourg`, `Zürich`, `Sydney`, `Kyoto`, `Praha`];
 
+export const FILTER_NAMES = [`everything`, `future`, `past`];
+
 export const OFFER_LIST = [
   {
     "type": `check-in`,
