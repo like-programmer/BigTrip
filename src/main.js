@@ -1,7 +1,7 @@
 import {createTripInfoTemplate} from "./components/trip-info.js";
 import {createSiteMenuTemplate} from "./components/site-menu.js";
 import {createFilterTemplate} from "./components/filter.js";
-import {createSortingTemplate} from "./components/sorting.js";
+import {createSortTemplate} from "./components/sorting.js";
 import {createEditEventTemplate} from "./components/edit-event.js";
 import {createDayListTemplate} from "./components/day-list.js";
 import {createEventTemplate} from "./components/event.js";
@@ -33,7 +33,7 @@ render(siteHeaderHiddenTitles[1], createFilterTemplate(FILTER_NAMES), `afterend`
 
 const eventsContainerElement = document.querySelector(`.trip-events`);
 
-render(eventsContainerElement, createSortingTemplate(), `beforeend`);
+render(eventsContainerElement, createSortTemplate(), `beforeend`);
 
 const dayListElement = eventsContainerElement.querySelector(`.trip-days`);
 

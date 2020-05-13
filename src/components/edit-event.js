@@ -1,5 +1,5 @@
 import {EVENT_TYPES, DESTINATION_CITIES, OFFER_LIST} from "../const";
-import {createTripTypeTitle, getCapitalizedType} from "../utils.js";
+import {createTripTypeTitle, getCapitalizedType, createElement} from "../utils.js";
 
 const createTypesListMarkup = (types, checkedType) => {
   return types.map((type) => {
@@ -51,7 +51,7 @@ const createPhotoTapeMarkup = (photos) => {
   }).join(`\n`);
 };
 
-export const createEditEventTemplate = (event) => {
+const createEditEventTemplate = (event) => {
   const {basePrice, dateFrom, dateTo, destination, isFavourite, offers, type} = event;
   const [eventIcon] = EVENT_TYPES.filter((it) => it.name === type).map((it) => it.icon);
 
@@ -85,8 +85,7 @@ export const createEditEventTemplate = (event) => {
 
   const activityTypeListMarkup = createTypesListMarkup(EVENT_TYPES.filter((it) => it.type === `activity`), type);
 
-  return (`
-    <li class="trip-events__item">
+  return (`<li class="trip-events__item">
       <form class="event  event--edit" action="#" method="post">
         <header class="event__header">
           <div class="event__type-wrapper">
@@ -182,6 +181,28 @@ export const createEditEventTemplate = (event) => {
           </section>
         </section>
     </form>
-    </li>
-    `);
+    </li>`);
 };
+
+export default class EditEvent {
+  constructor(event) {
+    this._event = event;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEditEventTemplate(this._event);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
