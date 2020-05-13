@@ -19,51 +19,25 @@ const events = generateEvents(EVENT_COUNT);
 const eventsCopy = events.slice();
 const sortedEvents = eventsCopy.sort((first, second) => first.dateFrom - second.dateFrom);
 
+const renderEvent = () => {
+};
+const renderDayList = () => {
+};
+
 const siteHeaderElement = document.querySelector(`.trip-main`);
 
-// render(siteHeaderElement, createTripInfoTemplate(sortedEvents), `afterbegin`);
+render(siteHeaderElement, new TripInfoComponent(sortedEvents).getElement(), RenderPosition.AFTERBEGIN);
 
-const siteHeaderHiddenTitles = Array.from(siteHeaderElement.querySelectorAll(`.trip-main__trip-controls.trip-controls .visually-hidden`));
+const siteHeaderControls = siteHeaderElement.querySelector(`.trip-main__trip-controls.trip-controls`);
 
-// render(siteHeaderHiddenTitles[0], createSiteMenuTemplate(), `afterend`);
-// render(siteHeaderHiddenTitles[1], createFilterTemplate(FILTER_NAMES), `afterend`);
+render(siteHeaderControls, new SiteMenuComponent().getElement(), RenderPosition.AFTERBEGIN);
+const hiddenTitle = siteHeaderControls.querySelector(`.visually-hidden`);
+siteHeaderControls.replaceChild(siteHeaderControls.querySelector(`nav`), hiddenTitle);
+siteHeaderControls.prepend(hiddenTitle);
+
+render(siteHeaderControls, new FilterComponent(FILTER_NAMES).getElement(), RenderPosition.BEFOREEND);
 
 
 const eventsContainerElement = document.querySelector(`.trip-events`);
 
-// render(eventsContainerElement, createSortTemplate(), `beforeend`);
-
-const dayListElement = eventsContainerElement.querySelector(`.trip-days`);
-
-// const getuniqueArray = (array) => {
-//   return Array.from(new Set(array));
-// };
-
-// const eventDatesFrom = sortedEvents.map((it) => {
-//   return it.dateFrom.toISOString().split(`.`)[0];
-// });
-
-// const uniqueEventDatesFrom = getuniqueArray(eventDatesFrom);
-
-// uniqueEventDatesFrom.forEach((date, i) => {
-//   render(dayListElement, createDayListItemTemplate(date, i), `beforeend`);
-//
-//   const eventListElement = eventsContainerElement.querySelectorAll(`.trip-events__list`);
-//
-//   const groupedEventByDate = sortedEvents.filter((event) => {
-//     return date === event.dateFrom.toISOString().split(`.`)[0];
-//   });
-
-// let eventsForRender;
-
-// if (i === 0) {
-//   render(eventListElement[0], createEditEventTemplate(sortedEvents[0]), `beforeend`);
-//   eventsForRender = groupedEventByDate.slice(1);
-// } else {
-//   eventsForRender = groupedEventByDate;
-// }
-
-// eventsForRender.forEach((event) => {
-//   render(eventListElement[i], createEventTemplate(event), `beforeend`);
-// });
-// });
+render(eventsContainerElement, new SortComponent().getElement(), RenderPosition.BEFOREEND);
