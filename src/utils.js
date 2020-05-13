@@ -55,13 +55,8 @@ export const createTripTypeTitle = (eventTypes, eventName) => {
   return event.type === `activity` ? `${getCapitalizedType(event.name)} in` : `${getCapitalizedType(event.name)} to`;
 };
 
-// export const formatDateDMY = (date) => {
-//   const day = setTimeDateFormat(date.getDate());
-//   const month = parseInt(date.getMonth(), 10) + 1;
-//   const formattedMonth = setTimeDateFormat(month);
-//   const year = date.getFullYear();
-//   const formattedYear = year.toString().slice(0, 2);
-//
-//
-//   return `${day}/${formattedMonth}/${formattedYear}`;
-// };
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+  return newElement.firstChild;
+};
