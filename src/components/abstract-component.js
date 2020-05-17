@@ -9,7 +9,7 @@ export default class AbstractComponent {
     this._element = null;
   }
 
-  getTemlate() {
+  getTemplate() {
     throw new Error(`Abstract method not implemented: getTemplate`);
   }
 
