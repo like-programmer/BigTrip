@@ -1,5 +1,5 @@
 import {MONTH_NAMES} from "../const.js";
-import {createElement} from "../utils.js";
+import AbstractComponent from "./abstract-component.js";
 
 const createDayListItemTemplate = (date, index) => {
   const dayNumber = index + 1;
@@ -21,26 +21,14 @@ const createDayListItemTemplate = (date, index) => {
   </li>`);
 };
 
-export default class DayListItem {
+export default class DayListItem extends AbstractComponent {
   constructor(date, index) {
+    super();
     this._date = date;
     this._index = index;
-    this._element = null;
   }
 
   getTemplate() {
     return createDayListItemTemplate(this._date, this._index);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

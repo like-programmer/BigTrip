@@ -1,5 +1,6 @@
 import {EVENT_TYPES, DESTINATION_CITIES, OFFER_LIST} from "../const";
-import {createTripTypeTitle, getCapitalizedType, createElement} from "../utils.js";
+import {createTripTypeTitle, getCapitalizedType} from "../utils.js";
+import AbstractComponent from "./abstract-component.js";
 
 const createTypesListMarkup = (types, checkedType) => {
   return types.map((type) => {
@@ -184,25 +185,13 @@ const createEditEventTemplate = (event) => {
     </li>`);
 };
 
-export default class EditEvent {
+export default class EditEvent extends AbstractComponent {
   constructor(event) {
+    super();
     this._event = event;
-    this._element = null;
   }
 
   getTemplate() {
     return createEditEventTemplate(this._event);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

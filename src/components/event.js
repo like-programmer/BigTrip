@@ -1,5 +1,6 @@
 import {EVENT_TYPES} from "../const.js";
-import {getDuration, createTripTypeTitle, createElement} from "../utils.js";
+import {getDuration, createTripTypeTitle} from "../utils.js";
+import AbstractComponent from "./abstract-component.js";
 
 const createOffersMarkup = (offers) => {
   return offers.slice(0, 2).map((offer) => {
@@ -64,25 +65,13 @@ const createEventTemplate = (event) => {
     </li>`);
 };
 
-export default class Event {
+export default class Event extends AbstractComponent {
   constructor(event) {
+    super();
     this._event = event;
-    this._element = null;
   }
 
   getTemplate() {
     return createEventTemplate(this._event);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
