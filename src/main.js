@@ -11,7 +11,7 @@ import NoEventsComponent from "./components/no-events.js";
 import {generateEvents} from "./mock/event.js";
 
 import {FILTER_NAMES} from "./const.js";
-import {RenderPosition, render} from "./utils/render.js";
+import {RenderPosition, render, replace} from "./utils/render.js";
 
 const EVENT_COUNT = 4;
 
@@ -19,11 +19,11 @@ const sortedEvents = generateEvents(EVENT_COUNT).sort((first, second) => first.d
 
 const renderEvent = (dayElement, event) => {
   const replaceEventToEdit = () => {
-    dayElement.replaceChild(editEventComponent.getElement(), eventComponent.getElement());
+    replace(editEventComponent, eventComponent);
   };
 
   const replaceEditToEvent = () => {
-    dayElement.replaceChild(eventComponent.getElement(), editEventComponent.getElement());
+    replace(eventComponent, editEventComponent);
   };
 
   const documentEscKeydownHandler = (evt) => {
