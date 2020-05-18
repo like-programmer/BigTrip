@@ -1,58 +1,16 @@
 import TripInfoComponent from "./components/trip-info.js";
 import SiteMenuComponent from "./components/site-menu.js";
 import FilterComponent from "./components/filter.js";
-import SortComponent from "./components/sort.js";
-import DaysListComponent from "./components/days-list.js";
-import DayListItemComponent from "./components/day-list-item.js";
-import EditEventComponent from "./components/edit-event.js";
-import EventComponent from "./components/event.js";
-import NoEventsComponent from "./components/no-events.js";
+import TripController from "./controllers/trip.js";
 
 import {generateEvents} from "./mock/event.js";
 
 import {FILTER_NAMES} from "./const.js";
-import {RenderPosition, render, replace} from "./utils/render.js";
+import {RenderPosition, render} from "./utils/render.js";
 
 const EVENT_COUNT = 4;
 
 const sortedEvents = generateEvents(EVENT_COUNT).sort((first, second) => first.dateFrom - second.dateFrom);
-
-const renderEvent = (dayElement, event) => {
-  const replaceEventToEdit = () => {
-    replace(editEventComponent, eventComponent);
-  };
-
-  const replaceEditToEvent = () => {
-    replace(eventComponent, editEventComponent);
-  };
-
-  const documentEscKeydownHandler = (evt) => {
-    const isEsc = evt.key === `Escape` || evt.key === `Esc`;
-    if (isEsc) {
-      replaceEditToEvent();
-      document.removeEventListener(`keydown`, documentEscKeydownHandler);
-    }
-  };
-
-  const eventComponent = new EventComponent(event);
-  eventComponent.setEditBtnClickHandler(() => {
-    replaceEventToEdit();
-    document.addEventListener(`keydown`, documentEscKeydownHandler);
-  });
-
-  const editEventComponent = new EditEventComponent(event);
-  editEventComponent.setSubmitHandler((evt) => {
-    evt.preventDefault();
-    replaceEditToEvent();
-    document.removeEventListener(`keydown`, documentEscKeydownHandler);
-  });
-  editEventComponent.setCloseHandler(() => {
-    replaceEditToEvent();
-    document.removeEventListener(`keydown`, documentEscKeydownHandler);
-  });
-
-  render(dayElement, eventComponent, RenderPosition.BEFOREEND);
-};
 
 const siteHeaderElement = document.querySelector(`.trip-main`);
 
@@ -68,39 +26,5 @@ siteHeaderControls.prepend(hiddenTitle);
 render(siteHeaderControls, new FilterComponent(FILTER_NAMES), RenderPosition.BEFOREEND);
 
 const eventsContainerElement = document.querySelector(`.trip-events`);
-
-if (sortedEvents.length > 0) {
-  render(eventsContainerElement, new SortComponent(), RenderPosition.BEFOREEND);
-
-  const daysListComponent = new DaysListComponent();
-  render(eventsContainerElement, daysListComponent, RenderPosition.BEFOREEND);
-
-  const dayListElement = daysListComponent.getElement();
-
-  const getuniqueArray = (array) => {
-    return Array.from(new Set(array));
-  };
-
-  const eventDatesFrom = sortedEvents.map((it) => {
-    return it.dateFrom.toISOString().split(`.`)[0];
-  });
-
-  const uniqueEventDatesFrom = getuniqueArray(eventDatesFrom);
-
-  uniqueEventDatesFrom.forEach((date, i) => {
-    const dayListComponent = new DayListItemComponent(date, i);
-    render(dayListElement, dayListComponent, RenderPosition.BEFOREEND);
-
-    const groupedEventByDate = sortedEvents.filter((event) => {
-      return date === event.dateFrom.toISOString().split(`.`)[0];
-    });
-
-    const eventListElement = dayListComponent.getElement().querySelector(`.trip-events__list`);
-    groupedEventByDate.forEach((event) => {
-      renderEvent(eventListElement, event);
-    });
-  });
-} else {
-  render(eventsContainerElement, new NoEventsComponent(), RenderPosition.BEFOREEND);
-
-}
+const tripController = new TripController(eventsContainerElement);
+tripController.render(sortedEvents);
