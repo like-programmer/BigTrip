@@ -90,5 +90,7 @@ export default class TripController {
         renderEvent(eventListElement, event);
       });
     });
+
+    this._sortComponent.setSortTypeChangeHandler(() => {});
   }
 }
