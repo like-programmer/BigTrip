@@ -35,21 +35,18 @@ const renderEvent = (dayElement, event) => {
   };
 
   const eventComponent = new EventComponent(event);
-  const editBtn = eventComponent.getElement().querySelector(`.event__rollup-btn`);
-  editBtn.addEventListener(`click`, () => {
+  eventComponent.setEditBtnClickHandler(() => {
     replaceEventToEdit();
     document.addEventListener(`keydown`, documentEscKeydownHandler);
   });
 
   const editEventComponent = new EditEventComponent(event);
-  const editForm = editEventComponent.getElement().querySelector(`.event.event--edit`);
-  editForm.addEventListener(`submit`, (evt) => {
+  editEventComponent.setSubmitHandler((evt) => {
     evt.preventDefault();
     replaceEditToEvent();
     document.removeEventListener(`keydown`, documentEscKeydownHandler);
   });
-  const closeForm = editEventComponent.getElement().querySelector(`.event__rollup-btn`);
-  closeForm.addEventListener(`click`, () => {
+  editEventComponent.setCloseHandler(() => {
     replaceEditToEvent();
     document.removeEventListener(`keydown`, documentEscKeydownHandler);
   });
