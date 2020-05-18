@@ -1,5 +1,5 @@
 import {EVENT_TYPES} from "../const.js";
-import {getDuration, createTripTypeTitle} from "../utils.js";
+import {getDuration, createTripTypeTitle} from "../utils/common.js";
 import AbstractComponent from "./abstract-component.js";
 
 const createOffersMarkup = (offers) => {

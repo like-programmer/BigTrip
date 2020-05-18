@@ -1,5 +1,5 @@
 import {EVENT_TYPES, DESTINATION_CITIES, OFFER_LIST} from "../const";
-import {createTripTypeTitle, getCapitalizedType} from "../utils.js";
+import {createTripTypeTitle, getCapitalizedType} from "../utils/common.js";
 import AbstractComponent from "./abstract-component.js";
 
 const createTypesListMarkup = (types, checkedType) => {
