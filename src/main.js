@@ -11,7 +11,7 @@ import NoEventsComponent from "./components/no-events.js";
 import {generateEvents} from "./mock/event.js";
 
 import {FILTER_NAMES} from "./const.js";
-import {RenderPosition, render} from "./utils.js";
+import {RenderPosition, render} from "./utils/render.js";
 
 const EVENT_COUNT = 4;
 

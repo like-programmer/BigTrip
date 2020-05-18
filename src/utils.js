@@ -54,25 +54,3 @@ export const createTripTypeTitle = (eventTypes, eventName) => {
   const [event] = eventTypes.filter((eventType) => eventType.name === eventName);
   return event.type === `activity` ? `${getCapitalizedType(event.name)} in` : `${getCapitalizedType(event.name)} to`;
 };
-
-export const createElement = (template) => {
-  const newElement = document.createElement(`div`);
-  newElement.innerHTML = template;
-  return newElement.firstChild;
-};
-
-export const RenderPosition = {
-  AFTERBEGIN: `afterbegin`,
-  BEFOREEND: `beforeend`
-};
-
-export const render = (container, element, position) => {
-  switch (position) {
-    case RenderPosition.AFTERBEGIN:
-      container.prepend(element);
-      break;
-    case RenderPosition.BEFOREEND:
-      container.append(element);
-      break;
-  }
-};
