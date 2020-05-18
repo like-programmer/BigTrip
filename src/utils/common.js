@@ -54,3 +54,8 @@ export const createTripTypeTitle = (eventTypes, eventName) => {
   const [event] = eventTypes.filter((eventType) => eventType.name === eventName);
   return event.type === `activity` ? `${getCapitalizedType(event.name)} in` : `${getCapitalizedType(event.name)} to`;
 };
+
+export const getOrderedEvents = (events) => {
+  const eventArray = events.slice();
+  return eventArray.sort((first, second) => first.dateFrom - second.dateFrom);
+};

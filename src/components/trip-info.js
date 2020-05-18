@@ -1,5 +1,6 @@
-import {MONTH_NAMES} from "../const.js";
 import AbstractComponent from "./abstract-component.js";
+import {MONTH_NAMES} from "../const.js";
+import {getOrderedEvents} from "../utils/common.js";
 
 const createTripName = (events) => {
   if (events.length <= 3) {
@@ -38,11 +39,12 @@ const calculateTotalPrice = (events) => {
 };
 
 const createTripInfoTemplate = (events) => {
-  const isNoPoints = events.length === 0;
+  const orderedEvents = getOrderedEvents(events);
+  const isNoPoints = orderedEvents.length === 0;
 
-  const tripName = isNoPoints ? null : createTripName(events);
-  const tripLimits = isNoPoints ? null : createTripLimits(events, MONTH_NAMES);
-  const totalPrice = calculateTotalPrice(events);
+  const tripName = isNoPoints ? null : createTripName(orderedEvents);
+  const tripLimits = isNoPoints ? null : createTripLimits(orderedEvents, MONTH_NAMES);
+  const totalPrice = calculateTotalPrice(orderedEvents);
 
   return (`<section class="trip-main__trip-info  trip-info">
             ${isNoPoints ? `` : `

@@ -9,12 +9,11 @@ import {FILTER_NAMES} from "./const.js";
 import {RenderPosition, render} from "./utils/render.js";
 
 const EVENT_COUNT = 4;
-
-const sortedEvents = generateEvents(EVENT_COUNT).sort((first, second) => first.dateFrom - second.dateFrom);
+const events = generateEvents(EVENT_COUNT);
 
 const siteHeaderElement = document.querySelector(`.trip-main`);
 
-render(siteHeaderElement, new TripInfoComponent(sortedEvents), RenderPosition.AFTERBEGIN);
+render(siteHeaderElement, new TripInfoComponent(events), RenderPosition.AFTERBEGIN);
 
 const siteHeaderControls = siteHeaderElement.querySelector(`.trip-main__trip-controls.trip-controls`);
 
@@ -27,4 +26,4 @@ render(siteHeaderControls, new FilterComponent(FILTER_NAMES), RenderPosition.BEF
 
 const eventsContainerElement = document.querySelector(`.trip-events`);
 const tripController = new TripController(eventsContainerElement);
-tripController.render(sortedEvents);
+tripController.render(events);
