@@ -54,29 +54,29 @@ const renderEvent = (dayElement, event) => {
     document.removeEventListener(`keydown`, documentEscKeydownHandler);
   });
 
-  render(dayElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
+  render(dayElement, eventComponent, RenderPosition.BEFOREEND);
 };
 
 const siteHeaderElement = document.querySelector(`.trip-main`);
 
-render(siteHeaderElement, new TripInfoComponent(sortedEvents).getElement(), RenderPosition.AFTERBEGIN);
+render(siteHeaderElement, new TripInfoComponent(sortedEvents), RenderPosition.AFTERBEGIN);
 
 const siteHeaderControls = siteHeaderElement.querySelector(`.trip-main__trip-controls.trip-controls`);
 
-render(siteHeaderControls, new SiteMenuComponent().getElement(), RenderPosition.AFTERBEGIN);
+render(siteHeaderControls, new SiteMenuComponent(), RenderPosition.AFTERBEGIN);
 const hiddenTitle = siteHeaderControls.querySelector(`.visually-hidden`);
 siteHeaderControls.replaceChild(siteHeaderControls.querySelector(`nav`), hiddenTitle);
 siteHeaderControls.prepend(hiddenTitle);
 
-render(siteHeaderControls, new FilterComponent(FILTER_NAMES).getElement(), RenderPosition.BEFOREEND);
+render(siteHeaderControls, new FilterComponent(FILTER_NAMES), RenderPosition.BEFOREEND);
 
 const eventsContainerElement = document.querySelector(`.trip-events`);
 
 if (sortedEvents.length > 0) {
-  render(eventsContainerElement, new SortComponent().getElement(), RenderPosition.BEFOREEND);
+  render(eventsContainerElement, new SortComponent(), RenderPosition.BEFOREEND);
 
   const daysListComponent = new DaysListComponent();
-  render(eventsContainerElement, daysListComponent.getElement(), RenderPosition.BEFOREEND);
+  render(eventsContainerElement, daysListComponent, RenderPosition.BEFOREEND);
 
   const dayListElement = daysListComponent.getElement();
 
@@ -92,7 +92,7 @@ if (sortedEvents.length > 0) {
 
   uniqueEventDatesFrom.forEach((date, i) => {
     const dayListComponent = new DayListItemComponent(date, i);
-    render(dayListElement, dayListComponent.getElement(), RenderPosition.BEFOREEND);
+    render(dayListElement, dayListComponent, RenderPosition.BEFOREEND);
 
     const groupedEventByDate = sortedEvents.filter((event) => {
       return date === event.dateFrom.toISOString().split(`.`)[0];
@@ -104,6 +104,6 @@ if (sortedEvents.length > 0) {
     });
   });
 } else {
-  render(eventsContainerElement, new NoEventsComponent().getElement(), RenderPosition.BEFOREEND);
+  render(eventsContainerElement, new NoEventsComponent(), RenderPosition.BEFOREEND);
 
 }
