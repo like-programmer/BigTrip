@@ -53,7 +53,6 @@ const getSortedEvents = (events, sortType) => {
   switch (sortType) {
     case SortType.EVENT:
       sortedEvents = eventsCopy.sort((a, b) => a.dateFrom - b.dateFrom);
-      sortedEvents.forEach((it) => console.log(it.dateFrom));
       break;
 
     case SortType.TIME:
@@ -62,7 +61,6 @@ const getSortedEvents = (events, sortType) => {
       });
 
       sortedEvents = eventsCopy.sort((a, b) => b.duration - a.duration);
-      sortedEvents.forEach((it) => console.log(it.duration));
       break;
 
     case SortType.PRICE:
@@ -73,7 +71,6 @@ const getSortedEvents = (events, sortType) => {
         event.totalPrice = totalPrice;
       });
       sortedEvents = eventsCopy.sort((a, b) => b.totalPrice - a.totalPrice);
-      sortedEvents.forEach((it) => console.log(it.totalPrice));
       break;
   }
 
@@ -126,6 +123,7 @@ export default class TripController {
     });
 
     this._sortComponent.setSortTypeChangeHandler((sortType) => {
+      const sortedEvents = getSortedEvents(events, sortType);
       dayListElement.innerHTML = ``;
 
       if (sortType === SortType.EVENT) {
@@ -147,7 +145,7 @@ export default class TripController {
         render(dayListElement, dayListItemComponent, RenderPosition.BEFOREEND);
 
         const eventListElement = dayListItemComponent.getElement().querySelector(`.trip-events__list`);
-        orderedEvents.forEach((event) => {
+        sortedEvents.forEach((event) => {
           renderEvent(eventListElement, event);
         });
       }
