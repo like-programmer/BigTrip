@@ -67,7 +67,10 @@ const getSortedEvents = (events, sortType) => {
       eventsCopy.forEach((event) => {
         let totalPrice = 0;
         totalPrice = totalPrice + event.basePrice;
-        event.offers.forEach((offer) => totalPrice = totalPrice + offer.price);
+        event.offers.forEach((offer) => {
+          totalPrice = totalPrice + offer.price;
+          return totalPrice;
+        });
         event.totalPrice = totalPrice;
       });
       sortedEvents = eventsCopy.sort((a, b) => b.totalPrice - a.totalPrice);
@@ -75,6 +78,47 @@ const getSortedEvents = (events, sortType) => {
   }
 
   return sortedEvents;
+};
+
+const renderEvents = (container, events, sortType) => {
+  if (sortType === SortType.EVENT) {
+    const orderedByDateFromEvents = getOrderedEvents(events);
+
+    const getuniqueArray = (array) => {
+      return Array.from(new Set(array));
+    };
+
+    const eventDatesFromAsString = orderedByDateFromEvents.map((it) => {
+      return it.dateFrom.toISOString().split(`T`)[0];
+    });
+
+    const uniqueEventDatesFrom = getuniqueArray(eventDatesFromAsString);
+
+    uniqueEventDatesFrom.forEach((date, i) => {
+      const dayListItemComponent = new DayListItemComponent(date, i);
+      render(container, dayListItemComponent, RenderPosition.BEFOREEND);
+
+      const groupedEventByDate = orderedByDateFromEvents.filter((event) => {
+        return date === event.dateFrom.toISOString().split(`T`)[0];
+      });
+
+      const eventListElement = dayListItemComponent.getElement().querySelector(`.trip-events__list`);
+      groupedEventByDate.forEach((event) => {
+        renderEvent(eventListElement, event);
+      });
+    });
+  } else {
+    const dayListItemComponent = new DayListItemComponent();
+    render(container, dayListItemComponent, RenderPosition.BEFOREEND);
+
+    const sortedEvents = getSortedEvents(events, sortType);
+
+    const eventListElement = dayListItemComponent.getElement().querySelector(`.trip-events__list`);
+
+    sortedEvents.forEach((event) => {
+      renderEvent(eventListElement, event);
+    });
+  }
 };
 
 export default class TripController {
@@ -86,9 +130,7 @@ export default class TripController {
   }
 
   render(events) {
-    const orderedEvents = getOrderedEvents(events);
-
-    if (orderedEvents.length === 0) {
+    if (events.length === 0) {
       render(this._container, this._noEventsComponent, RenderPosition.BEFOREEND);
       return;
     }
@@ -98,57 +140,12 @@ export default class TripController {
 
     const dayListElement = this._daysListComponent.getElement();
 
-    const getuniqueArray = (array) => {
-      return Array.from(new Set(array));
-    };
-
-    const eventDatesFrom = orderedEvents.map((it) => {
-      return it.dateFrom.toISOString().split(`.`)[0];
-    });
-
-    const uniqueEventDatesFrom = getuniqueArray(eventDatesFrom);
-
-    uniqueEventDatesFrom.forEach((date, i) => {
-      const dayListItemComponent = new DayListItemComponent(date, i);
-      render(dayListElement, dayListItemComponent, RenderPosition.BEFOREEND);
-
-      const groupedEventByDate = orderedEvents.filter((event) => {
-        return date === event.dateFrom.toISOString().split(`.`)[0];
-      });
-
-      const eventListElement = dayListItemComponent.getElement().querySelector(`.trip-events__list`);
-      groupedEventByDate.forEach((event) => {
-        renderEvent(eventListElement, event);
-      });
-    });
+    renderEvents(dayListElement, events, this._sortComponent.getSortType());
 
     this._sortComponent.setSortTypeChangeHandler((sortType) => {
-      const sortedEvents = getSortedEvents(events, sortType);
       dayListElement.innerHTML = ``;
 
-      if (sortType === SortType.EVENT) {
-        uniqueEventDatesFrom.forEach((date, i) => {
-          const dayListItemComponent = new DayListItemComponent(date, i);
-          render(dayListElement, dayListItemComponent, RenderPosition.BEFOREEND);
-
-          const groupedEventByDate = orderedEvents.filter((event) => {
-            return date === event.dateFrom.toISOString().split(`.`)[0];
-          });
-
-          const eventListElement = dayListItemComponent.getElement().querySelector(`.trip-events__list`);
-          groupedEventByDate.forEach((event) => {
-            renderEvent(eventListElement, event);
-          });
-        });
-      } else {
-        const dayListItemComponent = new DayListItemComponent();
-        render(dayListElement, dayListItemComponent, RenderPosition.BEFOREEND);
-
-        const eventListElement = dayListItemComponent.getElement().querySelector(`.trip-events__list`);
-        sortedEvents.forEach((event) => {
-          renderEvent(eventListElement, event);
-        });
-      }
+      renderEvents(dayListElement, events, sortType);
     });
   }
 }
