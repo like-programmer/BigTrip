@@ -2,14 +2,14 @@ import {MONTH_NAMES} from "../const.js";
 import AbstractComponent from "./abstract-component.js";
 
 const createDayListItemTemplate = (date, index) => {
-  const dayNumber = index + 1;
+  const dayNumber = date ? (index + 1) : ``;
 
-  const dateTime = date.split(`T`)[0];
+  const dateTime = date ? (date.split(`T`)[0]) : ``;
 
-  const dayDate = dateTime.split(`-`)[2];
+  const dayDate = date ? (dateTime.split(`-`)[2]) : ``;
   const formattedDayDate = parseInt(dayDate, 10) < 10 ? dayDate.slice(1) : dayDate;
 
-  const month = MONTH_NAMES[parseInt((dateTime.split(`-`)[1]), 10) - 1];
+  const month = date ? (MONTH_NAMES[parseInt((dateTime.split(`-`)[1]), 10) - 1]) : ``;
 
   return (`<li class="trip-days__item  day">
     <div class="day__info">

@@ -1,4 +1,4 @@
-import SortComponent from "../components/sort";
+import SortComponent, {SortType} from "../components/sort";
 import DaysListComponent from "../components/days-list";
 import DayListItemComponent from "../components/day-list-item";
 import EventComponent from "../components/event.js";
@@ -46,6 +46,40 @@ const renderEvent = (dayElement, event) => {
   render(dayElement, eventComponent, RenderPosition.BEFOREEND);
 };
 
+const getSortedEvents = (events, sortType) => {
+  let sortedEvents = [];
+  const eventsCopy = events.slice();
+
+  switch (sortType) {
+    case SortType.EVENT:
+      sortedEvents = eventsCopy.sort((a, b) => a.dateFrom - b.dateFrom);
+      sortedEvents.forEach((it) => console.log(it.dateFrom));
+      break;
+
+    case SortType.TIME:
+      eventsCopy.forEach((it) => {
+        it.duration = it.dateTo - it.dateFrom;
+      });
+
+      sortedEvents = eventsCopy.sort((a, b) => b.duration - a.duration);
+      sortedEvents.forEach((it) => console.log(it.duration));
+      break;
+
+    case SortType.PRICE:
+      eventsCopy.forEach((event) => {
+        let totalPrice = 0;
+        totalPrice = totalPrice + event.basePrice;
+        event.offers.forEach((offer) => totalPrice = totalPrice + offer.price);
+        event.totalPrice = totalPrice;
+      });
+      sortedEvents = eventsCopy.sort((a, b) => b.totalPrice - a.totalPrice);
+      sortedEvents.forEach((it) => console.log(it.totalPrice));
+      break;
+  }
+
+  return sortedEvents;
+};
+
 export default class TripController {
   constructor(container) {
     this._container = container;
@@ -78,19 +112,45 @@ export default class TripController {
     const uniqueEventDatesFrom = getuniqueArray(eventDatesFrom);
 
     uniqueEventDatesFrom.forEach((date, i) => {
-      const dayListComponent = new DayListItemComponent(date, i);
-      render(dayListElement, dayListComponent, RenderPosition.BEFOREEND);
+      const dayListItemComponent = new DayListItemComponent(date, i);
+      render(dayListElement, dayListItemComponent, RenderPosition.BEFOREEND);
 
       const groupedEventByDate = orderedEvents.filter((event) => {
         return date === event.dateFrom.toISOString().split(`.`)[0];
       });
 
-      const eventListElement = dayListComponent.getElement().querySelector(`.trip-events__list`);
+      const eventListElement = dayListItemComponent.getElement().querySelector(`.trip-events__list`);
       groupedEventByDate.forEach((event) => {
         renderEvent(eventListElement, event);
       });
     });
 
-    this._sortComponent.setSortTypeChangeHandler(() => {});
+    this._sortComponent.setSortTypeChangeHandler((sortType) => {
+      dayListElement.innerHTML = ``;
+
+      if (sortType === SortType.EVENT) {
+        uniqueEventDatesFrom.forEach((date, i) => {
+          const dayListItemComponent = new DayListItemComponent(date, i);
+          render(dayListElement, dayListItemComponent, RenderPosition.BEFOREEND);
+
+          const groupedEventByDate = orderedEvents.filter((event) => {
+            return date === event.dateFrom.toISOString().split(`.`)[0];
+          });
+
+          const eventListElement = dayListItemComponent.getElement().querySelector(`.trip-events__list`);
+          groupedEventByDate.forEach((event) => {
+            renderEvent(eventListElement, event);
+          });
+        });
+      } else {
+        const dayListItemComponent = new DayListItemComponent();
+        render(dayListElement, dayListItemComponent, RenderPosition.BEFOREEND);
+
+        const eventListElement = dayListItemComponent.getElement().querySelector(`.trip-events__list`);
+        orderedEvents.forEach((event) => {
+          renderEvent(eventListElement, event);
+        });
+      }
+    });
   }
 }

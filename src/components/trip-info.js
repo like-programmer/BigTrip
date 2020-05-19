@@ -32,7 +32,7 @@ const calculateTotalPrice = (events) => {
   });
 
   for (const price of priceSums) {
-    totalPrice += price;
+    totalPrice = totalPrice + price;
   }
 
   return totalPrice;

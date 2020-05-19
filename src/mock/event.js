@@ -27,11 +27,13 @@ const getRandomDates = () => {
   const sign = Math.random() > 0.5 ? 1 : -1;
   const startDiffValue = sign * getRandomIntegerNumber(0, 3);
   startDate.setDate(startDate.getDate() + startDiffValue);
+  startDate.setHours(startDate.getHours() + getRandomIntegerNumber(0, 3));
+  startDate.setMinutes(startDate.getMinutes() + getRandomIntegerNumber(5, 30));
 
   const endDate = new Date();
   endDate.setDate(startDate.getDate() + getRandomIntegerNumber(0, 1));
-  endDate.setHours(endDate.getHours() + getRandomIntegerNumber(0, 3));
-  endDate.setMinutes(endDate.getMinutes() + getRandomIntegerNumber(5, 30));
+  endDate.setHours(startDate.getHours() + getRandomIntegerNumber(0, 3));
+  endDate.setMinutes(startDate.getMinutes() + getRandomIntegerNumber(5, 30));
 
   return [startDate, endDate];
 };

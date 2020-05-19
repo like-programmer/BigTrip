@@ -27,3 +27,4 @@ render(siteHeaderControls, new FilterComponent(FILTER_NAMES), RenderPosition.BEF
 const eventsContainerElement = document.querySelector(`.trip-events`);
 const tripController = new TripController(eventsContainerElement);
 tripController.render(events);
+
