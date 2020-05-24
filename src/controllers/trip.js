@@ -45,7 +45,7 @@ const getSortedEvents = (events, sortType) => {
   return sortedEvents;
 };
 
-const renderPoints = (container, events, sortType) => {
+const renderPoints = (container, events, sortType, onDataChange) => {
   if (sortType === SortType.EVENT) {
     const orderedByDateFromEvents = getOrderedEvents(events);
 
@@ -70,7 +70,7 @@ const renderPoints = (container, events, sortType) => {
       const eventListElement = dayListItemComponent.getElement().querySelector(`.trip-events__list`);
 
       return groupedEventByDate.map((event) => {
-        const pointController = new PointController(eventListElement);
+        const pointController = new PointController(eventListElement, onDataChange);
         pointController.render(event);
         return pointController;
       });
@@ -98,6 +98,8 @@ export default class TripController {
     this._sortComponent = new SortComponent();
     this._daysListComponent = new DaysListComponent();
     this._noPointsComponent = new NoPointsComponent();
+
+    this._onDataChange = this._onDataChange.bind(this);
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
     this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChange);
   }
@@ -115,13 +117,25 @@ export default class TripController {
 
     const dayListElement = this._daysListComponent.getElement();
 
-    renderPoints(dayListElement, this._events, this._sortComponent.getSortType());
+    renderPoints(dayListElement, this._events, this._sortComponent.getSortType(), this._onDataChange);
+  }
+
+  _onDataChange(pointController, oldData, newData) {
+    const index = this._events.findIndex((event) => event === oldData);
+
+    if (index === -1) {
+      return;
+    }
+
+    this._events = [].concat(this._events.slice(0, index), newData, this._events.slice(index + 1));
+
+    pointController.render(this._events[index]);
   }
 
   _onSortTypeChange(sortType) {
     const sortedEvents = getSortedEvents(this._events, sortType);
     const dayListElement = this._daysListComponent.getElement();
     dayListElement.innerHTML = ``;
-    renderPoints(dayListElement, sortedEvents, sortType);
+    renderPoints(dayListElement, sortedEvents, sortType, this._onDataChange);
   }
 }

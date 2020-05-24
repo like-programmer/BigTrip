@@ -4,8 +4,9 @@ import PointEditComponent from "../components/point-edit.js";
 import {RenderPosition, render, replace} from "../utils/render.js";
 
 export default class PointController {
-  constructor(container) {
+  constructor(container, onDataChange) {
     this._container = container;
+    this._onDataChange = onDataChange;
 
     this._pointComponent = null;
     this._pointEditComponent = null;
@@ -22,7 +23,11 @@ export default class PointController {
       document.addEventListener(`keydown`, this._onEscKeyDown);
     });
 
-    this._pointEditComponent.setFavouriteBtnClickHandler(() => {});
+    this._pointEditComponent.setFavouriteBtnClickHandler(() => {
+      this._onDataChange(this, event, Object.assign({}, event, {
+        isFavourite: !event.isFavourite,
+      }));
+    });
 
     this._pointEditComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
