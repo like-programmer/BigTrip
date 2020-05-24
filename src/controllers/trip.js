@@ -1,50 +1,12 @@
 import SortComponent, {SortType} from "../components/sort";
 import DaysListComponent from "../components/days-list";
 import DayListItemComponent from "../components/day-list-item";
-import PointComponent from "../components/point.js";
-import PointEditComponent from "../components/point-edit.js";
 import NoPointsComponent from "../components/no-points";
 
-import {RenderPosition, render, replace} from "../utils/render.js";
+import PointController from "./point.js";
+
+import {RenderPosition, render} from "../utils/render.js";
 import {getOrderedEvents} from "../utils/common";
-
-
-const renderEvent = (dayElement, event) => {
-  const replaceEventToEdit = () => {
-    replace(editEventComponent, eventComponent);
-  };
-
-  const replaceEditToEvent = () => {
-    replace(eventComponent, editEventComponent);
-  };
-
-  const documentEscKeydownHandler = (evt) => {
-    const isEsc = evt.key === `Escape` || evt.key === `Esc`;
-    if (isEsc) {
-      replaceEditToEvent();
-      document.removeEventListener(`keydown`, documentEscKeydownHandler);
-    }
-  };
-
-  const eventComponent = new PointComponent(event);
-  eventComponent.setEditBtnClickHandler(() => {
-    replaceEventToEdit();
-    document.addEventListener(`keydown`, documentEscKeydownHandler);
-  });
-
-  const editEventComponent = new PointEditComponent(event);
-  editEventComponent.setSubmitHandler((evt) => {
-    evt.preventDefault();
-    replaceEditToEvent();
-    document.removeEventListener(`keydown`, documentEscKeydownHandler);
-  });
-  editEventComponent.setCloseHandler(() => {
-    replaceEditToEvent();
-    document.removeEventListener(`keydown`, documentEscKeydownHandler);
-  });
-
-  render(dayElement, eventComponent, RenderPosition.BEFOREEND);
-};
 
 const getSortedEvents = (events, sortType) => {
   let sortedEvents = [];
@@ -80,7 +42,7 @@ const getSortedEvents = (events, sortType) => {
   return sortedEvents;
 };
 
-const renderEvents = (container, events, sortType) => {
+const renderPoints = (container, events, sortType) => {
   if (sortType === SortType.EVENT) {
     const orderedByDateFromEvents = getOrderedEvents(events);
 
@@ -126,12 +88,12 @@ export default class TripController {
     this._container = container;
     this._sortComponent = new SortComponent();
     this._daysListComponent = new DaysListComponent();
-    this._noEventsComponent = new NoPointsComponent();
+    this._noPointsComponent = new NoPointsComponent();
   }
 
   render(events) {
     if (events.length === 0) {
-      render(this._container, this._noEventsComponent, RenderPosition.BEFOREEND);
+      render(this._container, this._noPointsComponent, RenderPosition.BEFOREEND);
       return;
     }
 
@@ -140,12 +102,12 @@ export default class TripController {
 
     const dayListElement = this._daysListComponent.getElement();
 
-    renderEvents(dayListElement, events, this._sortComponent.getSortType());
+    renderPoints(dayListElement, events, this._sortComponent.getSortType());
 
     this._sortComponent.setSortTypeChangeHandler((sortType) => {
       dayListElement.innerHTML = ``;
 
-      renderEvents(dayListElement, events, sortType);
+      renderPoints(dayListElement, events, sortType);
     });
   }
 }
