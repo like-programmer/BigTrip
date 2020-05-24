@@ -104,10 +104,14 @@ export default class TripController {
 
     renderPoints(dayListElement, events, this._sortComponent.getSortType());
 
-    this._sortComponent.setSortTypeChangeHandler((sortType) => {
-      dayListElement.innerHTML = ``;
+    const sortedEvents = getSortedEvents(events, this._sortComponent.getSortType());
+  }
 
-      renderPoints(dayListElement, events, sortType);
-    });
+  _onSortTypeChange(sortType) {
+    const sortedEvents = getSortedEvents(events, sortType);
+
+    dayListElement.innerHTML = ``;
+
+    renderPoints(dayListElement, sortedEvents);
   }
 }
