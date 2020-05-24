@@ -195,11 +195,15 @@ export default class PointEdit extends AbstractComponent {
     return createEditEventTemplate(this._event);
   }
 
+  setFavouriteBtnClickHandler(handler) {
+    this.getElement().querySelector(`#event-favorite-1`).addEventListener(`click`, handler);
+  }
+
   setSubmitHandler(handler) {
     this.getElement().querySelector(`form`).addEventListener(`submit`, handler);
   }
 
-  setCloseHandler(handler) {
+  setCloseBtnHandler(handler) {
     this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
   }
 }

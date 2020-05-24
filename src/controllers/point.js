@@ -22,13 +22,15 @@ export default class PointController {
       document.addEventListener(`keydown`, this._onEscKeyDown);
     });
 
+    this._pointEditComponent.setFavouriteBtnClickHandler(() => {});
+
     this._pointEditComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
       document.removeEventListener(`keydown`, this._onEscKeyDown);
       this._replaceEditToPoint();
     });
 
-    this._pointEditComponent.setCloseHandler(() => {
+    this._pointEditComponent.setCloseBtnHandler(() => {
       document.removeEventListener(`keydown`, this._onEscKeyDown);
       this._replaceEditToPoint();
     });
