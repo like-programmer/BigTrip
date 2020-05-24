@@ -1,9 +1,9 @@
 import SortComponent, {SortType} from "../components/sort";
 import DaysListComponent from "../components/days-list";
 import DayListItemComponent from "../components/day-list-item";
-import EventComponent from "../components/event.js";
-import EditEventComponent from "../components/edit-event.js";
-import NoEventsComponent from "../components/no-events";
+import PointComponent from "../components/point.js";
+import PointEditComponent from "../components/point-edit.js";
+import NoPointsComponent from "../components/no-points";
 
 import {RenderPosition, render, replace} from "../utils/render.js";
 import {getOrderedEvents} from "../utils/common";
@@ -26,13 +26,13 @@ const renderEvent = (dayElement, event) => {
     }
   };
 
-  const eventComponent = new EventComponent(event);
+  const eventComponent = new PointComponent(event);
   eventComponent.setEditBtnClickHandler(() => {
     replaceEventToEdit();
     document.addEventListener(`keydown`, documentEscKeydownHandler);
   });
 
-  const editEventComponent = new EditEventComponent(event);
+  const editEventComponent = new PointEditComponent(event);
   editEventComponent.setSubmitHandler((evt) => {
     evt.preventDefault();
     replaceEditToEvent();
@@ -126,7 +126,7 @@ export default class TripController {
     this._container = container;
     this._sortComponent = new SortComponent();
     this._daysListComponent = new DaysListComponent();
-    this._noEventsComponent = new NoEventsComponent();
+    this._noEventsComponent = new NoPointsComponent();
   }
 
   render(events) {

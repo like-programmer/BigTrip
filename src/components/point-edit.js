@@ -185,7 +185,7 @@ const createEditEventTemplate = (event) => {
     </li>`);
 };
 
-export default class EditEvent extends AbstractComponent {
+export default class PointEdit extends AbstractComponent {
   constructor(event) {
     super();
     this._event = event;

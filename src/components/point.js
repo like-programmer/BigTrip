@@ -65,7 +65,7 @@ const createEventTemplate = (event) => {
     </li>`);
 };
 
-export default class Event extends AbstractComponent {
+export default class Point extends AbstractComponent {
   constructor(event) {
     super();
     this._event = event;

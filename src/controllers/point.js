@@ -1,5 +1,5 @@
-import EventComponent from "../components/event.js";
-import EditEventComponent from "../components/edit-event.js";
+import PointComponent from "../components/point.js";
+import PointEditComponent from "../components/point-edit.js";
 
 import {RenderPosition, render, replace} from "../utils/render.js";
 
