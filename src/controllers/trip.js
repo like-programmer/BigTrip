@@ -66,7 +66,7 @@ const renderPoints = (container, events, sortType) => {
 
       const eventListElement = dayListItemComponent.getElement().querySelector(`.trip-events__list`);
       groupedEventByDate.forEach((event) => {
-        renderEvent(eventListElement, event);
+        renderPoint(eventListElement, event);
       });
     });
   } else {
@@ -78,7 +78,7 @@ const renderPoints = (container, events, sortType) => {
     const eventListElement = dayListItemComponent.getElement().querySelector(`.trip-events__list`);
 
     sortedEvents.forEach((event) => {
-      renderEvent(eventListElement, event);
+      renderPoint(eventListElement, event);
     });
   }
 };
@@ -86,13 +86,21 @@ const renderPoints = (container, events, sortType) => {
 export default class TripController {
   constructor(container) {
     this._container = container;
+
+    this._events = [];
+
     this._sortComponent = new SortComponent();
     this._daysListComponent = new DaysListComponent();
     this._noPointsComponent = new NoPointsComponent();
+
+    this._onSortTypeChange = this._onSortTypeChange.bind(this);
+    this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChange());
   }
 
   render(events) {
-    if (events.length === 0) {
+    this._events = events;
+
+    if (this._events.length === 0) {
       render(this._container, this._noPointsComponent, RenderPosition.BEFOREEND);
       return;
     }
@@ -102,13 +110,12 @@ export default class TripController {
 
     const dayListElement = this._daysListComponent.getElement();
 
-    renderPoints(dayListElement, events, this._sortComponent.getSortType());
-
-    const sortedEvents = getSortedEvents(events, this._sortComponent.getSortType());
+    renderPoints(dayListElement, this._events, this._sortComponent.getSortType());
   }
 
   _onSortTypeChange(sortType) {
-    const sortedEvents = getSortedEvents(events, sortType);
+    const sortedEvents = getSortedEvents(this._events, sortType);
+    const dayListElement = this._daysListComponent.getElement();
 
     dayListElement.innerHTML = ``;
 
