@@ -59,3 +59,20 @@ export const getOrderedEvents = (events) => {
   const eventArray = events.slice();
   return eventArray.sort((first, second) => first.dateFrom - second.dateFrom);
 };
+
+export const getRandomIntegerNumber = (min, max) => {
+  return (min + Math.floor(Math.random() * (max - min)));
+};
+
+export const getRandomArrayItem = (array) => {
+  const randomIndex = getRandomIntegerNumber(0, array.length);
+
+  return array[randomIndex];
+};
+
+export const getRandomString = (array) => {
+  const itemsCount = getRandomIntegerNumber(1, 3);
+  return new Array(itemsCount).fill(``).map(() => {
+    return getRandomArrayItem(array);
+  }).join(` `);
+};

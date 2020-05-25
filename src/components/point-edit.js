@@ -1,4 +1,4 @@
-import {EVENT_TYPES, DESTINATION_CITIES, OFFER_LIST} from "../const";
+import {EVENT_TYPES, DESTINATION_ITEMS, OFFER_LIST} from "../const";
 import {createTripTypeTitle, getCapitalizedType} from "../utils/common.js";
 import AbstractSmartComponent from "./abstract-smart-component.js";
 
@@ -18,7 +18,7 @@ const createTypesListMarkup = (types, checkedType) => {
 const createDestinationListMarkup = (cities) => {
   return cities.map((city) => {
     return (`
-  <option value="${city}"></option>
+  <option value="${city.name}"></option>
   `);
   }).join(`\n`);
 };
@@ -52,14 +52,16 @@ const createPhotoTapeMarkup = (photos) => {
   }).join(`\n`);
 };
 
-const createEditEventTemplate = (event) => {
-  const {basePrice, dateFrom, dateTo, destination, isFavourite, offers, type} = event;
-  const [eventIcon] = EVENT_TYPES.filter((it) => it.name === type).map((it) => it.icon);
+const createEditEventTemplate = (event, options) => {
+  const {basePrice, dateFrom, dateTo, isFavourite, offers} = event;
+  const {eventType, destinationCity} = options;
 
-  const destinationName = destination.name;
-  const eventTitle = createTripTypeTitle(EVENT_TYPES, type);
+  const [eventIcon] = EVENT_TYPES.filter((it) => it.name === eventType).map((it) => it.icon);
 
-  const destinationListMarkup = createDestinationListMarkup(DESTINATION_CITIES);
+  const destinationName = destinationCity.name;
+  const eventTitle = createTripTypeTitle(EVENT_TYPES, eventType);
+
+  const destinationListMarkup = createDestinationListMarkup(DESTINATION_ITEMS);
 
   const getFormattedDateTime = (date) => {
     const stringedDate = date.toISOString();
@@ -69,11 +71,11 @@ const createEditEventTemplate = (event) => {
   const formattedDateFrom = getFormattedDateTime(dateFrom);
   const formattedDateTo = getFormattedDateTime(dateTo);
 
-  const destinationDescription = destination.description;
-  const photoTapeMarkup = createPhotoTapeMarkup(destination.pictures);
+  const destinationDescription = destinationCity.description;
+  const photoTapeMarkup = createPhotoTapeMarkup(destinationCity.pictures);
 
 
-  const [filteredOfferType] = OFFER_LIST.filter((it) => it.type === type);
+  const [filteredOfferType] = OFFER_LIST.filter((it) => it.type === eventType);
   const filteredOfferList = filteredOfferType.offers;
   offers.map((it, i) => {
     filteredOfferList[i].isChecked = it.title === filteredOfferList[i].title;
@@ -82,9 +84,9 @@ const createEditEventTemplate = (event) => {
   const isOffersAvailable = filteredOfferList.length !== 0;
   const offersMarkup = createOffersMarkup(filteredOfferList);
 
-  const transferTypeListMarkup = createTypesListMarkup(EVENT_TYPES.filter((it) => it.type === `transfer`), type);
+  const transferTypeListMarkup = createTypesListMarkup(EVENT_TYPES.filter((it) => it.type === `transfer`), eventType);
 
-  const activityTypeListMarkup = createTypesListMarkup(EVENT_TYPES.filter((it) => it.type === `activity`), type);
+  const activityTypeListMarkup = createTypesListMarkup(EVENT_TYPES.filter((it) => it.type === `activity`), eventType);
 
   return (`<li class="trip-events__item">
       <form class="event  event--edit" action="#" method="post">
@@ -192,11 +194,17 @@ export default class PointEdit extends AbstractSmartComponent {
     this._submitHandler = null;
     this._closeBtnClickHandler = null;
     this._favouriteBtnClickHandler = null;
+    this._eventType = event.type;
+    this._destinationCity = event.destination;
+
     this._subscribeOnEvents();
   }
 
   getTemplate() {
-    return createEditEventTemplate(this._event);
+    return createEditEventTemplate(this._event, {
+      eventType: this._eventType,
+      destinationCity: this._destinationCity
+    });
   }
 
   recoveryListeners() {
@@ -229,12 +237,12 @@ export default class PointEdit extends AbstractSmartComponent {
     const element = this.getElement();
 
     element.querySelector(`.event__type-list`).addEventListener(`change`, (evt) => {
-      this._eventTypes[evt.target.value] = evt.target.checked;
+      this._eventType = evt.target.value;
       this.rerender();
     });
 
-    element.querySelector(`#event-destination-1`).addEventListener(`input`, (evt) => {
-      this._destinationCity = evt.target.value;
+    element.querySelector(`#event-destination-1`).addEventListener(`change`, (evt) => {
+      [this._destinationCity] = DESTINATION_ITEMS.filter((item) => item.name === evt.target.value);
       this.rerender();
     });
   }

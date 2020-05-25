@@ -1,26 +1,5 @@
-import {EVENT_TYPES, DESTINATION_CITIES, OFFER_LIST} from "../const.js";
-
-const descriptionItems = [
-  `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget.`,
-  `Fusce tristique felis at fermentum pharetra.`,
-  `Aliquam id orci ut lectus varius viverra.`,
-  `Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.`,
-  `Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.`,
-  `Sed blandit, eros vel aliquam faucibus, purus ex diam, eu luctus nunc ante ut dui.`,
-  `Sed sed nisi sed augue convallis suscipit in sed felis.`,
-  `Aliquam erat volutpat.`, `Nunc fermentum tortor ac porta dapibus.`,
-  `In rutrum ac purus sit amet tempus.`
-];
-
-const getRandomIntegerNumber = (min, max) => {
-  return (min + Math.floor(Math.random() * (max - min)));
-};
-
-const getRandomArrayItem = (array) => {
-  const randomIndex = getRandomIntegerNumber(0, array.length);
-
-  return array[randomIndex];
-};
+import {EVENT_TYPES, OFFER_LIST, DESTINATION_ITEMS} from "../const.js";
+import {getRandomIntegerNumber, getRandomArrayItem} from "../utils/common.js";
 
 const getRandomDates = () => {
   const startDate = new Date();
@@ -38,16 +17,6 @@ const getRandomDates = () => {
   return [startDate, endDate];
 };
 
-const getPhotosArray = () => {
-  const itemsCount = getRandomIntegerNumber(4, 8);
-  return new Array(itemsCount).fill(``).map(() => {
-    return ({
-      src: `http://picsum.photos/300/150?r=${Math.random()}`,
-      description: getRandomArrayItem(descriptionItems)
-    });
-  });
-};
-
 const getRandomArray = (array) => {
   if (array.length > 0) {
     const itemsCount = getRandomIntegerNumber(0, array.length - 1);
@@ -59,20 +28,6 @@ const getRandomArray = (array) => {
   }
 };
 
-const getRandomString = (array) => {
-  const itemsCount = getRandomIntegerNumber(1, 3);
-  return new Array(itemsCount).fill(``).map(() => {
-    return getRandomArrayItem(array);
-  }).join(` `);
-};
-
-const destinationItems = [];
-DESTINATION_CITIES.forEach((city) => destinationItems.push({
-  description: getRandomString(descriptionItems),
-  name: city,
-  pictures: getPhotosArray()
-}));
-
 export const generateEvent = () => {
   const dates = getRandomDates();
   const eventType = getRandomArrayItem(EVENT_TYPES);
@@ -83,7 +38,7 @@ export const generateEvent = () => {
     basePrice: getRandomIntegerNumber(50, 500),
     dateFrom: dates[0],
     dateTo: dates[1],
-    destination: getRandomArrayItem(destinationItems),
+    destination: getRandomArrayItem(DESTINATION_ITEMS),
     isFavourite: Math.random() > 0.5,
     offers: randomCheckedOfferList,
     type: eventType.name

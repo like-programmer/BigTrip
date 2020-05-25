@@ -1,3 +1,19 @@
+import {getRandomIntegerNumber, getRandomArrayItem, getRandomString} from "./utils/common.js";
+
+const DESCRIPTION_ITEMS = [
+  `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget.`,
+  `Fusce tristique felis at fermentum pharetra.`,
+  `Aliquam id orci ut lectus varius viverra.`,
+  `Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.`,
+  `Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.`,
+  `Sed blandit, eros vel aliquam faucibus, purus ex diam, eu luctus nunc ante ut dui.`,
+  `Sed sed nisi sed augue convallis suscipit in sed felis.`,
+  `Aliquam erat volutpat.`, `Nunc fermentum tortor ac porta dapibus.`,
+  `In rutrum ac purus sit amet tempus.`
+];
+
+const DESTINATION_CITIES = [`Amsterdam`, `Chamonix`, `Geneva`, `Rotterdam`, `Strasbourg`, `Zürich`, `Sydney`, `Kyoto`, `Praha`];
+
 export const EVENT_TYPES = [
   {
     name: `check-in`,
@@ -66,7 +82,22 @@ export const MONTH_NAMES = [
   `DEC`
 ];
 
-export const DESTINATION_CITIES = [`Amsterdam`, `Chamonix`, `Geneva`, `Rotterdam`, `Strasbourg`, `Zürich`, `Sydney`, `Kyoto`, `Praha`];
+const getPhotosArray = () => {
+  const itemsCount = getRandomIntegerNumber(4, 8);
+  return new Array(itemsCount).fill(``).map(() => {
+    return ({
+      src: `http://picsum.photos/300/150?r=${Math.random()}`,
+      description: getRandomArrayItem(DESCRIPTION_ITEMS)
+    });
+  });
+};
+
+export const DESTINATION_ITEMS = [];
+DESTINATION_CITIES.forEach((city) => DESTINATION_ITEMS.push({
+  description: getRandomString(DESCRIPTION_ITEMS),
+  name: city,
+  pictures: getPhotosArray()
+}));
 
 export const FILTER_NAMES = [`everything`, `future`, `past`];
 
