@@ -66,6 +66,13 @@ const getRandomString = (array) => {
   }).join(` `);
 };
 
+const destinationItems = [];
+DESTINATION_CITIES.forEach((city) => destinationItems.push({
+  description: getRandomString(descriptionItems),
+  name: city,
+  pictures: getPhotosArray()
+}));
+
 export const generateEvent = () => {
   const dates = getRandomDates();
   const eventType = getRandomArrayItem(EVENT_TYPES);
@@ -76,11 +83,7 @@ export const generateEvent = () => {
     basePrice: getRandomIntegerNumber(50, 500),
     dateFrom: dates[0],
     dateTo: dates[1],
-    destination: {
-      description: getRandomString(descriptionItems),
-      name: getRandomArrayItem(DESTINATION_CITIES),
-      pictures: getPhotosArray()
-    },
+    destination: getRandomArrayItem(destinationItems),
     isFavourite: Math.random() > 0.5,
     offers: randomCheckedOfferList,
     type: eventType.name

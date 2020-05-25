@@ -1,6 +1,6 @@
 import {EVENT_TYPES, DESTINATION_CITIES, OFFER_LIST} from "../const";
 import {createTripTypeTitle, getCapitalizedType} from "../utils/common.js";
-import AbstractComponent from "./abstract-component.js";
+import AbstractSmartComponent from "./abstract-smart-component.js";
 
 const createTypesListMarkup = (types, checkedType) => {
   return types.map((type) => {
@@ -185,25 +185,57 @@ const createEditEventTemplate = (event) => {
     </li>`);
 };
 
-export default class PointEdit extends AbstractComponent {
+export default class PointEdit extends AbstractSmartComponent {
   constructor(event) {
     super();
     this._event = event;
+    this._submitHandler = null;
+    this._closeBtnClickHandler = null;
+    this._favouriteBtnClickHandler = null;
+    this._subscribeOnEvents();
   }
 
   getTemplate() {
     return createEditEventTemplate(this._event);
   }
 
+  recoveryListeners() {
+    this.setSubmitHandler(this._submitHandler);
+    this.setCloseBtnClickHandler(this._closeBtnClickHandler);
+    this.setFavouriteBtnClickHandler(this._favouriteBtnClickHandler);
+    this._subscribeOnEvents();
+  }
+
+  rerender() {
+    super.rerender();
+  }
+
   setFavouriteBtnClickHandler(handler) {
     this.getElement().querySelector(`#event-favorite-1`).addEventListener(`click`, handler);
+    this._favouriteBtnClickHandler = handler;
   }
 
   setSubmitHandler(handler) {
     this.getElement().querySelector(`form`).addEventListener(`submit`, handler);
+    this._submitHandler = handler;
   }
 
-  setCloseBtnHandler(handler) {
+  setCloseBtnClickHandler(handler) {
     this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
+    this._closeBtnClickHandler = handler;
+  }
+
+  _subscribeOnEvents() {
+    const element = this.getElement();
+
+    element.querySelector(`.event__type-list`).addEventListener(`change`, (evt) => {
+      this._eventTypes[evt.target.value] = evt.target.checked;
+      this.rerender();
+    });
+
+    element.querySelector(`#event-destination-1`).addEventListener(`input`, (evt) => {
+      this._destinationCity = evt.target.value;
+      this.rerender();
+    });
   }
 }

@@ -35,7 +35,7 @@ export default class PointController {
       this._replaceEditToPoint();
     });
 
-    this._pointEditComponent.setCloseBtnHandler(() => {
+    this._pointEditComponent.setCloseBtnClickHandler(() => {
       document.removeEventListener(`keydown`, this._onEscKeyDown);
       this._replaceEditToPoint();
     });
