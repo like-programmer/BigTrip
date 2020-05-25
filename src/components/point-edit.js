@@ -218,6 +218,15 @@ export default class PointEdit extends AbstractSmartComponent {
     super.rerender();
   }
 
+  reset() {
+    const event = this._event;
+    
+    this._eventType = event.type;
+    this._destinationCity = event.destination;
+
+    this.rerender();
+  }
+
   setFavouriteBtnClickHandler(handler) {
     this.getElement().querySelector(`#event-favorite-1`).addEventListener(`click`, handler);
     this._favouriteBtnClickHandler = handler;
