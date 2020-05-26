@@ -9,10 +9,10 @@ const Mode = {
 };
 
 export default class PointController {
-  constructor(container, onDataChange, onViewChange) {
+  constructor(container, dataChangeHandler, viewChangeHandler) {
     this._container = container;
-    this._onDataChange = onDataChange;
-    this._onViewChange = onViewChange;
+    this._dataChangeHandler = dataChangeHandler;
+    this._viewChangeHandler = viewChangeHandler;
 
     this._mode = Mode.DEFAULT;
     this._pointComponent = null;
@@ -34,7 +34,7 @@ export default class PointController {
     });
 
     this._pointEditComponent.setFavouriteBtnClickHandler(() => {
-      this._onDataChange(this, event, Object.assign({}, event, {
+      this._dataChangeHandler(this, event, Object.assign({}, event, {
         isFavourite: !event.isFavourite,
       }));
     });
@@ -71,7 +71,7 @@ export default class PointController {
   }
 
   _replacePointToEdit() {
-    this._onViewChange();
+    this._viewChangeHandler();
     replace(this._pointEditComponent, this._pointComponent);
     this._mode = Mode.EDIT;
   }
