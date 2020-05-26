@@ -13,11 +13,12 @@ export default class PointController {
     this._container = container;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
+
     this._mode = Mode.DEFAULT;
     this._pointComponent = null;
     this._pointEditComponent = null;
 
-    this._onEscKeyDown = null;
+    this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
   }
 
   render(event) {
@@ -29,7 +30,7 @@ export default class PointController {
 
     this._pointComponent.setEditBtnClickHandler(() => {
       this._replacePointToEdit();
-      document.addEventListener(`keydown`, this._onEscKeyDown);
+      document.addEventListener(`keydown`, this._escKeyDownHandler);
     });
 
     this._pointEditComponent.setFavouriteBtnClickHandler(() => {
@@ -40,12 +41,12 @@ export default class PointController {
 
     this._pointEditComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
-      document.removeEventListener(`keydown`, this._onEscKeyDown);
+      document.removeEventListener(`keydown`, this._escKeyDownHandler);
       this._replaceEditToPoint();
     });
 
     this._pointEditComponent.setCloseBtnClickHandler(() => {
-      document.removeEventListener(`keydown`, this._onEscKeyDown);
+      document.removeEventListener(`keydown`, this._escKeyDownHandler);
       this._replaceEditToPoint();
     });
 
@@ -75,11 +76,11 @@ export default class PointController {
     this._mode = Mode.EDIT;
   }
 
-  _onEscKeyDown(evt) {
+  _escKeyDownHandler(evt) {
     const isEsc = evt.key === `Escape` || evt.key === `Esc`;
     if (isEsc) {
       this._replaceEditToPoint();
-      document.removeEventListener(`keydown`, this._onEscKeyDown);
+      document.removeEventListener(`keydown`, this._escKeyDownHandler);
     }
   }
 }
