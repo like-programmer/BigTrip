@@ -259,14 +259,14 @@ export default class PointEdit extends AbstractSmartComponent {
 
     const dateFromInputElement = this.getElement().querySelector(`#event-start-time-1`);
     this._flatpickrFrom = flatpickr(dateFromInputElement, {
-      dateFormat: `d/m/y H:i`,
+      dateFormat: `d/m/Y H:i`,
       allowInput: true,
       defaultDate: this._event.dateFrom || `today`
     });
 
     const dateToInputElement = this.getElement().querySelector(`#event-end-time-1`);
     this._flatpickrTo = flatpickr(dateToInputElement, {
-      dateFormat: `d/m/y H:i`,
+      dateFormat: `d/m/Y H:i`,
       allowInput: true,
       defaultDate: this._event.dateTo || this._event.dateFrom,
       minDate: this._event.dateFrom,
