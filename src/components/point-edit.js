@@ -55,7 +55,7 @@ const createPhotoTapeMarkup = (photos) => {
   }).join(`\n`);
 };
 
-const createEditEventTemplate = (event, options) => {
+const createEditEventTemplate = (event, options = {}) => {
   const {basePrice, dateFrom, dateTo, isFavourite, offers} = event;
   const {eventType, destinationCity} = options;
 
