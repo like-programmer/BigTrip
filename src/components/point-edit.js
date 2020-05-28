@@ -4,6 +4,7 @@ import {createTripTypeTitle, getCapitalizedType} from "../utils/common.js";
 
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import moment from "moment";
 
 const createTypesListMarkup = (types, checkedType) => {
   return types.map((type) => {
@@ -66,13 +67,8 @@ const createEditEventTemplate = (event, options = {}) => {
 
   const destinationListMarkup = createDestinationListMarkup(DESTINATION_ITEMS);
 
-  const getFormattedDateTime = (date) => {
-    const stringedDate = date.toISOString();
-    return (`${stringedDate.split(`-`)[2].split(`T`)[0]}/${stringedDate.split(`-`)[1]}/${stringedDate.split(`-`)[0].slice(2)} ${stringedDate.split(`-`)[2].split(`T`)[1].slice(0, 5)}`);
-  };
-
-  const formattedDateFrom = getFormattedDateTime(dateFrom);
-  const formattedDateTo = getFormattedDateTime(dateTo);
+  const startDate = moment(dateFrom).format(`DD/MM/YYYY HH:mm`);
+  const endDate = moment(dateTo).format(`DD/MM/YYYY HH:mm`);
 
   const destinationDescription = destinationCity.description;
   const photoTapeMarkup = createPhotoTapeMarkup(destinationCity.pictures);
@@ -132,12 +128,12 @@ const createEditEventTemplate = (event, options = {}) => {
             <label class="visually-hidden" for="event-start-time-1">
               From
             </label>
-            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${formattedDateFrom}">
+            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${startDate}">
             &mdash;
             <label class="visually-hidden" for="event-end-time-1">
               To
             </label>
-            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${formattedDateTo}">
+            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${endDate}">
           </div>
 
           <div class="event__field-group  event__field-group--price">

@@ -103,91 +103,91 @@ export const FILTER_NAMES = [`everything`, `future`, `past`];
 
 export const OFFER_LIST = [
   {
-    "type": `check-in`,
-    "offers": [
+    type: `check-in`,
+    offers: [
       {
-        "title": `Add breakfast`,
-        "price": 45
+        title: `Add breakfast`,
+        price: 45
       }
     ]
   },
   {
-    "type": `sightseeing`,
-    "offers": [
+    type: `sightseeing`,
+    offers: [
       {
-        "title": `Book tickets`,
-        "price": 30
+        title: `Book tickets`,
+        price: 30
       },
       {
-        "title": `Lunch in city`,
-        "price": 65
+        title: `Lunch in city`,
+        price: 65
       }
     ]
   },
   {
-    "type": `restaurant`,
-    "offers": []
+    type: `restaurant`,
+    offers: []
   },
   {
-    "type": `taxi`,
-    "offers": [
+    type: `taxi`,
+    offers: [
       {
-        "title": `Upgrade to a comfort class`,
-        "price": 120
+        title: `Upgrade to a comfort class`,
+        price: 120
       },
       {
-        "title": `Choose the radio station`,
-        "price": 60
+        title: `Choose the radio station`,
+        price: 60
       },
       {
-        "title": `Order Uber`,
-        "price": 20
+        title: `Order Uber`,
+        price: 20
       }
     ]
   },
   {
-    "type": `bus`,
-    "offers": []
+    type: `bus`,
+    offers: []
   },
   {
-    "type": `train`,
-    "offers": []
+    type: `train`,
+    offers: []
   },
   {
-    "type": `ship`,
-    "offers": []
+    type: `ship`,
+    offers: []
   },
   {
-    "type": `transport`,
-    "offers": []
+    type: `transport`,
+    offers: []
   },
   {
-    "type": `drive`,
-    "offers": [
+    type: `drive`,
+    offers: [
       {
-        "title": `Rent a car`,
-        "price": 200
+        title: `Rent a car`,
+        price: 200
       },
     ]
   },
   {
-    "type": `flight`,
-    "offers": [
+    type: `flight`,
+    offers: [
       {
-        "title": `Add luggage`,
-        "price": 50
+        title: `Add luggage`,
+        price: 50
       },
       {
-        "title": `Switch to a comfort class`,
-        "price": 100
+        title: `Switch to a comfort class`,
+        price: 100
       },
       {
-        "title": `Choose seats`,
-        "price": 5
+        title: `Choose seats`,
+        price: 5
       },
       {
-        "title": `Add meal`,
-        "price": 15
+        title: `Add meal`,
+        price: 15
       },
     ]
   }

@@ -2,6 +2,8 @@ import {EVENT_TYPES} from "../const.js";
 import {getDuration, createTripTypeTitle} from "../utils/common.js";
 import AbstractComponent from "./abstract-component.js";
 
+import moment from "moment";
+
 const createOffersMarkup = (offers) => {
   return offers.slice(0, 2).map((offer) => {
     const title = offer.title;
@@ -22,11 +24,11 @@ const createEventTemplate = (event) => {
   const destinationName = destination.name;
   const eventTitle = createTripTypeTitle(EVENT_TYPES, type);
 
-  const formattedDateFrom = dateFrom.toISOString().slice(0, -5);
-  const formattedTimeFrom = dateFrom.toISOString().split(`T`)[1].slice(0, 5);
+  const startDate = moment(dateFrom).format(`YYYY-MM-DDTHH:mm`);
+  const startTime = moment(dateFrom).format(`HH:mm`);
 
-  const formattedDateTo = dateTo.toISOString().slice(0, -5);
-  const formattedTimeTo = dateTo.toISOString().split(`T`)[1].slice(0, 5);
+  const endDate = moment(dateTo).format(`YYYY-MM-DDTHH:mm`);
+  const endTime = moment(dateTo).format(`HH:mm`);
 
   const duration = getDuration(dateFrom, dateTo);
 
@@ -42,9 +44,9 @@ const createEventTemplate = (event) => {
 
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="${formattedDateFrom}">${formattedTimeFrom}</time>
+            <time class="event__start-time" datetime="${startDate}">${startTime}</time>
             &mdash;
-            <time class="event__end-time" datetime="${formattedDateTo}">${formattedTimeTo}</time>
+            <time class="event__end-time" datetime="${endDate}">${endTime}</time>
           </p>
           <p class="event__duration">${duration}</p>
         </div>
