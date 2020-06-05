@@ -1,7 +1,10 @@
 import TripInfoComponent from "./components/trip-info.js";
 import SiteMenuComponent from "./components/site-menu.js";
 import FilterComponent from "./components/filter.js";
+
 import TripController from "./controllers/trip.js";
+
+import PointsModel from "./models/points.js";
 
 import {generateEvents} from "./mock/event.js";
 
@@ -10,6 +13,9 @@ import {RenderPosition, render} from "./utils/render.js";
 
 const EVENT_COUNT = 4;
 const events = generateEvents(EVENT_COUNT);
+
+const pointsModel = new PointsModel();
+pointsModel.setPoints(events);
 
 const siteHeaderElement = document.querySelector(`.trip-main`);
 
@@ -25,6 +31,6 @@ siteHeaderControls.prepend(hiddenTitle);
 render(siteHeaderControls, new FilterComponent(FILTER_NAMES), RenderPosition.BEFOREEND);
 
 const eventsContainerElement = document.querySelector(`.trip-events`);
-const tripController = new TripController(eventsContainerElement);
-tripController.render(events);
+const tripController = new TripController(eventsContainerElement, pointsModel);
+tripController.render();
 
