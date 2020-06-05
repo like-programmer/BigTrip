@@ -39,3 +39,11 @@ export const getRandomString = (array) => {
     return getRandomArrayItem(array);
   }).join(` `);
 };
+
+export const isPastPoint = (pointDate, date) => {
+  return pointDate < date;
+};
+
+export const isFuturePoint = (pointDate, date) => {
+  return pointDate > date;
+};
