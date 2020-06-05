@@ -1,4 +1,4 @@
-import {EVENT_TYPES, OFFER_LIST, DESTINATION_ITEMS} from "../const.js";
+import {POINT_TYPES, OFFER_LIST, DESTINATION_ITEMS} from "../const.js";
 import {getRandomIntegerNumber, getRandomArrayItem} from "../utils/common.js";
 
 const getRandomDates = () => {
@@ -28,10 +28,10 @@ const getRandomArray = (array) => {
   }
 };
 
-export const generateEvent = () => {
+export const generatePoint = () => {
   const dates = getRandomDates();
-  const eventType = getRandomArrayItem(EVENT_TYPES);
-  const [filteredOfferList] = OFFER_LIST.filter((it) => it.type === eventType.name);
+  const pointType = getRandomArrayItem(POINT_TYPES);
+  const [filteredOfferList] = OFFER_LIST.filter((it) => it.type === pointType.name);
   const randomCheckedOfferList = getRandomArray(filteredOfferList.offers);
 
   return {
@@ -42,10 +42,10 @@ export const generateEvent = () => {
     destination: getRandomArrayItem(DESTINATION_ITEMS),
     isFavourite: Math.random() > 0.5,
     offers: randomCheckedOfferList,
-    type: eventType.name
+    type: pointType.name
   };
 };
 
-export const generateEvents = (count) => {
-  return new Array(count).fill(``).map(generateEvent);
+export const generatePoints = (count) => {
+  return new Array(count).fill(``).map(generatePoint);
 };

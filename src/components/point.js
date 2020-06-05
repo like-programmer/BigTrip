@@ -1,4 +1,4 @@
-import {EVENT_TYPES} from "../const.js";
+import {POINT_TYPES} from "../const.js";
 import {getDuration, createTripTypeTitle} from "../utils/common.js";
 import AbstractComponent from "./abstract-component.js";
 
@@ -18,11 +18,11 @@ const createOffersMarkup = (offers) => {
   }).join(`\n`);
 };
 
-const createEventTemplate = (event) => {
-  const {basePrice, dateFrom, dateTo, destination, offers, type} = event;
+const createPointTemplate = (point) => {
+  const {basePrice, dateFrom, dateTo, destination, offers, type} = point;
 
   const destinationName = destination.name;
-  const eventTitle = createTripTypeTitle(EVENT_TYPES, type);
+  const pointTitle = createTripTypeTitle(POINT_TYPES, type);
 
   const startDate = moment(dateFrom).format(`YYYY-MM-DDTHH:mm`);
   const startTime = moment(dateFrom).format(`HH:mm`);
@@ -32,15 +32,15 @@ const createEventTemplate = (event) => {
 
   const duration = getDuration(dateFrom, dateTo);
 
-  const [eventIcon] = EVENT_TYPES.filter((it) => it.name === type).map((it) => it.icon);
+  const [pointIcon] = POINT_TYPES.filter((it) => it.name === type).map((it) => it.icon);
   const offersMarkup = createOffersMarkup(offers);
 
   return (`<li class="trip-events__item">
       <div class="event">
         <div class="event__type">
-          <img class="event__type-icon" width="42" height="42" src="${eventIcon}" alt="Event type icon">
+          <img class="event__type-icon" width="42" height="42" src="${pointIcon}" alt="Event type icon">
         </div>
-        <h3 class="event__title">${eventTitle} ${destinationName}</h3>
+        <h3 class="event__title">${pointTitle} ${destinationName}</h3>
 
         <div class="event__schedule">
           <p class="event__time">
@@ -74,7 +74,7 @@ export default class Point extends AbstractComponent {
   }
 
   getTemplate() {
-    return createEventTemplate(this._event);
+    return createPointTemplate(this._event);
   }
 
   setEditBtnClickHandler(handler) {

@@ -13,14 +13,14 @@ export const getDuration = (dateFrom, dateTo) => {
 
 export const getCapitalizedType = (string) => `${string.substr(0, 1).toUpperCase()}${string.slice(1)}`;
 
-export const createTripTypeTitle = (eventTypes, eventName) => {
-  const [event] = eventTypes.filter((eventType) => eventType.name === eventName);
-  return event.type === `activity` ? `${getCapitalizedType(event.name)} in` : `${getCapitalizedType(event.name)} to`;
+export const createTripTypeTitle = (pointTypes, pointName) => {
+  const [point] = pointTypes.filter((pointType) => pointType.name === pointName);
+  return point.type === `activity` ? `${getCapitalizedType(point.name)} in` : `${getCapitalizedType(point.name)} to`;
 };
 
-export const getOrderedEvents = (events) => {
-  const eventArray = events.slice();
-  return eventArray.sort((first, second) => first.dateFrom - second.dateFrom);
+export const getOrderedPoints = (points) => {
+  const pointArray = points.slice();
+  return pointArray.sort((first, second) => first.dateFrom - second.dateFrom);
 };
 
 export const getRandomIntegerNumber = (min, max) => {

@@ -14,7 +14,7 @@ const DESCRIPTION_ITEMS = [
 
 const DESTINATION_CITIES = [`Amsterdam`, `Chamonix`, `Geneva`, `Rotterdam`, `Strasbourg`, `Zürich`, `Sydney`, `Kyoto`, `Praha`];
 
-export const EVENT_TYPES = [
+export const POINT_TYPES = [
   {
     name: `check-in`,
     icon: `img/icons/check-in.png`,

@@ -21,12 +21,12 @@ export default class PointController {
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
   }
 
-  render(event) {
+  render(point) {
     const oldPointComponent = this._pointComponent;
     const oldPointEditComponent = this._pointEditComponent;
 
-    this._pointComponent = new PointComponent(event);
-    this._pointEditComponent = new PointEditComponent(event);
+    this._pointComponent = new PointComponent(point);
+    this._pointEditComponent = new PointEditComponent(point);
 
     this._pointComponent.setEditBtnClickHandler(() => {
       this._replacePointToEdit();
@@ -34,8 +34,8 @@ export default class PointController {
     });
 
     this._pointEditComponent.setFavouriteBtnClickHandler(() => {
-      this._dataChangeHandler(this, event, Object.assign({}, event, {
-        isFavourite: !event.isFavourite,
+      this._dataChangeHandler(this, point, Object.assign({}, point, {
+        isFavourite: !point.isFavourite,
       }));
     });
 

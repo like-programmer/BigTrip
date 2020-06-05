@@ -1,31 +1,31 @@
 import AbstractComponent from "./abstract-component.js";
 import {MONTH_NAMES} from "../const.js";
-import {getOrderedEvents} from "../utils/common.js";
+import {getOrderedPoints} from "../utils/common.js";
 
-const createTripName = (events) => {
-  if (events.length <= 3) {
-    return events.map((event) => {
-      return (`${event.destination.name}`);
+const createTripName = (points) => {
+  if (points.length <= 3) {
+    return points.map((point) => {
+      return (`${point.destination.name}`);
     }).join(` &mdash; `);
   } else {
-    const eventsLastPoint = events.length - 1;
-    return `${events[0].destination.name} &mdash; ... &mdash; ${events[eventsLastPoint].destination.name}`;
+    const eventsLastPoint = points.length - 1;
+    return `${points[0].destination.name} &mdash; ... &mdash; ${points[eventsLastPoint].destination.name}`;
   }
 };
 
-const createTripLimits = (events, monthNames) => {
-  const eventsLastPoint = events.length - 1;
-  const startMonthName = monthNames[events[0].dateFrom.getMonth()];
-  const endMonthName = monthNames[events[eventsLastPoint].dateTo.getMonth()];
+const createTripLimits = (points, monthNames) => {
+  const pointsLastPoint = points.length - 1;
+  const startMonthName = monthNames[points[0].dateFrom.getMonth()];
+  const endMonthName = monthNames[points[pointsLastPoint].dateTo.getMonth()];
 
-  return (`${events[0].dateFrom.getDate()} ${startMonthName} &mdash; ${events[eventsLastPoint].dateTo.getDate()} ${endMonthName}`);
+  return (`${points[0].dateFrom.getDate()} ${startMonthName} &mdash; ${points[pointsLastPoint].dateTo.getDate()} ${endMonthName}`);
 };
 
-const calculateTotalPrice = (events) => {
+const calculateTotalPrice = (points) => {
   let totalPrice = 0;
-  const priceSums = events.map((event) => {
-    let priceSum = event.basePrice;
-    event.offers.map((offer) => {
+  const priceSums = points.map((point) => {
+    let priceSum = point.basePrice;
+    point.offers.map((offer) => {
       priceSum = priceSum + offer.price;
     });
     return priceSum;
@@ -38,13 +38,13 @@ const calculateTotalPrice = (events) => {
   return totalPrice;
 };
 
-const createTripInfoTemplate = (events) => {
-  const orderedEvents = getOrderedEvents(events);
-  const isNoPoints = orderedEvents.length === 0;
+const createTripInfoTemplate = (points) => {
+  const orderedPoints = getOrderedPoints(points);
+  const isNoPoints = orderedPoints.length === 0;
 
-  const tripName = isNoPoints ? null : createTripName(orderedEvents);
-  const tripLimits = isNoPoints ? null : createTripLimits(orderedEvents, MONTH_NAMES);
-  const totalPrice = calculateTotalPrice(orderedEvents);
+  const tripName = isNoPoints ? null : createTripName(orderedPoints);
+  const tripLimits = isNoPoints ? null : createTripLimits(orderedPoints, MONTH_NAMES);
+  const totalPrice = calculateTotalPrice(orderedPoints);
 
   return (`<section class="trip-main__trip-info  trip-info">
             ${isNoPoints ? `` : `
@@ -62,12 +62,12 @@ const createTripInfoTemplate = (events) => {
 };
 
 export default class TripInfo extends AbstractComponent {
-  constructor(events) {
+  constructor(points) {
     super();
-    this._events = events;
+    this._points = points;
   }
 
   getTemplate() {
-    return createTripInfoTemplate(this._events);
+    return createTripInfoTemplate(this._points);
   }
 }

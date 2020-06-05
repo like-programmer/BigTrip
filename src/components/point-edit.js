@@ -1,5 +1,5 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
-import {EVENT_TYPES, DESTINATION_ITEMS, OFFER_LIST} from "../const";
+import {POINT_TYPES, DESTINATION_ITEMS, OFFER_LIST} from "../const";
 import {createTripTypeTitle, getCapitalizedType} from "../utils/common.js";
 
 import flatpickr from "flatpickr";
@@ -56,14 +56,14 @@ const createPhotoTapeMarkup = (photos) => {
   }).join(`\n`);
 };
 
-const createEditEventTemplate = (event, options = {}) => {
-  const {basePrice, dateFrom, dateTo, isFavourite, offers} = event;
-  const {eventType, destinationCity} = options;
+const createEditPointTemplate = (point, options = {}) => {
+  const {basePrice, dateFrom, dateTo, isFavourite, offers} = point;
+  const {pointType, destinationCity} = options;
 
-  const [eventIcon] = EVENT_TYPES.filter((it) => it.name === eventType).map((it) => it.icon);
+  const [pointIcon] = POINT_TYPES.filter((it) => it.name === pointType).map((it) => it.icon);
 
   const destinationName = destinationCity.name;
-  const eventTitle = createTripTypeTitle(EVENT_TYPES, eventType);
+  const pointTitle = createTripTypeTitle(POINT_TYPES, pointType);
 
   const destinationListMarkup = createDestinationListMarkup(DESTINATION_ITEMS);
 
@@ -74,7 +74,7 @@ const createEditEventTemplate = (event, options = {}) => {
   const photoTapeMarkup = createPhotoTapeMarkup(destinationCity.pictures);
 
 
-  const [filteredOfferType] = OFFER_LIST.filter((it) => it.type === eventType);
+  const [filteredOfferType] = OFFER_LIST.filter((it) => it.type === pointType);
   const filteredOfferList = filteredOfferType.offers;
   offers.map((it, i) => {
     filteredOfferList[i].isChecked = it.title === filteredOfferList[i].title;
@@ -83,9 +83,9 @@ const createEditEventTemplate = (event, options = {}) => {
   const isOffersAvailable = filteredOfferList.length !== 0;
   const offersMarkup = createOffersMarkup(filteredOfferList);
 
-  const transferTypeListMarkup = createTypesListMarkup(EVENT_TYPES.filter((it) => it.type === `transfer`), eventType);
+  const transferTypeListMarkup = createTypesListMarkup(POINT_TYPES.filter((it) => it.type === `transfer`), pointType);
 
-  const activityTypeListMarkup = createTypesListMarkup(EVENT_TYPES.filter((it) => it.type === `activity`), eventType);
+  const activityTypeListMarkup = createTypesListMarkup(POINT_TYPES.filter((it) => it.type === `activity`), pointType);
 
   return (`<li class="trip-events__item">
       <form class="event  event--edit" action="#" method="post">
@@ -93,7 +93,7 @@ const createEditEventTemplate = (event, options = {}) => {
           <div class="event__type-wrapper">
             <label class="event__type  event__type-btn" for="event-type-toggle-1">
               <span class="visually-hidden">Choose event type</span>
-              <img class="event__type-icon" width="17" height="17" src="${eventIcon}" alt="Event type icon">
+              <img class="event__type-icon" width="17" height="17" src="${pointIcon}" alt="Event type icon">
             </label>
             <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -116,7 +116,7 @@ const createEditEventTemplate = (event, options = {}) => {
 
           <div class="event__field-group  event__field-group--destination">
             <label class="event__label  event__type-output" for="event-destination-1">
-              ${eventTitle}
+              ${pointTitle}
             </label>
             <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destinationName}" list="destination-list-1">
             <datalist id="destination-list-1">
@@ -187,24 +187,24 @@ const createEditEventTemplate = (event, options = {}) => {
 };
 
 export default class PointEdit extends AbstractSmartComponent {
-  constructor(event) {
+  constructor(point) {
     super();
-    this._event = event;
+    this._point = point;
     this._flatpickrFrom = null;
     this._flatpickrTo = null;
     this._submitHandler = null;
     this._closeBtnClickHandler = null;
     this._favouriteBtnClickHandler = null;
-    this._eventType = event.type;
-    this._destinationCity = event.destination;
+    this._pointType = point.type;
+    this._destinationCity = point.destination;
 
     this._applyFlatpickr();
     this._subscribeOnEvents();
   }
 
   getTemplate() {
-    return createEditEventTemplate(this._event, {
-      eventType: this._eventType,
+    return createEditPointTemplate(this._point, {
+      pointType: this._pointType,
       destinationCity: this._destinationCity
     });
   }
@@ -222,10 +222,10 @@ export default class PointEdit extends AbstractSmartComponent {
   }
 
   reset() {
-    const event = this._event;
+    const point = this._point;
 
-    this._eventType = event.type;
-    this._destinationCity = event.destination;
+    this._pointType = point.type;
+    this._destinationCity = point.destination;
 
     this.rerender();
   }
@@ -257,15 +257,15 @@ export default class PointEdit extends AbstractSmartComponent {
     this._flatpickrFrom = flatpickr(dateFromInputElement, {
       dateFormat: `d/m/Y H:i`,
       allowInput: true,
-      defaultDate: this._event.dateFrom || `today`
+      defaultDate: this._point.dateFrom || `today`
     });
 
     const dateToInputElement = this.getElement().querySelector(`#event-end-time-1`);
     this._flatpickrTo = flatpickr(dateToInputElement, {
       dateFormat: `d/m/Y H:i`,
       allowInput: true,
-      defaultDate: this._event.dateTo || this._event.dateFrom,
-      minDate: this._event.dateFrom,
+      defaultDate: this._point.dateTo || this._point.dateFrom,
+      minDate: this._point.dateFrom,
     });
   }
 
@@ -273,7 +273,7 @@ export default class PointEdit extends AbstractSmartComponent {
     const element = this.getElement();
 
     element.querySelector(`.event__type-list`).addEventListener(`change`, (evt) => {
-      this._eventType = evt.target.value;
+      this._pointType = evt.target.value;
       this.rerender();
     });
 
