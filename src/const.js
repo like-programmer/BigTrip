@@ -101,6 +101,12 @@ DESTINATION_CITIES.forEach((city) => DESTINATION_ITEMS.push({
 
 export const FILTER_NAMES = [`everything`, `future`, `past`];
 
+export const FilterType = {
+  EVERYTHING: `everything`,
+  FUTURE: `future`,
+  PAST: `past`,
+};
+
 export const OFFER_LIST = [
   {
     type: `check-in`,
