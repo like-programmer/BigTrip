@@ -35,6 +35,7 @@ export const generateEvent = () => {
   const randomCheckedOfferList = getRandomArray(filteredOfferList.offers);
 
   return {
+    id: String(new Date() + Math.random()),
     basePrice: getRandomIntegerNumber(50, 500),
     dateFrom: dates[0],
     dateTo: dates[1],
