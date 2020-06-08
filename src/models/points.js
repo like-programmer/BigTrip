@@ -1,16 +1,30 @@
+import {getPointsByFilter} from "../utils/filter.js";
+import {FilterType} from "../const.js";
+
 export default class Points {
   constructor() {
     this._points = [];
+    this._activeFilterType = FilterType.EVERYTHING;
+    this._filterChangeHandlers = [];
     this._dataChangeHandlers = [];
   }
 
   getPoints() {
+    return getPointsByFilter(this._points, this._activeFilterType);
+  }
+
+  getPointsAll() {
     return this._points;
   }
 
   setPoints(points) {
     this._points = points;
     this._callHandlers(this._dataChangeHandlers);
+  }
+
+  setFilter(filterType) {
+    this._activeFilterType = filterType;
+    this._callHandlers(this._filterChangeHandlers);
   }
 
   updatePoint(id, point) {

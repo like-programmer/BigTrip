@@ -44,7 +44,7 @@ export default class FilterController {
   }
 
   _filterChangeHandler(filterType) {
-    // this._pointsModel.setFilter(filterType);
+    this._pointsModel.setFilter(filterType);
     this._activeFilterType = filterType;
   }
 }
