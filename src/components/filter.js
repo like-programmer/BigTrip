@@ -6,18 +6,18 @@ const getFilterNameById = (id) => {
   return id.substring(FILTER_ID_PREFIX.length);
 };
 
-const createFilterMarkup = (filterName, isChecked) => {
+const createFilterMarkup = (filter, isChecked) => {
   return (`
   <div class="trip-filters__filter">
-      <input id="filter-${filterName}" class="trip-filters__filter-input  visually-hidden" type="radio"
-             name="trip-filter" value="${filterName}" ${isChecked ? `checked` : ``}>
-      <label class="trip-filters__filter-label" for="filter-${filterName}">${filterName}</label>
+      <input id="filter-${filter.name}" class="trip-filters__filter-input  visually-hidden" type="radio"
+             name="trip-filter" value="${filter.name}" ${isChecked ? `checked` : ``}>
+      <label class="trip-filters__filter-label" for="filter-${filter.name}">${filter.name}</label>
   </div>
   `);
 };
 
-const createFilterTemplate = (filterNames) => {
-  const filterMarkup = filterNames.map((it) => createFilterMarkup(it, it.checked)).join(`\n`);
+const createFilterTemplate = (filters) => {
+  const filterMarkup = filters.map((it) => createFilterMarkup(it, it.checked)).join(`\n`);
 
   return (`<form class="trip-filters" action="#" method="get">
         ${filterMarkup}
@@ -27,13 +27,13 @@ const createFilterTemplate = (filterNames) => {
 };
 
 export default class Filter extends AbstractComponent {
-  constructor(filterNames) {
+  constructor(filters) {
     super();
-    this._filterNames = filterNames;
+    this._filters = filters;
   }
 
   getTemplate() {
-    return createFilterTemplate(this._filterNames);
+    return createFilterTemplate(this._filters);
   }
 
   setFilterChangeHandler(handler) {

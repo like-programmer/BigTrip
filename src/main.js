@@ -1,14 +1,13 @@
 import TripInfoComponent from "./components/trip-info.js";
 import SiteMenuComponent from "./components/site-menu.js";
-import FilterComponent from "./components/filter.js";
 
+import FilterController from "./controllers/filter.js";
 import TripController from "./controllers/trip.js";
 
 import PointsModel from "./models/points.js";
 
 import {generatePoints} from "./mock/event.js";
 
-import {FILTER_NAMES} from "./const.js";
 import {RenderPosition, render} from "./utils/render.js";
 
 const POINT_COUNT = 4;
@@ -28,7 +27,8 @@ const hiddenTitle = siteHeaderControls.querySelector(`.visually-hidden`);
 siteHeaderControls.replaceChild(siteHeaderControls.querySelector(`nav`), hiddenTitle);
 siteHeaderControls.prepend(hiddenTitle);
 
-render(siteHeaderControls, new FilterComponent(FILTER_NAMES), RenderPosition.BEFOREEND);
+const filterController = new FilterController(siteHeaderControls, pointsModel);
+filterController.render();
 
 const pointsContainerElement = document.querySelector(`.trip-events`);
 const tripController = new TripController(pointsContainerElement, pointsModel);
