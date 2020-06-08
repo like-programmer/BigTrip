@@ -3,10 +3,12 @@ import PointEditComponent from "../components/point-edit.js";
 
 import {RenderPosition, render, replace, remove} from "../utils/render.js";
 
-const Mode = {
+export const Mode = {
   DEFAULT: `default`,
   EDIT: `edit`
 };
+
+export const EmptyPoint = {};
 
 export default class PointController {
   constructor(container, dataChangeHandler, viewChangeHandler) {

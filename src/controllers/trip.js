@@ -3,7 +3,7 @@ import DaysListComponent from "../components/days-list.js";
 import DayListItemComponent from "../components/day-list-item.js";
 import NoPointsComponent from "../components/no-points.js";
 
-import PointController from "./point.js";
+import PointController, {Mode as PointControllerMode, EmptyPoint} from "./point.js";
 
 import {RenderPosition, render, remove} from "../utils/render.js";
 import {getOrderedPoints} from "../utils/common.js";
@@ -149,10 +149,24 @@ export default class TripController {
   }
 
   _dataChangeHandler(pointController, oldData, newData) {
-    const isSuccess = this._pointsModel.updatePoint(oldData.id, newData);
+    if (oldData === EmptyPoint) {
+      this._creatingPoint = null;
+      if (newData === null) {
+        pointController.destroy();
+        this._updatePoints();
+      } else {
+        this._pointsModel.addPoint(newData);
+        pointController.render(newData, PointControllerMode.DEFAULT);
+      }
+    } else if (newData === null) {
+      this._pointsModel.removePoint(oldData.id);
+      this._updatePoints();
+    } else {
+      const isSuccess = this._pointsModel.updatePoint(oldData.id, newData);
 
-    if (isSuccess) {
-      pointController.render(newData);
+      if (isSuccess) {
+        pointController.render(newData, PointControllerMode.DEFAULT);
+      }
     }
   }
 
