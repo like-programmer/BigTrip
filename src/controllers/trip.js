@@ -70,9 +70,9 @@ const renderPoints = (container, points, sortType, dataChangeHandler, viewChange
 
       const pointListElement = dayListItemComponent.getElement().querySelector(`.trip-events__list`);
 
-      groupedPointByDate.map((event) => {
+      groupedPointByDate.map((point) => {
         const pointController = new PointController(pointListElement, dataChangeHandler, viewChangeHandler);
-        pointController.render(event);
+        pointController.render(point, PointControllerMode.DEFAULT);
         pointControllers.push(pointController);
       });
     });
@@ -85,9 +85,9 @@ const renderPoints = (container, points, sortType, dataChangeHandler, viewChange
 
     const pointListElement = dayListItemComponent.getElement().querySelector(`.trip-events__list`);
 
-    sortedPoints.map((event) => {
+    sortedPoints.map((point) => {
       const pointController = new PointController(pointListElement, dataChangeHandler, viewChangeHandler);
-      pointController.render(event);
+      pointController.render(point, PointControllerMode.DEFAULT);
       pointControllers.push(pointController);
     });
   }

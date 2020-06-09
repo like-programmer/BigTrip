@@ -23,9 +23,10 @@ export default class PointController {
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
   }
 
-  render(point) {
+  render(point, mode) {
     const oldPointComponent = this._pointComponent;
     const oldPointEditComponent = this._pointEditComponent;
+    this._mode = mode;
 
     this._pointComponent = new PointComponent(point);
     this._pointEditComponent = new PointEditComponent(point);
@@ -41,20 +42,24 @@ export default class PointController {
       }));
     });
 
-    this._pointEditComponent.setSubmitHandler((evt) => {
-      evt.preventDefault();
-      document.removeEventListener(`keydown`, this._escKeyDownHandler);
-      this._replaceEditToPoint();
-    });
-
     this._pointEditComponent.setCloseBtnClickHandler(() => {
       document.removeEventListener(`keydown`, this._escKeyDownHandler);
       this._replaceEditToPoint();
     });
 
+    this._pointEditComponent.setSubmitHandler((evt) => {
+      evt.preventDefault();
+      document.removeEventListener(`keydown`, this._escKeyDownHandler);
+      const data = this._pointEditComponent.getData();
+      this._dataChangeHandler(this, point, data);
+    });
+
+    this._pointEditComponent.setDeleteBtnClickHandler(() => this._dataChangeHandler(this, point, null));
+
     if (oldPointComponent && oldPointEditComponent) {
       replace(this._pointComponent, oldPointComponent);
       replace(this._pointEditComponent, oldPointEditComponent);
+      this._replaceEditToPoint();
     } else {
       render(this._container, this._pointComponent, RenderPosition.BEFOREEND);
     }
@@ -74,7 +79,9 @@ export default class PointController {
 
   _replaceEditToPoint() {
     this._pointEditComponent.reset();
-    replace(this._pointComponent, this._pointEditComponent);
+    if (document.contains(this._pointEditComponent.getElement())) {
+      replace(this._pointComponent, this._pointEditComponent);
+    }
     this._mode = Mode.DEFAULT;
   }
 

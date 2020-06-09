@@ -186,6 +186,21 @@ const createEditPointTemplate = (point, options = {}) => {
     </li>`);
 };
 
+const parseFormData = (formData) => {
+  const isFavourite = formData.get(`event-favorite`);
+  const [offerType] = OFFER_LIST.filter((it) => it.type === formData.get(`event-type`));
+
+  return {
+    basePrice: formData.get(`event-price`),
+    dateFrom: formData.get(`event-start-time`),
+    dateTo: formData.get(`event-end-time`),
+    destination: formData.get(`event-destination`),
+    isFavourite: !!isFavourite,
+    offers: offerType.offers.filter((it) => it.isChecked),
+    type: formData.get(`event-type`),
+  };
+};
+
 export default class PointEdit extends AbstractSmartComponent {
   constructor(point) {
     super();
@@ -194,6 +209,7 @@ export default class PointEdit extends AbstractSmartComponent {
     this._flatpickrTo = null;
     this._submitHandler = null;
     this._closeBtnClickHandler = null;
+    this._deleteBtnClickHandler = null;
     this._favouriteBtnClickHandler = null;
     this._pointType = point.type;
     this._destinationCity = point.destination;
@@ -209,10 +225,23 @@ export default class PointEdit extends AbstractSmartComponent {
     });
   }
 
+  removeElement() {
+    if (this._flatpickrFrom && this._flatpickrTo) {
+      this._flatpickrFrom.destroy();
+      this._flatpickrFrom = null;
+
+      this._flatpickrTo.destroy();
+      this._flatpickrTo = null;
+    }
+
+    super.removeElement();
+  }
+
   recoveryListeners() {
     this.setSubmitHandler(this._submitHandler);
     this.setCloseBtnClickHandler(this._closeBtnClickHandler);
     this.setFavouriteBtnClickHandler(this._favouriteBtnClickHandler);
+    this.setDeleteBtnClickHandler(this._deleteBtnClickHandler);
     this._subscribeOnEvents();
   }
 
@@ -230,6 +259,12 @@ export default class PointEdit extends AbstractSmartComponent {
     this.rerender();
   }
 
+  getData() {
+    const form = this.getElement().querySelector(`form`);
+    const formData = new FormData(form);
+    return parseFormData(formData);
+  }
+
   setFavouriteBtnClickHandler(handler) {
     this.getElement().querySelector(`#event-favorite-1`).addEventListener(`click`, handler);
     this._favouriteBtnClickHandler = handler;
@@ -243,6 +278,11 @@ export default class PointEdit extends AbstractSmartComponent {
   setCloseBtnClickHandler(handler) {
     this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
     this._closeBtnClickHandler = handler;
+  }
+
+  setDeleteBtnClickHandler(handler) {
+    this.getElement().querySelector(`.event__reset-btn`).addEventListener(`click`, handler);
+    this._deleteBtnClickHandler = handler;
   }
 
   _applyFlatpickr() {
