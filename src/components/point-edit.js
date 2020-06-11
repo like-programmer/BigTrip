@@ -187,17 +187,25 @@ const createEditPointTemplate = (point, options = {}) => {
 };
 
 const parseFormData = (formData) => {
+  const eventType = formData.get(`event-type`);
+  const startDate = moment(formData.get(`event-start-time`)).format(`DD/MM/YYYY HH:mm`);
+  const endDate = moment(formData.get(`event-end-time`)).format(`DD/MM/YYYY HH:mm`);
   const isFavourite = formData.get(`event-favorite`);
-  const [offerType] = OFFER_LIST.filter((it) => it.type === formData.get(`event-type`));
+  const [offerType] = OFFER_LIST.filter((it) => it.type === eventType);
+  const [destinationItem] = DESTINATION_ITEMS.filter((item) => item.name === formData.get(`event-destination`));
 
   return {
-    basePrice: formData.get(`event-price`),
-    dateFrom: formData.get(`event-start-time`),
-    dateTo: formData.get(`event-end-time`),
-    destination: formData.get(`event-destination`),
+    basePrice: parseInt(formData.get(`event-price`), 10),
+    dateFrom: new Date(startDate),
+    dateTo: new Date(endDate),
+    destination: {
+      description: destinationItem.description,
+      name: destinationItem.name,
+      pictures: destinationItem.pictures,
+    },
     isFavourite: !!isFavourite,
     offers: offerType.offers.filter((it) => it.isChecked),
-    type: formData.get(`event-type`),
+    type: eventType,
   };
 };
 
@@ -209,8 +217,8 @@ export default class PointEdit extends AbstractSmartComponent {
     this._flatpickrTo = null;
     this._submitHandler = null;
     this._closeBtnClickHandler = null;
-    this._deleteBtnClickHandler = null;
     this._favouriteBtnClickHandler = null;
+    this._deleteBtnClickHandler = null;
     this._pointType = point.type;
     this._destinationCity = point.destination;
 
@@ -275,14 +283,14 @@ export default class PointEdit extends AbstractSmartComponent {
     this._submitHandler = handler;
   }
 
-  setCloseBtnClickHandler(handler) {
-    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
-    this._closeBtnClickHandler = handler;
-  }
-
   setDeleteBtnClickHandler(handler) {
     this.getElement().querySelector(`.event__reset-btn`).addEventListener(`click`, handler);
     this._deleteBtnClickHandler = handler;
+  }
+
+  setCloseBtnClickHandler(handler) {
+    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
+    this._closeBtnClickHandler = handler;
   }
 
   _applyFlatpickr() {

@@ -70,9 +70,9 @@ const renderPoints = (container, points, sortType, dataChangeHandler, viewChange
 
       const pointListElement = dayListItemComponent.getElement().querySelector(`.trip-events__list`);
 
-      groupedPointByDate.map((point) => {
+      groupedPointByDate.map((event) => {
         const pointController = new PointController(pointListElement, dataChangeHandler, viewChangeHandler);
-        pointController.render(point, PointControllerMode.DEFAULT);
+        pointController.render(event, PointControllerMode.DEFAULT);
         pointControllers.push(pointController);
       });
     });
@@ -85,9 +85,9 @@ const renderPoints = (container, points, sortType, dataChangeHandler, viewChange
 
     const pointListElement = dayListItemComponent.getElement().querySelector(`.trip-events__list`);
 
-    sortedPoints.map((point) => {
+    sortedPoints.map((event) => {
       const pointController = new PointController(pointListElement, dataChangeHandler, viewChangeHandler);
-      pointController.render(point, PointControllerMode.DEFAULT);
+      pointController.render(event);
       pointControllers.push(pointController);
     });
   }
@@ -162,7 +162,9 @@ export default class TripController {
       this._pointsModel.removePoint(oldData.id);
       this._updatePoints();
     } else {
+      // console.log(pointController, oldData, newData);
       const isSuccess = this._pointsModel.updatePoint(oldData.id, newData);
+      // console.log(isSuccess);
 
       if (isSuccess) {
         pointController.render(newData, PointControllerMode.DEFAULT);

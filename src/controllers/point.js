@@ -52,14 +52,13 @@ export default class PointController {
       document.removeEventListener(`keydown`, this._escKeyDownHandler);
       const data = this._pointEditComponent.getData();
       this._dataChangeHandler(this, point, data);
+      this._replaceEditToPoint();
     });
-
     this._pointEditComponent.setDeleteBtnClickHandler(() => this._dataChangeHandler(this, point, null));
 
     if (oldPointComponent && oldPointEditComponent) {
       replace(this._pointComponent, oldPointComponent);
       replace(this._pointEditComponent, oldPointEditComponent);
-      this._replaceEditToPoint();
     } else {
       render(this._container, this._pointComponent, RenderPosition.BEFOREEND);
     }
