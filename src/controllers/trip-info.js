@@ -29,7 +29,7 @@ export default class TripInfoController {
     }
   }
 
-  dataChangeHandler() {
+  _dataChangeHandler() {
     this.render();
   }
 }

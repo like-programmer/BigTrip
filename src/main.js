@@ -1,6 +1,6 @@
-import TripInfoComponent from "./components/trip-info.js";
 import SiteMenuComponent from "./components/site-menu.js";
 
+import TripInfoController from "./controllers/trip-info.js";
 import FilterController from "./controllers/filter.js";
 import TripController from "./controllers/trip.js";
 
@@ -18,7 +18,8 @@ pointsModel.setPoints(points);
 
 const siteHeaderElement = document.querySelector(`.trip-main`);
 
-render(siteHeaderElement, new TripInfoComponent(points), RenderPosition.AFTERBEGIN);
+const tripInfoController = new TripInfoController(siteHeaderElement, pointsModel);
+tripInfoController.render();
 
 const siteHeaderControls = siteHeaderElement.querySelector(`.trip-main__trip-controls.trip-controls`);
 
