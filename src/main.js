@@ -1,4 +1,5 @@
 import SiteMenuComponent from "./components/site-menu.js";
+import StatisticsComponent from "./components/statistics.js";
 
 import TripInfoController from "./controllers/trip-info.js";
 import FilterController from "./controllers/filter.js";
@@ -38,6 +39,11 @@ const pointsContainerElement = document.querySelector(`.trip-events`);
 const tripController = new TripController(pointsContainerElement, pointsModel);
 tripController.render();
 
+const pageBodyElement = document.querySelector(`.page-body__page-main.page-main .page-body__container`);
+const statisticsComponent = new StatisticsComponent();
+render(pageBodyElement, statisticsComponent, RenderPosition.BEFOREEND);
+statisticsComponent.hide();
+
 const addEventBtnElement = siteHeaderElement.querySelector(`.trip-main__event-add-btn`);
 addEventBtnElement.addEventListener(`click`, () => {
   tripController.createPoint();
@@ -48,9 +54,13 @@ siteMenuComponent.setOnChange((menuItem) => {
   switch (menuItem) {
     case MenuItem.POINTS:
       siteMenuComponent.setActiveItem(MenuItem.POINTS);
+      statisticsComponent.hide();
+      tripController.show();
       break;
     case MenuItem.STATISTICTS:
       siteMenuComponent.setActiveItem(MenuItem.STATISTICTS);
+      statisticsComponent.show();
+      tripController.hide();
       break;
   }
 });

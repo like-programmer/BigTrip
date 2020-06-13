@@ -6,6 +6,8 @@ import PointController, {Mode as PointControllerMode, EmptyPoint} from "./point.
 import {RenderPosition, render, remove} from "../utils/render.js";
 import {getOrderedPoints} from "../utils/common.js";
 
+const HIDDEN_CLASS = `visually-hidden`;
+
 const getSortedPoints = (points, sortType) => {
   let sortedPoints = [];
   const pointsCopy = points.slice();
@@ -122,11 +124,15 @@ export default class TripController {
   }
 
   show() {
-    this._container.show();
+    if (this._container) {
+      this._container.classList.remove(HIDDEN_CLASS);
+    }
   }
 
   hide() {
-    this._container.hide();
+    if (this._container) {
+      this._container.classList.add(HIDDEN_CLASS);
+    }
   }
 
   render() {
