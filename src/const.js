@@ -16,21 +16,6 @@ const DESTINATION_CITIES = [`Amsterdam`, `Chamonix`, `Geneva`, `Rotterdam`, `Str
 
 export const POINT_TYPES = [
   {
-    name: `check-in`,
-    icon: `img/icons/check-in.png`,
-    type: `activity`
-  },
-  {
-    name: `sightseeing`,
-    icon: `img/icons/sightseeing.png`,
-    type: `activity`
-  },
-  {
-    name: `restaurant`,
-    icon: `img/icons/restaurant.png`,
-    type: `activity`
-  },
-  {
     name: `taxi`,
     icon: `img/icons/taxi.png`,
     type: `transfer`
@@ -64,6 +49,21 @@ export const POINT_TYPES = [
     name: `flight`,
     icon: `img/icons/flight.png`,
     type: `transfer`
+  },
+  {
+    name: `check-in`,
+    icon: `img/icons/check-in.png`,
+    type: `activity`
+  },
+  {
+    name: `sightseeing`,
+    icon: `img/icons/sightseeing.png`,
+    type: `activity`
+  },
+  {
+    name: `restaurant`,
+    icon: `img/icons/restaurant.png`,
+    type: `activity`
   }
 ];
 
@@ -99,12 +99,16 @@ DESTINATION_CITIES.forEach((city) => DESTINATION_ITEMS.push({
   pictures: getPhotosArray()
 }));
 
-export const FILTER_NAMES = [`everything`, `future`, `past`];
-
 export const FilterType = {
   EVERYTHING: `everything`,
   FUTURE: `future`,
   PAST: `past`,
+};
+
+export const MenuItem = {
+  NEW_EVENT: `btn__add-event`,
+  POINTS: `btn__table`,
+  STATISTICTS: `btn__statistics`,
 };
 
 export const OFFER_LIST = [

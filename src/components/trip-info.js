@@ -15,10 +15,12 @@ const createTripName = (points) => {
 
 const createTripLimits = (points, monthNames) => {
   const pointsLastPoint = points.length - 1;
-  const startMonthName = monthNames[points[0].dateFrom.getMonth()];
-  const endMonthName = monthNames[points[pointsLastPoint].dateTo.getMonth()];
+  const startDate = new Date(points[0].dateFrom);
+  const endDate = new Date(points[pointsLastPoint].dateTo);
+  const startMonthName = monthNames[startDate.getMonth()];
+  const endMonthName = monthNames[endDate.getMonth()];
 
-  return (`${points[0].dateFrom.getDate()} ${startMonthName} &mdash; ${points[pointsLastPoint].dateTo.getDate()} ${endMonthName}`);
+  return (`${startDate.getDate()} ${startMonthName} &mdash; ${endDate.getDate()} ${endMonthName}`);
 };
 
 const calculateTotalPrice = (points) => {

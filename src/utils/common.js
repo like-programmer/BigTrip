@@ -20,7 +20,12 @@ export const createTripTypeTitle = (pointTypes, pointName) => {
 
 export const getOrderedPoints = (points) => {
   const pointArray = points.slice();
-  return pointArray.sort((first, second) => first.dateFrom - second.dateFrom);
+  return pointArray.sort((first, second) => {
+    const dateA = new Date(first.dateFrom);
+    const dateB = new Date(second.dateFrom);
+
+    return dateA - dateB;
+  });
 };
 
 export const getRandomIntegerNumber = (min, max) => {
@@ -41,9 +46,11 @@ export const getRandomString = (array) => {
 };
 
 export const isPastPoint = (pointDate, date) => {
-  return pointDate < date;
+  const startDate = new Date(pointDate);
+  return startDate < date;
 };
 
 export const isFuturePoint = (pointDate, date) => {
-  return pointDate > date;
+  const endDate = new Date(pointDate);
+  return endDate > date;
 };

@@ -68,13 +68,13 @@ const createPointTemplate = (point) => {
 };
 
 export default class Point extends AbstractComponent {
-  constructor(event) {
+  constructor(point) {
     super();
-    this._event = event;
+    this._point = point;
   }
 
   getTemplate() {
-    return createPointTemplate(this._event);
+    return createPointTemplate(this._point);
   }
 
   setEditBtnClickHandler(handler) {

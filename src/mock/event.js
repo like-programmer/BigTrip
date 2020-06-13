@@ -37,8 +37,8 @@ export const generatePoint = () => {
   return {
     id: String(new Date() + Math.random()),
     basePrice: getRandomIntegerNumber(50, 500),
-    dateFrom: dates[0],
-    dateTo: dates[1],
+    dateFrom: dates[0].toISOString(),
+    dateTo: dates[1].toISOString(),
     destination: getRandomArrayItem(DESTINATION_ITEMS),
     isFavourite: Math.random() > 0.5,
     offers: randomCheckedOfferList,

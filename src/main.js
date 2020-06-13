@@ -10,6 +10,8 @@ import {generatePoints} from "./mock/event.js";
 
 import {RenderPosition, render} from "./utils/render.js";
 
+import {MenuItem} from "./const.js";
+
 const POINT_COUNT = 4;
 const points = generatePoints(POINT_COUNT);
 
@@ -23,7 +25,8 @@ tripInfoController.render();
 
 const siteHeaderControls = siteHeaderElement.querySelector(`.trip-main__trip-controls.trip-controls`);
 
-render(siteHeaderControls, new SiteMenuComponent(), RenderPosition.AFTERBEGIN);
+const siteMenuComponent = new SiteMenuComponent();
+render(siteHeaderControls, siteMenuComponent, RenderPosition.AFTERBEGIN);
 const hiddenTitle = siteHeaderControls.querySelector(`.visually-hidden`);
 siteHeaderControls.replaceChild(siteHeaderControls.querySelector(`nav`), hiddenTitle);
 siteHeaderControls.prepend(hiddenTitle);
@@ -34,4 +37,21 @@ filterController.render();
 const pointsContainerElement = document.querySelector(`.trip-events`);
 const tripController = new TripController(pointsContainerElement, pointsModel);
 tripController.render();
+
+const addEventBtnElement = siteHeaderElement.querySelector(`.trip-main__event-add-btn`);
+addEventBtnElement.addEventListener(`click`, () => {
+  tripController.createPoint();
+  addEventBtnElement.setAttribute(`disabled`, `disabled`);
+});
+
+siteMenuComponent.setOnChange((menuItem) => {
+  switch (menuItem) {
+    case MenuItem.POINTS:
+      siteMenuComponent.setActiveItem(MenuItem.POINTS);
+      break;
+    case MenuItem.STATISTICTS:
+      siteMenuComponent.setActiveItem(MenuItem.STATISTICTS);
+      break;
+  }
+});
 

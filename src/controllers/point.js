@@ -1,14 +1,31 @@
 import PointComponent from "../components/point.js";
 import PointEditComponent from "../components/point-edit.js";
 
+import {OFFER_LIST, POINT_TYPES} from "../const";
+
 import {RenderPosition, render, replace, remove} from "../utils/render.js";
 
 export const Mode = {
+  ADDING: `adding`,
   DEFAULT: `default`,
   EDIT: `edit`
 };
 
-export const EmptyPoint = {};
+const [pointTypeOffers] = OFFER_LIST.filter((it) => it.type === POINT_TYPES[0].name);
+
+export const EmptyPoint = {
+  basePrice: ``,
+  dateFrom: new Date(),
+  dateTo: new Date(),
+  destination: {
+    description: ``,
+    name: ``,
+    pictures: [],
+  },
+  offers: pointTypeOffers.offers,
+  type: POINT_TYPES[0].name,
+  isAdding: true,
+};
 
 export default class PointController {
   constructor(container, dataChangeHandler, viewChangeHandler) {
@@ -31,36 +48,53 @@ export default class PointController {
     this._pointComponent = new PointComponent(point);
     this._pointEditComponent = new PointEditComponent(point);
 
+
     this._pointComponent.setEditBtnClickHandler(() => {
       this._replacePointToEdit();
       document.addEventListener(`keydown`, this._escKeyDownHandler);
     });
 
-    this._pointEditComponent.setFavouriteBtnClickHandler(() => {
-      this._dataChangeHandler(this, point, Object.assign({}, point, {
-        isFavourite: !point.isFavourite,
-      }));
-    });
+    if (!point.isAdding) {
+      this._pointEditComponent.setFavouriteBtnClickHandler(() => {
+        this._dataChangeHandler(this, point, Object.assign({}, point, {
+          isFavourite: !point.isFavourite,
+        }));
+      });
 
-    this._pointEditComponent.setCloseBtnClickHandler(() => {
-      document.removeEventListener(`keydown`, this._escKeyDownHandler);
-      this._replaceEditToPoint();
-    });
+      this._pointEditComponent.setCloseBtnClickHandler(() => {
+        document.removeEventListener(`keydown`, this._escKeyDownHandler);
+        this._replaceEditToPoint();
+      });
+    }
 
     this._pointEditComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
       document.removeEventListener(`keydown`, this._escKeyDownHandler);
       const data = this._pointEditComponent.getData();
       this._dataChangeHandler(this, point, data);
-      this._replaceEditToPoint();
     });
+
     this._pointEditComponent.setDeleteBtnClickHandler(() => this._dataChangeHandler(this, point, null));
 
-    if (oldPointComponent && oldPointEditComponent) {
-      replace(this._pointComponent, oldPointComponent);
-      replace(this._pointEditComponent, oldPointEditComponent);
-    } else {
-      render(this._container, this._pointComponent, RenderPosition.BEFOREEND);
+    switch (mode) {
+      case Mode.DEFAULT:
+        if (oldPointComponent && oldPointEditComponent) {
+          replace(this._pointComponent, oldPointComponent);
+          replace(this._pointEditComponent, oldPointEditComponent);
+          this._replaceEditToPoint();
+        } else {
+          render(this._container, this._pointComponent, RenderPosition.BEFOREEND);
+        }
+        break;
+      case Mode.ADDING:
+        if (oldPointComponent && oldPointEditComponent) {
+          remove(oldPointComponent);
+          remove(oldPointEditComponent);
+        }
+        document.addEventListener(`keydown`, this._escKeyDownHandler);
+
+        render(this._container, this._pointEditComponent, RenderPosition.AFTERBEGIN);
+        break;
     }
   }
 
@@ -93,6 +127,9 @@ export default class PointController {
   _escKeyDownHandler(evt) {
     const isEsc = evt.key === `Escape` || evt.key === `Esc`;
     if (isEsc) {
+      if (this._mode === Mode.ADDING) {
+        this._dataChangeHandler(this, EmptyPoint, null);
+      }
       this._replaceEditToPoint();
       document.removeEventListener(`keydown`, this._escKeyDownHandler);
     }
