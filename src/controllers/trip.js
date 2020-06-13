@@ -121,6 +121,14 @@ export default class TripController {
     this._pointsModel.setFilterChangeHandler(this._filterChangeHandler);
   }
 
+  show() {
+    this._container.show();
+  }
+
+  hide() {
+    this._container.hide();
+  }
+
   render() {
     const points = this._pointsModel.getPoints();
 
