@@ -5,6 +5,7 @@ import NoPointsComponent from "../components/no-points.js";
 import PointController, {Mode as PointControllerMode, EmptyPoint} from "./point.js";
 import {RenderPosition, render, remove} from "../utils/render.js";
 import {getOrderedPoints} from "../utils/common.js";
+import moment from "moment";
 
 const HIDDEN_CLASS = `visually-hidden`;
 
@@ -61,7 +62,7 @@ const renderPoints = (container, points, sortType, dataChangeHandler, viewChange
     };
 
     const pointDatesFromAsString = orderedByDateFromPoints.map((it) => {
-      return it.dateFrom.split(`T`)[0];
+      return moment(it.dateFrom).format(`YYYY-MM-DD`);
     });
 
     const uniquePointDatesFrom = getuniqueArray(pointDatesFromAsString);
@@ -72,7 +73,7 @@ const renderPoints = (container, points, sortType, dataChangeHandler, viewChange
       render(container, dayListItemComponent, RenderPosition.BEFOREEND);
 
       const groupedPointByDate = orderedByDateFromPoints.filter((point) => {
-        return date === point.dateFrom.split(`T`)[0];
+        return date === moment(point.dateFrom).format(`YYYY-MM-DD`);
       });
 
       const pointListElement = dayListItemComponent.getElement().querySelector(`.trip-events__list`);

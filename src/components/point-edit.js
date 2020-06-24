@@ -57,8 +57,8 @@ const createPhotoTapeMarkup = (photos) => {
 };
 
 const createEditPointTemplate = (point, options = {}) => {
-  const {basePrice, dateFrom, dateTo, isFavourite, offers, isAdding} = point;
-  const {pointType, destinationCity = {name: ``, description: ``, pictures: []}} = options;
+  const {dateFrom, isFavourite, offers, isAdding} = point;
+  const {basePrice, dateTo, destinationCity = {name: ``, description: ``, pictures: []}, pointType} = options;
 
   const [pointIcon] = POINT_TYPES.filter((it) => it.name === pointType).map((it) => it.icon);
 
@@ -227,8 +227,11 @@ export default class PointEdit extends AbstractSmartComponent {
     this._closeBtnClickHandler = null;
     this._favouriteBtnClickHandler = null;
     this._deleteBtnClickHandler = null;
-    this._pointType = point.type;
+    this._basePrice = point.basePrice;
+    this._dateFrom = point.dateFrom;
+    this._dateTo = point.dateTo;
     this._destinationCity = point.destination;
+    this._pointType = point.type;
 
     this._applyFlatpickr();
     this._subscribeOnEvents();
@@ -236,8 +239,11 @@ export default class PointEdit extends AbstractSmartComponent {
 
   getTemplate() {
     return createEditPointTemplate(this._point, {
+      basePrice: this._basePrice,
+      dateFrom: this._dateFrom,
+      dateTo: this._dateTo,
+      destinationCity: this._destinationCity,
       pointType: this._pointType,
-      destinationCity: this._destinationCity
     });
   }
 
@@ -271,8 +277,11 @@ export default class PointEdit extends AbstractSmartComponent {
   reset() {
     const point = this._point;
 
-    this._pointType = point.type;
+    this._basePrice = point.basePrice;
+    this._dateFrom = point.dateFrom;
+    this._dateTo = point.dateTo;
     this._destinationCity = point.destination;
+    this._pointType = point.type;
 
     this.rerender();
   }
@@ -356,25 +365,36 @@ export default class PointEdit extends AbstractSmartComponent {
       this.rerender();
     });
 
-    // const dateFromInputElement = this.getElement().querySelector(`#event-start-time-1`);
-    // const dateToInputElement = this.getElement().querySelector(`#event-end-time-1`);
-    // dateToInputElement.addEventListener(`change`, () => {
-    //   this.rerender();
-    // });
-
     const destinationElement = element.querySelector(`#event-destination-1`);
-    const saveBtn = this.getElement().querySelector(`.event__save-btn`);
 
     destinationElement.addEventListener(`change`, (evt) => {
-      [this._destinationCity] = DESTINATION_ITEMS.filter((item) => item.name === evt.target.value);
+      const [choosenCity] = DESTINATION_ITEMS.filter((item) => item.name === evt.target.value);
 
-      saveBtn.disabled = evt.target.value.length < 1;
+      this._destinationCity = choosenCity ? choosenCity : {description: ``, name: ``, pictures: []};
 
       this.rerender();
+
+      const saveBtn = this.getElement().querySelector(`.event__save-btn`);
+      saveBtn.disabled = this._destinationCity.name === `` || this._basePrice.length < 1;
+    });
+
+    const dateFromInputElement = this.getElement().querySelector(`#event-start-time-1`);
+    dateFromInputElement.addEventListener(`change`, (evt) => {
+      this._dateFrom = new Date(moment(evt.target.value, `DD/MM/YYYY HH:mm`)).toISOString();
+      this._flatpickrTo.config.minDate = this._dateFrom;
+    });
+
+    const dateToInputElement = this.getElement().querySelector(`#event-end-time-1`);
+    dateToInputElement.addEventListener(`change`, (evt) => {
+      this._dateTo = new Date(moment(evt.target.value, `DD/MM/YYYY HH:mm`)).toISOString();
+      this._flatpickrFrom.config.maxDate = this._dateTo;
     });
 
     element.querySelector(`#event-price-1`).addEventListener(`input`, (evt) => {
-      saveBtn.disabled = evt.target.value.length < 1;
+      this._basePrice = evt.target.value;
+
+      const saveBtn = this.getElement().querySelector(`.event__save-btn`);
+      saveBtn.disabled = this._destinationCity.name === `` || this._basePrice.length < 1;
     });
   }
 }

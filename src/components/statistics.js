@@ -19,7 +19,7 @@ const createStatisticsTemplate = () => {
         </section>`);
 };
 
-export default class Statictics extends AbstractSmartComponent {
+export default class Statistics extends AbstractSmartComponent {
   constructor() {
     super();
   }
@@ -28,7 +28,7 @@ export default class Statictics extends AbstractSmartComponent {
     return createStatisticsTemplate();
   }
 
-  show() {
-    super.show();
-  }
+  // show() {
+  //   super.show();
+  // }
 }
