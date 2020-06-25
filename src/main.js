@@ -5,16 +5,13 @@ import TripInfoController from "./controllers/trip-info.js";
 import FilterController from "./controllers/filter.js";
 import TripController from "./controllers/trip.js";
 import PointsModel from "./models/points.js";
-// import {generatePoints} from "./mock/event.js";
 import {RenderPosition, render} from "./utils/render.js";
 import {MenuItem} from "./const.js";
 
-// const POINT_COUNT = 4;
-// const points = generatePoints(POINT_COUNT);
-const api = new API();
-const pointsModel = new PointsModel();
+const AUTHORIZATION = `Basic eo0w590ik29889a`;
 
-// pointsModel.setPoints(points);
+const api = new API(AUTHORIZATION);
+const pointsModel = new PointsModel();
 
 const siteHeaderElement = document.querySelector(`.trip-main`);
 const siteHeaderControls = siteHeaderElement.querySelector(`.trip-main__trip-controls.trip-controls`);
