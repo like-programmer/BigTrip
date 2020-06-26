@@ -263,6 +263,7 @@ export default class PointEdit extends AbstractSmartComponent {
       this.setCloseBtnClickHandler(this._closeBtnClickHandler);
       this.setFavouriteBtnClickHandler(this._favouriteBtnClickHandler);
     }
+
     this.setSubmitHandler(this._submitHandler);
     this.setDeleteBtnClickHandler(this._deleteBtnClickHandler);
     this._subscribeOnEvents();
