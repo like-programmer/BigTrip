@@ -1,10 +1,5 @@
 import AbstractComponent from "./abstract-component.js";
-
-export const SortType = {
-  EVENT: `event`,
-  TIME: `time`,
-  PRICE: `price`
-};
+import {SortType} from "../const.js";
 
 const createSortTemplate = () => {
   return (`<form class="trip-events__trip-sort  trip-sort" action="#" method="get">

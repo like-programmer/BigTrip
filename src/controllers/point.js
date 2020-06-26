@@ -1,17 +1,7 @@
 import PointComponent from "../components/point.js";
 import PointEditComponent from "../components/point-edit.js";
-
-import {OFFER_LIST, POINT_TYPES} from "../const";
-
-import {RenderPosition, render, replace, remove} from "../utils/render.js";
-
-export const Mode = {
-  ADDING: `adding`,
-  DEFAULT: `default`,
-  EDIT: `edit`
-};
-
-const [pointTypeOffers] = OFFER_LIST.filter((it) => it.type === POINT_TYPES[0].name);
+import {POINT_TYPES, Mode, RenderPosition} from "../const";
+import {render, replace, remove} from "../utils/render.js";
 
 export const EmptyPoint = {
   basePrice: ``,
@@ -22,16 +12,18 @@ export const EmptyPoint = {
     name: ``,
     pictures: [],
   },
-  offers: pointTypeOffers.offers,
+  offers: [],
   type: POINT_TYPES[0].name,
   isAdding: true,
 };
 
 export default class PointController {
-  constructor(container, dataChangeHandler, viewChangeHandler) {
+  constructor(container, dataChangeHandler, viewChangeHandler, offers, destinations) {
     this._container = container;
     this._dataChangeHandler = dataChangeHandler;
     this._viewChangeHandler = viewChangeHandler;
+    this._offers = offers;
+    this._destinations = destinations;
 
     this._mode = Mode.DEFAULT;
     this._pointComponent = null;
@@ -46,7 +38,7 @@ export default class PointController {
     this._mode = mode;
 
     this._pointComponent = new PointComponent(point);
-    this._pointEditComponent = new PointEditComponent(point);
+    this._pointEditComponent = new PointEditComponent(point, this._offers, this._destinations);
 
 
     this._pointComponent.setEditBtnClickHandler(() => {

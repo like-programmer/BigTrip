@@ -27,8 +27,4 @@ export default class Statistics extends AbstractSmartComponent {
   getTemplate() {
     return createStatisticsTemplate();
   }
-
-  // show() {
-  //   super.show();
-  // }
 }

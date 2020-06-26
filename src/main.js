@@ -5,13 +5,16 @@ import TripInfoController from "./controllers/trip-info.js";
 import FilterController from "./controllers/filter.js";
 import TripController from "./controllers/trip.js";
 import PointsModel from "./models/points.js";
-import {RenderPosition, render} from "./utils/render.js";
-import {MenuItem} from "./const.js";
-
-const AUTHORIZATION = `Basic eo0w590ik29889a`;
+import OffersModel from "./models/offers.js";
+import DestinationsModel from "./models/destinations.js";
+import {render} from "./utils/render.js";
+import {MenuItem, RenderPosition, AUTHORIZATION} from "./const.js";
 
 const api = new API(AUTHORIZATION);
+
 const pointsModel = new PointsModel();
+const offersModel = new OffersModel();
+const destinationsModel = new DestinationsModel();
 
 const siteHeaderElement = document.querySelector(`.trip-main`);
 const siteHeaderControls = siteHeaderElement.querySelector(`.trip-main__trip-controls.trip-controls`);
@@ -24,14 +27,11 @@ const tripInfoController = new TripInfoController(siteHeaderElement, pointsModel
 const siteMenuComponent = new SiteMenuComponent();
 const filterController = new FilterController(siteHeaderControls, pointsModel);
 const statisticsComponent = new StatisticsComponent();
-const tripController = new TripController(pointsContainerElement, pointsModel);
+const tripController = new TripController(pointsContainerElement, pointsModel, offersModel, destinationsModel);
 
 tripInfoController.render();
-render(siteHeaderControls, siteMenuComponent, RenderPosition.AFTERBEGIN);
-siteHeaderControls.replaceChild(siteHeaderControls.querySelector(`nav`), hiddenTitle);
-siteHeaderControls.prepend(hiddenTitle);
+render(hiddenTitle, siteMenuComponent, RenderPosition.AFTEREND);
 filterController.render();
-// tripController.render();
 render(pageBodyElement, statisticsComponent, RenderPosition.BEFOREEND);
 statisticsComponent.hide();
 
@@ -55,9 +55,10 @@ siteMenuComponent.setOnChange((menuItem) => {
   }
 });
 
-api.getPoints()
-  .then((points) => {
-    pointsModel.setPoints(points);
-    tripController.render();
-  });
-
+api.getDestinations()
+  .then((destinations) => destinationsModel.setDestinations(destinations))
+  .then(() => api.getOffers())
+  .then((offers) => offersModel.setOffers(offers))
+  .then(() => api.getPoints())
+  .then((points) => pointsModel.setPoints(points))
+  .then(() => tripController.render());
