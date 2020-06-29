@@ -27,7 +27,7 @@ const tripInfoController = new TripInfoController(siteHeaderElement, pointsModel
 const siteMenuComponent = new SiteMenuComponent();
 const filterController = new FilterController(siteHeaderControls, pointsModel);
 const statisticsComponent = new StatisticsComponent();
-const tripController = new TripController(pointsContainerElement, pointsModel, offersModel, destinationsModel);
+const tripController = new TripController(pointsContainerElement, pointsModel, offersModel, destinationsModel, api);
 
 tripInfoController.render();
 render(hiddenTitle, siteMenuComponent, RenderPosition.AFTEREND);

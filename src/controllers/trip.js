@@ -103,11 +103,12 @@ const renderPoints = (container, points, sortType, dataChangeHandler, viewChange
 };
 
 export default class TripController {
-  constructor(container, pointsModel, offersModel, destinationsModel) {
+  constructor(container, pointsModel, offersModel, destinationsModel, api) {
     this._container = container;
     this._pointsModel = pointsModel;
     this._offersModel = offersModel;
     this._destinationsModel = destinationsModel;
+    this._api = api;
     this._pointControllers = [];
     this._dayComponents = [];
     this._sortComponent = new SortComponent();
@@ -199,11 +200,15 @@ export default class TripController {
       this._pointsModel.removePoint(oldData.id);
       this._updatePoints();
     } else {
-      const isSuccess = this._pointsModel.updatePoint(oldData.id, newData);
+      this._api.updatePoint(oldData.id, newData)
+        .then((pointModel) => {
+          const isSuccess = this._pointsModel.updatePoint(oldData.id, pointModel);
 
-      if (isSuccess) {
-        this._updatePoints();
-      }
+          if (isSuccess) {
+            pointController.render(pointModel, PointControllerMode.DEFAULT);
+            this._updatePoints();
+          }
+        });
     }
   }
 
