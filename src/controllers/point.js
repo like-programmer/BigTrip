@@ -1,7 +1,9 @@
 import PointComponent from "../components/point.js";
 import PointEditComponent from "../components/point-edit.js";
+import PointModel from "../models/point.js";
 import {POINT_TYPES, Mode, RenderPosition} from "../const";
 import {render, replace, remove} from "../utils/render.js";
+import moment from "moment";
 
 export const EmptyPoint = {
   basePrice: ``,
@@ -15,6 +17,40 @@ export const EmptyPoint = {
   offers: [],
   type: POINT_TYPES[0].name,
   isAdding: true,
+};
+
+const parseFormData = (formData, allOffers, allDestinations) => {
+  const eventType = formData.get(`event-type`);
+  const startDate = moment(formData.get(`event-start-time`), `DD/MM/YYYY HH:mm`).toISOString();
+  const endDate = moment(formData.get(`event-end-time`), `DD/MM/YYYY HH:mm`).toISOString();
+  const isFavourite = formData.get(`event-favorite`);
+
+  const offerLabelElements = document.querySelectorAll(`.event__offer-label`);
+  let offers = [];
+  offerLabelElements.forEach((element) => {
+    if (element.control.checked) {
+      offers.push({
+        price: parseInt(element.lastElementChild.textContent, 10),
+        title: element.firstElementChild.textContent,
+      });
+    }
+  });
+
+  const [destinationItem] = allDestinations.filter((item) => item.name === formData.get(`event-destination`));
+
+  return new PointModel({
+    "base_price": parseInt(formData.get(`event-price`), 10),
+    "date_from": startDate,
+    "date_to": endDate,
+    "destination": {
+      "description": destinationItem.description,
+      "name": destinationItem.name,
+      "pictures": destinationItem.pictures,
+    },
+    "is_favourite": !!isFavourite,
+    "offers": offers,
+    "type": eventType,
+  });
 };
 
 export default class PointController {
@@ -48,9 +84,9 @@ export default class PointController {
 
     if (!point.isAdding) {
       this._pointEditComponent.setFavouriteBtnClickHandler(() => {
-        this._dataChangeHandler(this, point, Object.assign({}, point, {
-          isFavourite: !point.isFavourite,
-        }));
+        const newPoint = PointModel.clone(point);
+        newPoint.isFavourite = !newPoint.isFavourite;
+        this._dataChangeHandler(this, point, newPoint);
       });
 
       this._pointEditComponent.setCloseBtnClickHandler(() => {
@@ -62,7 +98,8 @@ export default class PointController {
     this._pointEditComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
       document.removeEventListener(`keydown`, this._escKeyDownHandler);
-      const data = this._pointEditComponent.getData();
+      const formData = this._pointEditComponent.getData();
+      const data = parseFormData(formData, this._offers, this._destinations);
       this._dataChangeHandler(this, point, data);
     });
 
