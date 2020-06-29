@@ -98,6 +98,9 @@ export const RenderPosition = {
   BEFOREBEGIN: `beforebegin`,
   BEFOREEND: `beforeend`
 };
+
 export const AUTHORIZATION = `Basic eo0w590ik29889a`;
+
+export const END_POINT = `https://11.ecmascript.pages.academy/big-trip`;
 
 export const HIDDEN_CLASS = `visually-hidden`;

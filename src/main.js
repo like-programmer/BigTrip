@@ -8,9 +8,9 @@ import PointsModel from "./models/points.js";
 import OffersModel from "./models/offers.js";
 import DestinationsModel from "./models/destinations.js";
 import {render} from "./utils/render.js";
-import {MenuItem, RenderPosition, AUTHORIZATION} from "./const.js";
+import {MenuItem, RenderPosition, AUTHORIZATION, END_POINT} from "./const.js";
 
-const api = new API(AUTHORIZATION);
+const api = new API(END_POINT, AUTHORIZATION);
 
 const pointsModel = new PointsModel();
 const offersModel = new OffersModel();
