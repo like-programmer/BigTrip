@@ -190,25 +190,27 @@ export default class TripController {
       this._creatingPoint = null;
       if (newData === null) {
         pointController.destroy();
-        this._updatePoints();
       } else {
-        this._pointsModel.addPoint(newData);
-        pointController.destroy();
-        this._updatePoints();
+        this._api.createPoint(newData)
+          .then((pointModel) => {
+            this._pointsModel.addPoint(pointModel);
+            pointController.destroy();
+            this._updatePoints();
+          });
       }
     } else if (newData === null) {
       this._pointsModel.removePoint(oldData.id);
       this._updatePoints();
     } else {
-      this._api.updatePoint(oldData.id, newData);
-      //   .then((pointModel) => {
-      //     const isSuccess = this._pointsModel.updatePoint(oldData.id, pointModel);
+      this._api.updatePoint(oldData.id, newData)
+        .then((pointModel) => {
+          const isSuccess = this._pointsModel.updatePoint(oldData.id, pointModel);
 
-          // if (isSuccess) {
-          //   pointController.render(pointModel, PointControllerMode.DEFAULT);
-          //   this._updatePoints();
-          // }
-        // });
+          if (isSuccess) {
+            pointController.render(pointModel, PointControllerMode.DEFAULT);
+            this._updatePoints();
+          }
+        });
     }
   }
 
