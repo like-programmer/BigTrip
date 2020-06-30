@@ -111,3 +111,5 @@ export const Method = {
 };
 
 export const HIDDEN_CLASS = `visually-hidden`;
+
+export const SHAKE_ANIMATION_TIMEOUT = 600;

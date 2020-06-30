@@ -1,7 +1,7 @@
 import PointComponent from "../components/point.js";
 import PointEditComponent from "../components/point-edit.js";
 import PointModel from "../models/point.js";
-import {POINT_TYPES, Mode, RenderPosition} from "../const";
+import {POINT_TYPES, Mode, RenderPosition, SHAKE_ANIMATION_TIMEOUT} from "../const";
 import {render, replace, remove} from "../utils/render.js";
 import moment from "moment";
 
@@ -137,6 +137,16 @@ export default class PointController {
     remove(this._pointComponent);
     remove(this._pointEditComponent);
     document.removeEventListener(`keydown`, this._escKeyDownHandler);
+  }
+
+  shake() {
+    this._pointEditComponent.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+    this._pointComponent.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+
+    setTimeout(() => {
+      this._pointEditComponent.getElement().style.animation = ``;
+      this._pointComponent.getElement().style.animation = ``;
+    }, SHAKE_ANIMATION_TIMEOUT);
   }
 
   _replaceEditToPoint() {
