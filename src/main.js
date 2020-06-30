@@ -55,10 +55,14 @@ siteMenuComponent.setOnChange((menuItem) => {
   }
 });
 
+
 api.getDestinations()
   .then((destinations) => destinationsModel.setDestinations(destinations))
   .then(() => api.getOffers())
   .then((offers) => offersModel.setOffers(offers))
   .then(() => api.getPoints())
   .then((points) => pointsModel.setPoints(points))
-  .then(() => tripController.render());
+  .then(() => {
+    pointsContainerElement.removeChild(pointsContainerElement.querySelector(`.trip-events__msg`));
+    tripController.render();
+  });
