@@ -23,15 +23,15 @@ const parseFormData = (formData, allOffers, allDestinations) => {
   const eventType = formData.get(`event-type`);
   const startDate = moment(formData.get(`event-start-time`), `DD/MM/YYYY HH:mm`).toISOString();
   const endDate = moment(formData.get(`event-end-time`), `DD/MM/YYYY HH:mm`).toISOString();
-  const isFavourite = formData.get(`event-favorite`);
+  const isFavorite = formData.get(`event-favorite`);
 
   const offerLabelElements = document.querySelectorAll(`.event__offer-label`);
   let offers = [];
   offerLabelElements.forEach((element) => {
     if (element.control.checked) {
       offers.push({
-        price: parseInt(element.lastElementChild.textContent, 10),
         title: element.firstElementChild.textContent,
+        price: parseInt(element.lastElementChild.textContent, 10),
       });
     }
   });
@@ -47,7 +47,7 @@ const parseFormData = (formData, allOffers, allDestinations) => {
       "name": destinationItem.name,
       "pictures": destinationItem.pictures,
     },
-    "is_favourite": !!isFavourite,
+    "is_favorite": !!isFavorite,
     "offers": offers,
     "type": eventType,
   });
@@ -72,7 +72,6 @@ export default class PointController {
     const oldPointComponent = this._pointComponent;
     const oldPointEditComponent = this._pointEditComponent;
     this._mode = mode;
-
     this._pointComponent = new PointComponent(point);
     this._pointEditComponent = new PointEditComponent(point, this._offers, this._destinations);
 
@@ -83,9 +82,9 @@ export default class PointController {
     });
 
     if (!point.isAdding) {
-      this._pointEditComponent.setFavouriteBtnClickHandler(() => {
+      this._pointEditComponent.setFavoriteBtnClickHandler(() => {
         const newPoint = PointModel.clone(point);
-        newPoint.isFavourite = !newPoint.isFavourite;
+        newPoint.isFavorite = !newPoint.isFavorite;
         this._dataChangeHandler(this, point, newPoint);
       });
 
@@ -100,6 +99,7 @@ export default class PointController {
       document.removeEventListener(`keydown`, this._escKeyDownHandler);
       const formData = this._pointEditComponent.getData();
       const data = parseFormData(formData, this._offers, this._destinations);
+      data.id = point.id;
       this._dataChangeHandler(this, point, data);
     });
 

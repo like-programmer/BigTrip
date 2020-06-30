@@ -101,6 +101,13 @@ export const RenderPosition = {
 
 export const AUTHORIZATION = `Basic eo0w590ik29889a`;
 
-export const END_POINT = `https://11.ecmascript.pages.academy/big-trip`;
+export const END_POINT = `https://11.ecmascript.pages.academy/big-trip/`;
+
+export const Method = {
+  GET: `GET`,
+  POST: `POST`,
+  PUT: `PUT`,
+  DELETE: `DELETE`
+};
 
 export const HIDDEN_CLASS = `visually-hidden`;

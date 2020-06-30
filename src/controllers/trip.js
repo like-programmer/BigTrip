@@ -159,6 +159,7 @@ export default class TripController {
       return;
     }
 
+    this._updatePoints();
     this._creatingPoint = new PointController(this._container, this._dataChangeHandler, this._viewChangeHandler, this._offersModel.getOffers(), this._destinationsModel.getDestinations());
     this._creatingPoint.render(EmptyPoint, PointControllerMode.ADDING);
     this._container.removeChild(this._sortComponent.getElement());

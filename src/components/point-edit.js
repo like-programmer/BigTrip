@@ -57,7 +57,7 @@ const createPhotoTapeMarkup = (photos) => {
 };
 
 const createEditPointTemplate = (point, options = {}) => {
-  const {dateFrom, isFavourite, offers, isAdding} = point;
+  const {dateFrom, isFavorite, offers, isAdding} = point;
   const {basePrice, dateTo, destinationCity = {name: ``, description: ``, pictures: []}, pointType, allOffers, allDestinations} = options;
 
   const [pointIcon] = POINT_TYPES.filter((it) => it.name === pointType).map((it) => it.icon);
@@ -145,7 +145,7 @@ const createEditPointTemplate = (point, options = {}) => {
           <button class="event__reset-btn" type="reset">${isAdding ? `Cancel` : `Delete`}</button>
 
           ${isAdding ? `` : `
-          <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${isFavourite ? `checked` : ``}>
+          <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${isFavorite ? `checked` : ``}>
           <label class="event__favorite-btn" for="event-favorite-1">
             <span class="visually-hidden">Add to favorite</span>
             <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
@@ -199,7 +199,7 @@ export default class PointEdit extends AbstractSmartComponent {
     this._flatpickrTo = null;
     this._submitHandler = null;
     this._closeBtnClickHandler = null;
-    this._favouriteBtnClickHandler = null;
+    this._favoriteBtnClickHandler = null;
     this._deleteBtnClickHandler = null;
     this._basePrice = point.basePrice;
     this._dateFrom = point.dateFrom;
@@ -237,7 +237,7 @@ export default class PointEdit extends AbstractSmartComponent {
   recoveryListeners() {
     if (!this._point.isAdding) {
       this.setCloseBtnClickHandler(this._closeBtnClickHandler);
-      this.setFavouriteBtnClickHandler(this._favouriteBtnClickHandler);
+      this.setFavoriteBtnClickHandler(this._favoriteBtnClickHandler);
     }
 
     this.setSubmitHandler(this._submitHandler);
@@ -274,9 +274,9 @@ export default class PointEdit extends AbstractSmartComponent {
     return new FormData(form);
   }
 
-  setFavouriteBtnClickHandler(handler) {
+  setFavoriteBtnClickHandler(handler) {
     this.getElement().querySelector(`#event-favorite-1`).addEventListener(`click`, handler);
-    this._favouriteBtnClickHandler = handler;
+    this._favoriteBtnClickHandler = handler;
   }
 
   setCloseBtnClickHandler(handler) {

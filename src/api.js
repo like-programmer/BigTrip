@@ -1,17 +1,11 @@
 import Point from "./models/point.js";
-
-const Method = {
-  GET: `GET`,
-  POST: `POST`,
-  PUT: `PUT`,
-  DELETE: `DELETE`
-};
+import {Method} from "./const.js";
 
 const checkStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {
     return response;
   } else {
-    throw new Error(`${response.status}: ${response.statusText}`);
+    throw new Error(`${response.status}: ${response.status === 400 ? `Bad Request` : response.statusText}`);
   }
 };
 
@@ -53,7 +47,7 @@ const API = class {
       url: `points/${id}`,
       method: Method.PUT,
       body: JSON.stringify(data.toRAW()),
-      header: new Headers({"Content-Type": `application/json`})
+      headers: new Headers({"Content-Type": `application/json`})
     })
       .then((response) => response.json())
       .then(Point.parsePoint);
