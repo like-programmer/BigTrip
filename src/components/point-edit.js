@@ -1,5 +1,5 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
-import {POINT_TYPES} from "../const";
+import {POINT_TYPES, DefaultData} from "../const";
 import {createTripTypeTitle, getCapitalizedType} from "../utils/common.js";
 
 import flatpickr from "flatpickr";
@@ -58,7 +58,7 @@ const createPhotoTapeMarkup = (photos) => {
 
 const createEditPointTemplate = (point, options = {}) => {
   const {dateFrom, isFavorite, offers, isAdding} = point;
-  const {basePrice, dateTo, destinationCity = {name: ``, description: ``, pictures: []}, pointType, allOffers, allDestinations} = options;
+  const {basePrice, dateTo, destinationCity = {name: ``, description: ``, pictures: []}, pointType, allOffers, allDestinations, externalData} = options;
 
   const [pointIcon] = POINT_TYPES.filter((it) => it.name === pointType).map((it) => it.icon);
   const [destination] = allDestinations.filter((item) => item.name === destinationCity.name);
@@ -83,6 +83,9 @@ const createEditPointTemplate = (point, options = {}) => {
   const transferTypeListMarkup = createTypesListMarkup(POINT_TYPES.filter((it) => it.type === `transfer`), pointType);
 
   const activityTypeListMarkup = createTypesListMarkup(POINT_TYPES.filter((it) => it.type === `activity`), pointType);
+
+  const saveBtnText = externalData.saveBtnText;
+  const deleteBtnText = externalData.deleteBtnText;
 
   return (`${isAdding ? `` : `<li class="trip-events__item">
       `}<form class="event  event--edit ${isAdding ? `trip-events__item` : ``}" action="#" method="post">
@@ -141,8 +144,8 @@ const createEditPointTemplate = (point, options = {}) => {
             <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}">
           </div>
 
-          <button class="event__save-btn  btn  btn--blue" type="submit" ${isAdding ? `disabled` : ``}>Save</button>
-          <button class="event__reset-btn" type="reset">${isAdding ? `Cancel` : `Delete`}</button>
+          <button class="event__save-btn  btn  btn--blue" type="submit" ${isAdding ? `disabled` : ``}>${saveBtnText}</button>
+          <button class="event__reset-btn" type="reset">${isAdding ? `Cancel` : deleteBtnText}</button>
 
           ${isAdding ? `` : `
           <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${isFavorite ? `checked` : ``}>
@@ -206,6 +209,7 @@ export default class PointEdit extends AbstractSmartComponent {
     this._dateTo = point.dateTo;
     this._destinationCity = point.destination;
     this._pointType = point.type;
+    this._externalData = DefaultData;
     this._applyFlatpickr();
     this._subscribeOnEvents();
   }
@@ -219,6 +223,7 @@ export default class PointEdit extends AbstractSmartComponent {
       pointType: this._pointType,
       allOffers: this._offers,
       allDestinations: this._destinations,
+      externalData: this._externalData,
     });
   }
 
@@ -272,6 +277,11 @@ export default class PointEdit extends AbstractSmartComponent {
     }
 
     return new FormData(form);
+  }
+
+  setData(data) {
+    this._externalData = Object.assign({}, DefaultData, data);
+    this.rerender();
   }
 
   setFavoriteBtnClickHandler(handler) {

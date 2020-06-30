@@ -100,10 +100,20 @@ export default class PointController {
       const formData = this._pointEditComponent.getData();
       const data = parseFormData(formData, this._offers, this._destinations);
       data.id = point.id;
+
+      this._pointEditComponent.setData({
+        saveBtnText: `Saving...`,
+      });
       this._dataChangeHandler(this, point, data);
     });
 
-    this._pointEditComponent.setDeleteBtnClickHandler(() => this._dataChangeHandler(this, point, null));
+    this._pointEditComponent.setDeleteBtnClickHandler(() => {
+      this._pointEditComponent.setData({
+        deleteBtnText: `Deleting...`,
+      });
+
+      this._dataChangeHandler(this, point, null);
+    });
 
     switch (mode) {
       case Mode.DEFAULT:
@@ -146,6 +156,11 @@ export default class PointController {
     setTimeout(() => {
       this._pointEditComponent.getElement().style.animation = ``;
       this._pointComponent.getElement().style.animation = ``;
+
+      this._pointEditComponent.setData({
+        saveBtnText: `Save`,
+        deleteBtnText: `Delete`,
+      });
     }, SHAKE_ANIMATION_TIMEOUT);
   }
 
