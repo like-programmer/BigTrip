@@ -79,10 +79,12 @@ export default class Provider {
 
   deletePoint(id) {
     if (isOnline()) {
-      return this._api.deletePoint(id);
+      return this._api.deletePoint(id)
+        .then(() => this._store.removeItem(id));
     }
 
-    // TODO: Write logic if internet is unavailable
-    return Promise.reject(`Offline logic is not implemented`);
+    this._store.removeItem(id);
+
+    return Promise.resolve();
   }
 }

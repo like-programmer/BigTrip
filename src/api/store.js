@@ -16,15 +16,23 @@ export default class Store {
     const store = this.getItems();
 
     this._storage.setItem(
-      this._storeKey,
-      JSON.stringify(
-        Object.assign({}, store, {
-          [key]: value
-        })
-      )
+        this._storeKey,
+        JSON.stringify(
+            Object.assign({}, store, {
+              [key]: value
+            })
+        )
     );
   }
 
   removeItem(key) {
+    const store = this.getItems();
+
+    delete store[key];
+
+    this._storage.setItem(
+        this._storeKey,
+        JSON.stringify(store)
+    );
   }
 }
