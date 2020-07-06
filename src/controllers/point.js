@@ -99,7 +99,6 @@ export default class PointController {
       document.removeEventListener(`keydown`, this._escKeyDownHandler);
       const formData = this._pointEditComponent.getData();
       const data = parseFormData(formData, this._offers, this._destinations);
-      data.id = point.id;
 
       this._pointEditComponent.setData({
         saveBtnText: `Saving...`,

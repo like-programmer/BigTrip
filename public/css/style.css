@@ -1144,6 +1144,7 @@ main {
 }
 
 .event__offer-checkbox:checked + .event__offer-label {
+    color: #ffffff;
     background-color: #0d8ae4;
 }
 

@@ -344,10 +344,13 @@ export default class PointEdit extends AbstractSmartComponent {
 
   _subscribeOnEvents() {
     const element = this.getElement();
+    const addEventBtnElement = document.querySelector(`.trip-main__event-add-btn`);
 
     element.querySelector(`.event__type-list`).addEventListener(`change`, (evt) => {
       this._pointType = evt.target.value;
       this.rerender();
+
+      addEventBtnElement.setAttribute(`disabled`, `disabled`);
     });
 
     const destinationElement = element.querySelector(`#event-destination-1`);
@@ -358,6 +361,8 @@ export default class PointEdit extends AbstractSmartComponent {
       this._destinationCity = choosenCity ? choosenCity : {description: ``, name: ``, pictures: []};
 
       this.rerender();
+
+      addEventBtnElement.setAttribute(`disabled`, `disabled`);
 
       const saveBtn = this.getElement().querySelector(`.event__save-btn`);
       saveBtn.disabled = this._destinationCity.name === `` || this._basePrice.length < 1;

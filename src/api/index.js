@@ -1,5 +1,5 @@
-import Point from "./models/point.js";
-import {Method} from "./const.js";
+import Point from "../models/point.js";
+import {Method} from "../const.js";
 
 const checkStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {
@@ -9,7 +9,7 @@ const checkStatus = (response) => {
   }
 };
 
-const API = class {
+const Index = class {
   constructor(endPoint, authorization) {
     this._endPoint = endPoint;
     this._authorization = authorization;
@@ -70,4 +70,4 @@ const API = class {
   }
 };
 
-export default API;
+export default Index;

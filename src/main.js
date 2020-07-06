@@ -1,4 +1,4 @@
-import API from "./api.js";
+import API from "./api/index.js";
 import SiteMenuComponent from "./components/site-menu.js";
 import StatisticsComponent from "./components/statistics.js";
 import TripInfoController from "./controllers/trip-info.js";
