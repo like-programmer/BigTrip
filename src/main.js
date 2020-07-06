@@ -10,10 +10,10 @@ import PointsModel from "./models/points.js";
 import OffersModel from "./models/offers.js";
 import DestinationsModel from "./models/destinations.js";
 import {render} from "./utils/render.js";
-import {MenuItem, RenderPosition, AUTHORIZATION, END_POINT} from "./const.js";
+import {MenuItem, RenderPosition, AUTHORIZATION, END_POINT, STORE_NAME} from "./const.js";
 
 const api = new API(END_POINT, AUTHORIZATION);
-const store = new Store();
+const store = new Store(STORE_NAME, window.localStorage);
 const apiWithProvider = new Provider(api, store);
 
 const pointsModel = new PointsModel();

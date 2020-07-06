@@ -1,3 +1,12 @@
+const STORE_PREFIX = `bigTrip-localstorage`;
+const STORE_VER = `v1`;
+
+export const AUTHORIZATION = `Basic eo0w590ik29889a`;
+
+export const END_POINT = `https://11.ecmascript.pages.academy/big-trip/`;
+
+export const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
+
 export const POINT_TYPES = [
   {
     name: `taxi`,
@@ -98,10 +107,6 @@ export const RenderPosition = {
   BEFOREBEGIN: `beforebegin`,
   BEFOREEND: `beforeend`
 };
-
-export const AUTHORIZATION = `Basic eo0w590ik29889a`;
-
-export const END_POINT = `https://11.ecmascript.pages.academy/big-trip/`;
 
 export const Method = {
   GET: `GET`,
