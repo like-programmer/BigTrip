@@ -1,4 +1,5 @@
 import API from "./api/index.js";
+import Provider from "./api/provider.js";
 import SiteMenuComponent from "./components/site-menu.js";
 import StatisticsComponent from "./components/statistics.js";
 import TripInfoController from "./controllers/trip-info.js";
@@ -11,6 +12,7 @@ import {render} from "./utils/render.js";
 import {MenuItem, RenderPosition, AUTHORIZATION, END_POINT} from "./const.js";
 
 const api = new API(END_POINT, AUTHORIZATION);
+const apiWithProvider = new Provider(api);
 
 const pointsModel = new PointsModel();
 const offersModel = new OffersModel();
@@ -27,7 +29,7 @@ const tripInfoController = new TripInfoController(siteHeaderElement, pointsModel
 const siteMenuComponent = new SiteMenuComponent();
 const filterController = new FilterController(siteHeaderControls, pointsModel);
 const statisticsComponent = new StatisticsComponent();
-const tripController = new TripController(pointsContainerElement, pointsModel, offersModel, destinationsModel, api);
+const tripController = new TripController(pointsContainerElement, pointsModel, offersModel, destinationsModel, apiWithProvider);
 
 tripInfoController.render();
 render(hiddenTitle, siteMenuComponent, RenderPosition.AFTEREND);
@@ -56,11 +58,11 @@ siteMenuComponent.setOnChange((menuItem) => {
 });
 
 
-api.getDestinations()
+apiWithProvider.getDestinations()
   .then((destinations) => destinationsModel.setDestinations(destinations))
-  .then(() => api.getOffers())
+  .then(() => apiWithProvider.getOffers())
   .then((offers) => offersModel.setOffers(offers))
-  .then(() => api.getPoints())
+  .then(() => apiWithProvider.getPoints())
   .then((points) => pointsModel.setPoints(points))
   .then(() => {
     pointsContainerElement.removeChild(pointsContainerElement.querySelector(`.trip-events__msg`));
