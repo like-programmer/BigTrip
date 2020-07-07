@@ -71,6 +71,16 @@ apiWithProvider.getDestinations()
     tripController.render();
   });
 
+window.addEventListener(`load`, () => {
+  navigator.serviceWorker.register(`/sw.js`)
+    .then(() => {
+      // action in case of succeed ServiceWorker registration
+    }).catch(() => {
+    // action in case of error of ServiceWorker registration
+  });
+});
+
+
 window.addEventListener(`online`, () => {
   document.title = document.title.replace(` [offline]`, ``);
 
