@@ -26,28 +26,32 @@ export default class Provider {
 
   getDestinations() {
     if (isOnline()) {
-      return this._api.getDestinations();
+      return this._api.getDestinations()
+        .then((destinations) => {
+          this._store.setDestinations(destinations);
+
+          return destinations;
+        });
     }
 
-    // TODO: Write logic if internet is unavailable
-    return Promise.reject(`Offline logic is not implemented`);
+    const storeDestinations = Object.values(this._store.getDestinations());
+
+    return Promise.resolve(storeDestinations);
   }
 
   getOffers() {
     if (isOnline()) {
-      return this._api.getOffers();
-      // return this._api.getOffers()
-      //   .then((offers) => {
-      //     this._store.setItems(offers);
-      //
-      //     return offers;
-      //   });
+      return this._api.getOffers()
+        .then((offers) => {
+          this._store.setOffers(offers);
+
+          return offers;
+        });
     }
 
-    // TODO: Write logic if internet is unavailable
-    return Promise.reject(`Offline logic is not implemented`);
-    // const storeOffers = Object.values(this._store.getItems());
-    // return Promise.resolve(storeOffers);
+    const storeOffers = Object.values(this._store.getOffers());
+
+    return Promise.resolve(storeOffers);
   }
 
   getPoints() {

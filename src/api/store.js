@@ -4,12 +4,42 @@ export default class Store {
     this._storage = storage;
   }
 
+  getDestinations() {
+    try {
+      return JSON.parse(this._storage.getItem(`${this._storeKey}/destinations`));
+    } catch (error) {
+      return {};
+    }
+  }
+
+  getOffers() {
+    try {
+      return JSON.parse(this._storage.getItem(`${this._storeKey}/offers`));
+    } catch (error) {
+      return {};
+    }
+  }
+
   getItems() {
     try {
       return JSON.parse(this._storage.getItem(this._storeKey));
     } catch (error) {
       return {};
     }
+  }
+
+  setDestinations(items) {
+    this._storage.setItem(
+        `${this._storeKey}/destinations`,
+        JSON.stringify(items)
+    );
+  }
+
+  setOffers(items) {
+    this._storage.setItem(
+        `${this._storeKey}/offers`,
+        JSON.stringify(items)
+    );
   }
 
   setItems(items) {
