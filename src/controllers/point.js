@@ -3,6 +3,7 @@ import PointEditComponent from "../components/point-edit.js";
 import PointModel from "../models/point.js";
 import {POINT_TYPES, Mode, RenderPosition, SHAKE_ANIMATION_TIMEOUT} from "../const";
 import {render, replace, remove} from "../utils/render.js";
+import {debounce} from "../utils/common.js";
 import moment from "moment";
 
 export const EmptyPoint = {
@@ -83,9 +84,11 @@ export default class PointController {
 
     if (!point.isAdding) {
       this._pointEditComponent.setFavoriteBtnClickHandler(() => {
-        const newPoint = PointModel.clone(point);
-        newPoint.isFavorite = !newPoint.isFavorite;
-        this._dataChangeHandler(this, point, newPoint);
+        debounce(() => {
+          const newPoint = PointModel.clone(point);
+          newPoint.isFavorite = !newPoint.isFavorite;
+          this._dataChangeHandler(this, point, newPoint);
+        });
       });
 
       this._pointEditComponent.setCloseBtnClickHandler(() => {
@@ -122,6 +125,15 @@ export default class PointController {
           this._replaceEditToPoint();
         } else {
           render(this._container, this._pointComponent, RenderPosition.BEFOREEND);
+        }
+        break;
+      case Mode.EDIT:
+        if (oldPointComponent && oldPointEditComponent) {
+          replace(this._pointComponent, oldPointComponent);
+          replace(this._pointEditComponent, oldPointEditComponent);
+          this._replacePointToEdit();
+        } else {
+          render(this._container, this._pointEditComponent, RenderPosition.BEFOREEND);
         }
         break;
       case Mode.ADDING:

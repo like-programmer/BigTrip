@@ -1,5 +1,17 @@
 import moment from "moment";
 
+let lastTimeout;
+
+export const debounce = (action) => {
+  if (lastTimeout) {
+    window.clearTimeout(lastTimeout);
+  }
+
+  lastTimeout = window.setTimeout(() => {
+    action();
+  }, 500);
+};
+
 const getFormattedNumber = (number) => {
   return number < 10 ? `0${number}` : `${number}`;
 };
@@ -31,23 +43,6 @@ export const getOrderedPoints = (points) => {
 
     return dateA - dateB;
   });
-};
-
-export const getRandomIntegerNumber = (min, max) => {
-  return (min + Math.floor(Math.random() * (max - min)));
-};
-
-export const getRandomArrayItem = (array) => {
-  const randomIndex = getRandomIntegerNumber(0, array.length);
-
-  return array[randomIndex];
-};
-
-export const getRandomString = (array) => {
-  const itemsCount = getRandomIntegerNumber(1, 3);
-  return new Array(itemsCount).fill(``).map(() => {
-    return getRandomArrayItem(array);
-  }).join(` `);
 };
 
 export const isPastPoint = (pointDate, date) => {

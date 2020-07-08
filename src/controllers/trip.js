@@ -7,6 +7,8 @@ import {Mode as PointControllerMode, SortType, RenderPosition, HIDDEN_CLASS} fro
 import {render, remove} from "../utils/render.js";
 import {getOrderedPoints} from "../utils/common.js";
 import moment from "moment";
+import {Mode} from "../const";
+import {replace} from "../utils/render";
 
 const getSortedPoints = (points, sortType) => {
   let sortedPoints = [];
@@ -215,10 +217,18 @@ export default class TripController {
       this._api.updatePoint(oldData.id, newData)
         .then((pointModel) => {
           const isSuccess = this._pointsModel.updatePoint(oldData.id, pointModel);
+          const isFavoriteStateChanged = oldData.isFavorite !== newData.isFavorite;
 
           if (isSuccess) {
-            pointController.render(pointModel, PointControllerMode.DEFAULT);
-            this._updatePoints();
+            switch (isFavoriteStateChanged) {
+              case true:
+                pointController.render(pointModel, PointControllerMode.DEFAULT);
+                this._updatePoints();
+                break;
+              case false:
+                pointController.render(pointModel, PointControllerMode.EDIT);
+                break;
+            }
           }
         })
         .catch(() => {

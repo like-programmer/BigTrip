@@ -5,7 +5,7 @@ import AbstractComponent from "./abstract-component.js";
 import moment from "moment";
 
 const createOffersMarkup = (offers) => {
-  return offers.slice(0, 2).map((offer) => {
+  return offers.slice(0, 3).map((offer) => {
     const title = offer.title;
     const price = offer.price;
     return (`
