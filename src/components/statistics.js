@@ -1,4 +1,29 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
+import Chart from "chart.js";
+
+const renderTransportChart = (transportCtx, points) => {
+  return new Chart(transportCtx, {
+    type: `horizontalBar`,
+    data: {
+      datasets: [{
+        barPercentage: 0.5,
+        barThickness: 6,
+        maxBarThickness: 8,
+        minBarLength: 2,
+        data: [10, 20, 30, 40, 50, 60, 70]
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          gridLines: {
+            offsetGridLines: true
+          }
+        }]
+      }
+    }
+  });
+};
 
 const createStatisticsTemplate = () => {
   return (`<section class="statistics">
@@ -20,11 +45,52 @@ const createStatisticsTemplate = () => {
 };
 
 export default class Statistics extends AbstractSmartComponent {
-  constructor() {
+  constructor(points) {
     super();
+
+    this._points = points;
+
+    this._moneyChart = null;
+    this._transportChart = null;
+    this._durationChart = null;
+
+    this._renderCharts();
   }
 
   getTemplate() {
     return createStatisticsTemplate();
+  }
+
+  show() {
+    super.show();
+
+    this.rerender(this._points);
+  }
+
+  recoveryListeners() {}
+
+  rerender(points) {
+    this._points = points;
+
+    super.rerender();
+
+    this._renderCharts();
+  }
+
+  _renderCharts() {
+    const element = this.getElement();
+
+    const transportCtx = element.querySelector(`.statistics__chart.statistics__chart--transport`);
+
+    this._resetCharts();
+
+    this._transportChart = renderTransportChart(transportCtx, this._points.getPointsAll());
+  }
+
+  _resetCharts() {
+    if (this._transportChart) {
+      this._transportChart.destroy();
+      this._transportChart = null;
+    }
   }
 }

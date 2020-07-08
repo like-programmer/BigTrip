@@ -30,14 +30,15 @@ const pointsContainerElement = document.querySelector(`.trip-events`);
 const tripInfoController = new TripInfoController(siteHeaderElement, pointsModel);
 const siteMenuComponent = new SiteMenuComponent();
 const filterController = new FilterController(siteHeaderControls, pointsModel);
-const statisticsComponent = new StatisticsComponent();
+const statisticsComponent = new StatisticsComponent(pointsModel);
 const tripController = new TripController(pointsContainerElement, pointsModel, offersModel, destinationsModel, apiWithProvider);
 
 tripInfoController.render();
 render(hiddenTitle, siteMenuComponent, RenderPosition.AFTEREND);
 filterController.render();
 render(pageBodyElement, statisticsComponent, RenderPosition.BEFOREEND);
-statisticsComponent.hide();
+statisticsComponent.show();
+// statisticsComponent.hide();
 
 addEventBtnElement.addEventListener(`click`, () => {
   tripController.createPoint();
@@ -69,6 +70,7 @@ apiWithProvider.getDestinations()
   .then(() => {
     pointsContainerElement.removeChild(pointsContainerElement.querySelector(`.trip-events__msg`));
     tripController.render();
+    tripController.hide();
   });
 
 window.addEventListener(`load`, () => {
