@@ -1,12 +1,17 @@
 import moment from "moment";
 
+const getFormattedNumber = (number) => {
+  return number < 10 ? `0${number}` : `${number}`;
+};
+
 export const getDuration = (dateFrom, dateTo) => {
   const startDate = moment(dateFrom);
   const endDate = moment(dateTo);
   const duration = moment.duration(endDate.diff(startDate));
-  const days = duration._data.days > 0 ? `${duration._data.days}D ` : ``;
-  const hours = duration._data.hours > 0 ? `${duration._data.hours}H ` : ``;
-  const minutes = duration._data.minutes > 0 ? `${duration._data.minutes}M` : ``;
+
+  const days = duration.days() > 0 ? `${getFormattedNumber(duration.days())}D ` : ``;
+  const hours = duration.hours() > 0 ? `${getFormattedNumber(duration.hours())}H ` : ``;
+  const minutes = duration.minutes() > 0 ? `${getFormattedNumber(duration.minutes())}M` : ``;
 
   return `${days}${hours}${minutes}`;
 };
