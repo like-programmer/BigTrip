@@ -11,7 +11,7 @@ export const getDuration = (dateFrom, dateTo) => {
 
   const days = duration.days() > 0 ? `${getFormattedNumber(duration.days())}D ` : ``;
   const hours = duration.hours() > 0 ? `${getFormattedNumber(duration.hours())}H ` : ``;
-  const minutes = duration.minutes() > 0 ? `${getFormattedNumber(duration.minutes())}M` : ``;
+  const minutes = duration.minutes() > 0 ? `${getFormattedNumber(duration.minutes())}M` : `00M`;
 
   return `${days}${hours}${minutes}`;
 };
