@@ -345,26 +345,22 @@ export default class PointEdit extends AbstractSmartComponent {
   _subscribeOnEvents() {
     const element = this.getElement();
     const addEventBtnElement = document.querySelector(`.trip-main__event-add-btn`);
+    const saveBtn = this.getElement().querySelector(`.event__save-btn`);
 
     element.querySelector(`.event__type-list`).addEventListener(`change`, (evt) => {
       this._pointType = evt.target.value;
       this.rerender();
-
-      addEventBtnElement.setAttribute(`disabled`, `disabled`);
+      addEventBtnElement.disabled = true;
+      saveBtn.disabled = this._destinationCity.name === `` || this._basePrice.length < 1;
     });
 
     const destinationElement = element.querySelector(`#event-destination-1`);
 
     destinationElement.addEventListener(`change`, (evt) => {
       const [choosenCity] = this._destinations.filter((item) => item.name === evt.target.value);
-
       this._destinationCity = choosenCity ? choosenCity : {description: ``, name: ``, pictures: []};
-
       this.rerender();
-
-      addEventBtnElement.setAttribute(`disabled`, `disabled`);
-
-      const saveBtn = this.getElement().querySelector(`.event__save-btn`);
+      addEventBtnElement.disabled = true;
       saveBtn.disabled = this._destinationCity.name === `` || this._basePrice.length < 1;
     });
 
@@ -383,7 +379,6 @@ export default class PointEdit extends AbstractSmartComponent {
     element.querySelector(`#event-price-1`).addEventListener(`input`, (evt) => {
       this._basePrice = evt.target.value;
 
-      const saveBtn = this.getElement().querySelector(`.event__save-btn`);
       saveBtn.disabled = this._destinationCity.name === `` || this._basePrice.length < 1;
     });
   }

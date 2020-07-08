@@ -41,7 +41,7 @@ statisticsComponent.hide();
 
 addEventBtnElement.addEventListener(`click`, () => {
   tripController.createPoint();
-  addEventBtnElement.setAttribute(`disabled`, `disabled`);
+  addEventBtnElement.disabled = true;
 });
 
 siteMenuComponent.setOnChange((menuItem) => {

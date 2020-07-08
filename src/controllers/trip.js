@@ -199,6 +199,7 @@ export default class TripController {
             this._pointsModel.addPoint(pointModel);
             pointController.destroy();
             this._updatePoints();
+            document.querySelector(`.trip-main__event-add-btn`).disabled = false;
           })
           .catch(() => {
             pointController.shake();

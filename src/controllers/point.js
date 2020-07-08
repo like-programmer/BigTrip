@@ -82,7 +82,7 @@ export default class PointController {
       document.addEventListener(`keydown`, this._escKeyDownHandler);
     });
 
-    if (!point.isAdding) {
+    if (this._mode !== Mode.ADDING) {
       this._pointEditComponent.setFavoriteBtnClickHandler(() => {
         debounce(() => {
           const newPoint = PointModel.clone(point);
@@ -106,6 +106,18 @@ export default class PointController {
       this._pointEditComponent.setData({
         saveBtnText: `Saving...`,
       });
+
+      switch (this._mode) {
+        case Mode.EDIT:
+          this._pointEditComponent.getElement().querySelector(`form`).classList.add(`event--disabled`);
+          break;
+        case Mode.ADDING:
+          this._pointEditComponent.getElement().classList.add(`event--disabled`);
+          break;
+      }
+
+      document.querySelector(`.trip-main__event-add-btn`).disabled = true;
+
       this._dataChangeHandler(this, point, data);
     });
 
@@ -117,7 +129,7 @@ export default class PointController {
       this._dataChangeHandler(this, point, null);
     });
 
-    switch (mode) {
+    switch (this._mode) {
       case Mode.DEFAULT:
         if (oldPointComponent && oldPointEditComponent) {
           replace(this._pointComponent, oldPointComponent);
@@ -172,6 +184,17 @@ export default class PointController {
         saveBtnText: `Save`,
         deleteBtnText: `Delete`,
       });
+
+      switch (this._mode) {
+        case Mode.EDIT:
+          this._pointEditComponent.getElement().querySelector(`form`).classList.remove(`event--disabled`);
+          break;
+        case Mode.ADDING:
+          this._pointEditComponent.getElement().classList.remove(`event--disabled`);
+          this._pointEditComponent.getElement().querySelector(`.event__save-btn`).disabled = false;
+          document.querySelector(`.trip-main__event-add-btn`).disabled = true;
+          break;
+      }
     }, SHAKE_ANIMATION_TIMEOUT);
   }
 
