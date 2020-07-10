@@ -37,8 +37,7 @@ tripInfoController.render();
 render(hiddenTitle, siteMenuComponent, RenderPosition.AFTEREND);
 filterController.render();
 render(pageBodyElement, statisticsComponent, RenderPosition.BEFOREEND);
-statisticsComponent.show();
-// statisticsComponent.hide();
+statisticsComponent.hide();
 
 addEventBtnElement.addEventListener(`click`, () => {
   tripController.createPoint();
@@ -70,7 +69,6 @@ apiWithProvider.getDestinations()
   .then(() => {
     pointsContainerElement.removeChild(pointsContainerElement.querySelector(`.trip-events__msg`));
     tripController.render();
-    tripController.hide();
   });
 
 window.addEventListener(`load`, () => {

@@ -1,7 +1,23 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
 import Chart from "chart.js";
 
+const getUniqItems = (item, index, array) => {
+  return array.indexOf(item) === index;
+};
+
+
+
+const getData = (points, type) => {
+  return points.filter((point) => {
+    console.log(point.type, type);
+    point.type === type;
+  }).length;
+};
+
 const renderTransportChart = (transportCtx, points) => {
+  const types = points.map((point) => point.type)
+    .filter(getUniqItems);
+
   return new Chart(transportCtx, {
     type: `horizontalBar`,
     data: {
@@ -10,7 +26,7 @@ const renderTransportChart = (transportCtx, points) => {
         barThickness: 6,
         maxBarThickness: 8,
         minBarLength: 2,
-        data: [10, 20, 30, 40, 50, 60]
+        data: types.map((type) => getData(points, type)),
       }]
     },
     options: {
@@ -47,7 +63,6 @@ const createStatisticsTemplate = () => {
 export default class Statistics extends AbstractSmartComponent {
   constructor(points) {
     super();
-
     this._points = points;
 
     this._moneyChart = null;
